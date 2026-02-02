@@ -11,8 +11,8 @@ const Counter = () => {
   return (
     <div>
       <div className="text-center space-y-4">
-        <h1>Counter Component</h1>
-        <p className="font-extrabold text-amber-500">Count: {count}</p>
+        <h1 className="text-3xl font-bold">Day1: Counter Component</h1>
+        <p className="text-3xl font-extrabold text-amber-500">Count: {count}</p>
         <button onClick={() => setCount(count + 1)}>Increase</button>
         <button onClick={() => setCount(0)}>Reset</button>
         <button onClick={() => setCount(count - 1)}>Decrease</button>
