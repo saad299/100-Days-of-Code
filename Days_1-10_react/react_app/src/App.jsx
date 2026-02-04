@@ -1,5 +1,6 @@
 import Basics from "./components/Basics";
 import State from "./components/State";
+import ListRendering from "./components/ListRendering";
 
 function App() {
 
@@ -13,6 +14,8 @@ function App() {
         <Basics />
         <br />
         <State />
+        <br />
+        <ListRendering />
       </div>
     </>
   );
