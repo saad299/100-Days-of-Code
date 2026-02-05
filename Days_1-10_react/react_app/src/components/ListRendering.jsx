@@ -15,7 +15,7 @@ const ListRendering = () => {
   return (
     <div className="text-center">
       <h2 className="text-3xl font-bold underline text-emerald-800">
-        Day 2: Rendering List + Conditional Rendering
+        Day 3: Rendering List + Conditional Rendering
       </h2>
       <p>
         This component demonstrates list rendering and conditional rendering in

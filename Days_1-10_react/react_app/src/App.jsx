@@ -1,6 +1,7 @@
 import Basics from "./components/Basics";
 import State from "./components/State";
 import ListRendering from "./components/ListRendering";
+import Effect from "./components/Effect";
 
 function App() {
 
@@ -16,6 +17,8 @@ function App() {
         <State />
         <br />
         <ListRendering />
+        <br />
+        <Effect />
       </div>
     </>
   );
