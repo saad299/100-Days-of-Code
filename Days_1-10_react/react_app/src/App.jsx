@@ -2,6 +2,7 @@ import Basics from "./components/Basics";
 import State from "./components/State";
 import ListRendering from "./components/ListRendering";
 import Effect from "./components/Effect";
+import Fetch from "./components/Fetch";
 
 function App() {
 
@@ -12,13 +13,15 @@ function App() {
           <h1 className="text-center underline decoration-pink-500">Days 1-10: React Refresher</h1>
         </div>
         <br />
-        <Basics />
+        {/* <Basics />
         <br />
         <State />
         <br />
         <ListRendering />
         <br />
         <Effect />
+        <br /> */}
+        <Fetch />
       </div>
     </>
   );

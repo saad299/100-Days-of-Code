@@ -29,9 +29,17 @@ install tailwindcss
 > npm install tailwindcss @tailwindcss/vite
 > ```
 
+## Day 1: React Refresher
 For day 1, go to `Basics.jsx` in `Days_1-10_react/react_app/src/components`
 
 ## Day 2: useState basics
 For day2, I used the same `react_app` project
-
 For day 2, go to `State.jsx` in `Days_1-10_react/react_app/src/components`
+
+## Day 3: Rendering List + Conditional Rendering
+For day3, I used the same `react_app` project
+For day 3, go to `ListRendering.jsx` in `Days_1-10_react/react_app/src/components`
+
+## Day 4: useEffect basics
+For day3, I used the same `react_app` project
+For day 4, go to `Effect.jsx` in `Days_1-10_react/react_app/src/components`
