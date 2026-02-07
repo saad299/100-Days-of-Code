@@ -8,38 +8,82 @@ This 100 days of code starts from revision of React.js. The reason for doing thi
 Installed React + Tailwind
 
 React installation:
-> ```cmd
+> ```powershell
 > npm create vite@latest
 > ```
 
 named the project `react_app`
 
 then,
-> ```cmd
+> ```powershell
 > cd project-directory
 > ```
 
 install project dependencies
-> ```cmd
+> ```powershell
 > npm install
 > ```
 
 install tailwindcss
-> ```cmd
+> ```powershell
 > npm install tailwindcss @tailwindcss/vite
 > ```
 
 ## Day 1: React Refresher
-For day 1, go to `Basics.jsx` in `Days_1-10_react/react_app/src/components`
+For day 1, go to `Basics.jsx` in `Days_1-10_react/react_app/src/components` directory
 
 ## Day 2: useState basics
 For day2, I used the same `react_app` project
-For day 2, go to `State.jsx` in `Days_1-10_react/react_app/src/components`
+For day 2, go to `State.jsx` in `Days_1-10_react/react_app/src/components` directory
 
 ## Day 3: Rendering List + Conditional Rendering
 For day3, I used the same `react_app` project
-For day 3, go to `ListRendering.jsx` in `Days_1-10_react/react_app/src/components`
+For day 3, go to `ListRendering.jsx` in `Days_1-10_react/react_app/src/components` directory
 
 ## Day 4: useEffect basics
-For day3, I used the same `react_app` project
-For day 4, go to `Effect.jsx` in `Days_1-10_react/react_app/src/components`
+For day4, I used the same `react_app` project
+For day 4, go to `Effect.jsx` in `Days_1-10_react/react_app/src/components` directory
+
+## Day 5: Fetching Data (useEffect/axios)
+For day5, I used the same `react_app` project
+For day 5, go to `Fetch.jsx` in `Days_1-10_react/react_app/src/components` directory
+
+## Day 6: TypeScript Basics
+For day6, I installed and learned the basics of TypeScript
+For day 6, go to `TypeScript` folder in `Days_1-10_react` directory
+
+Install TypeScript:
+```powershell
+npm install -D typescript
+```
+Then,
+```powershell
+npx tsc --init
+```
+
+Create a TypeScript file. To compile TypeScript file into JavaScript file:
+```powershell
+npx tsc filename.ts
+```
+Then, in order to see the result of the compiled JavaScript file:
+```powershell
+node filename.js
+```
+
+You have to manually type the above commands again and again in order to compile the file into js file. In order to automatically compile the TS file into JS and see the result at the same time, do this.
+### Step1:
+Open the terminal and type the following command:
+```powershell
+npx tsc --watch
+```
+This command will automatically compile the TS file into JS whenever you type some TS code in the TS file
+### Step2:
+Open another terminal (don't close the previous terminal) on the other side in the editor and enter the following command:
+```powershell
+node --watch filename.js
+```
+This command will instantly show the result of the JS file once the TS file is done compiling into JS
+
+<!-- ## Day 7: Custom Hooks
+For day7, I used the same `react_app` project
+For day 7, go to `Effect.jsx` in `Days_1-10_react/react_app/src/components` -->
