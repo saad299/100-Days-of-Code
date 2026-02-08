@@ -3,6 +3,7 @@ import State from "./components/State";
 import ListRendering from "./components/ListRendering";
 import Effect from "./components/Effect";
 import Fetch from "./components/Fetch";
+import CustomHooks from "./components/CustomHook/CustomHooks";
 
 function App() {
 
@@ -21,7 +22,8 @@ function App() {
         <br />
         <Effect />
         <br /> */}
-        <Fetch />
+        {/* <Fetch /> */}
+        <CustomHooks />
       </div>
     </>
   );
