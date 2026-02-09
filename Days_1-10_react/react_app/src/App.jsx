@@ -4,6 +4,7 @@ import ListRendering from "./components/ListRendering";
 import Effect from "./components/Effect";
 import Fetch from "./components/Fetch";
 import CustomHooks from "./components/CustomHook/CustomHooks";
+import FormHandling from "./components/FormHandling";
 
 function App() {
 
@@ -23,7 +24,7 @@ function App() {
         <Effect />
         <br /> */}
         {/* <Fetch /> */}
-        <CustomHooks />
+        <FormHandling />
       </div>
     </>
   );

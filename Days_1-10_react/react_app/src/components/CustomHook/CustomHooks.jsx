@@ -1,3 +1,10 @@
+/*
+   Use Custom Hooks to avoid code duplication. If a hook is repeating
+   logic at multiple places, create a custom hook and use it where needed.
+   For example, if an App is using an API, instead of using it at multiple
+   places, define it in one custom hook and use wherever needed in the App
+*/
+
 import useFetch from "./useFetch";
 
 const CustomHooks = () => {
