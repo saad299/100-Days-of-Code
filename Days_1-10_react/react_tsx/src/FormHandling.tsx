@@ -1,33 +1,26 @@
-import { useState } from "react";
+import { useState, type ChangeEvent, type FormEvent } from "react";
+// import type { ChangeEvent, FormEvent } from "react";
+
+interface Form {
+  name: string;
+  password: string;
+  confirmPassword: string;
+}
 
 const FormHandling = () => {
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<Form>({
     name: "",
     password: "",
     confirmPassword: "",
   });
-  const [submitted, setSubmitted] = useState(null);
+  const [submitted, setSubmitted] = useState<Form | null>(null);
 
-  function handleChange(e) {
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
     setForm(() => ({
       ...form,
       [name]: value,
     }));
-
-    // if (name === "email" && !value.includes("@")) {
-    //   setError("Invalid email");
-    // }
-
-    // if (name === "password" && value.length < 8) {
-    //   setError("Password too short");
-    // }
-
-    // if (name === "password" && !/[!@#$%]/.test(value)) {
-    //   setError("Need special character");
-    // }
-
-    // This is how we can add color and other styling in console.log
     console.log(
       `%cThis is value getting typed: ${value}`,
       "color: yellow; font-size: 10px; font-weight: bold;",
@@ -45,7 +38,7 @@ const FormHandling = () => {
       "font-size: 10px; font-weight: bold;",
     );
   }
-  function handleSubmit(e) {
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     console.log("This is the form you typed: ", form);
     setSubmitted(form);
@@ -55,7 +48,9 @@ const FormHandling = () => {
 
   return (
     <div>
-      <h2 className="text-center text-3xl font-bold">Day8: Form Handling in React(JSX)</h2>
+      <h2 className="text-center text-3xl font-bold">
+        Day8: Form Handling in React(TSX)
+      </h2>
       <br />
       <form
         onSubmit={handleSubmit}
