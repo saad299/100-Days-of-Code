@@ -24,7 +24,7 @@ const useFetch = () => {
     //   });
 
     // fetch with async/await + try/catch
-    async function fetchData() {
+    async function weather() {
       try {
         const respone = await fetch(
           "https://jsonplaceholder.typicode.com/users/",
@@ -40,7 +40,7 @@ const useFetch = () => {
       }
     }
 
-    fetchData()
+    weather()
   }, []);
 
   return (

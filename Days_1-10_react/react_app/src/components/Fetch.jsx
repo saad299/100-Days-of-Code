@@ -24,7 +24,7 @@ const Fetch = () => {
     //   });
 
     // fetch with async/await + try/catch
-    async function fetchData() {
+    async function weather() {
       try {
         const respone = await fetch("https://jsonplaceholder.typicode.com/users/");
         if (!respone.ok) throw new Error("Failed to fetch the data");
@@ -38,7 +38,7 @@ const Fetch = () => {
       }
     }
 
-    fetchData();
+    weather();
   }, []);
 
   if (loading) return <p className="text-3xl text-center font-extrabold">Loading.....</p>;

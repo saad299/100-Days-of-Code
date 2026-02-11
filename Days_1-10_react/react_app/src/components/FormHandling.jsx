@@ -1,6 +1,9 @@
 import { useState } from "react";
+import { useContext } from "react";
+import { ThemeContext } from "./context/context";
 
 const FormHandling = () => {
+  const value = useContext(ThemeContext)
   const [form, setForm] = useState({
     name: "",
     password: "",
@@ -53,9 +56,21 @@ const FormHandling = () => {
     setForm({ name: "", password: "", confirmPassword: "" });
   }
 
+  const light = {
+    background: "white",
+    textColor: "black",    
+  }
+  const dark = {
+    background: "gray",
+    textColor: "white",
+  }
   return (
     <div>
       <h2 className="text-center text-3xl font-bold">Day8: Form Handling in React(JSX)</h2>
+      <h2>This is from: {value.theme}</h2>
+      <button onClick={() => value.setTheme(value.theme === dark ? dark : light)}>
+        Toggle Theme
+      </button>
       <br />
       <form
         onSubmit={handleSubmit}

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import FormHandling from "../components/FormHandling";
 
 const Counter = () => {
   const [count, setCount] = useState(0);
@@ -22,6 +23,7 @@ const Counter = () => {
         <input type="text" value={name} onChange={handleInputChange} className="border-2 rounded-lg border-amber-600"/>
         <p>The text is: {name}</p>
       </div>
+      <FormHandling />
     </div>
   );
 };
