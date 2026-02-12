@@ -1,11 +1,29 @@
 import { useState, useEffect } from "react";
 
-const useWeather = (city) => {
+interface WeatherData {
+  name: string;
+  main: {
+    temp: number;
+    feels_like: number;
+    humidity: number;
+  };
+  weather: Array<{
+    description: string;
+    main: string;
+  }>;
+}
+
+interface UseWeatherReturn {
+  weather: WeatherData | null;
+  loading: boolean;
+  error: string | null;
+}
+const useWeather = (city: string): UseWeatherReturn => {
   const API_key = "YOUR_API_KEY_HERE";
 
-  const [weather, setweather] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [weather, setweather] = useState<WeatherData | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!city) return;
@@ -23,7 +41,7 @@ const useWeather = (city) => {
         setweather(data);
         console.log(data);
       } catch (error) {
-        setError(error.message);
+        setError((error as Error).message);
         setLoading(false);
       } finally{
         setLoading(false);

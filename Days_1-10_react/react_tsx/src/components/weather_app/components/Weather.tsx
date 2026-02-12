@@ -1,12 +1,12 @@
-import { useState } from "react";
+import { useState, type FormEvent, type ChangeEvent } from "react";
 import useWeather from "../weatherHook/useWeather";
 
 const Weather = () => {
-  const [city, setCity] = useState("");
-  const [searchCity, setSearchCity] = useState("");
+  const [city, setCity] = useState<string>("");
+  const [searchCity, setSearchCity] = useState<string>("");
   const { weather, loading, error } = useWeather(searchCity);
 
-  function handleSubmit(e) {
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setSearchCity(city);
   }
@@ -19,7 +19,7 @@ const Weather = () => {
         <form onSubmit={handleSubmit}>
           <input
             value={city}
-            onChange={(e) => setCity(e.target.value)}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => setCity(e.target.value)}
             type="text"
             placeholder="Enter city name"
             className="border-2 border-gray-400 rounded-md p-2 w-60 mx-auto block"
