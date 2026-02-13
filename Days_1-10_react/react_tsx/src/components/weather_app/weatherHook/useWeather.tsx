@@ -19,7 +19,7 @@ interface UseWeatherReturn {
   error: string | null;
 }
 const useWeather = (city: string): UseWeatherReturn => {
-  const API_key = "YOUR_API_KEY_HERE";
+  const API_key = "YOUR_API_KEY_HERE"; // YOUR_API_KEY_HERE
 
   const [weather, setweather] = useState<WeatherData | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
