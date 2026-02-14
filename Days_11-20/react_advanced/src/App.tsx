@@ -1,24 +1,14 @@
-import { useState } from 'react'
+import StateManagement from "./components/StateManagement";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
-      <h1 className='text-2xl font-bold text-red-400 bg-green-500'>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <h1 className="text-2xl font-bold text-red-400 bg-green-500">
+        Days 11-20: React Advanced
+      </h1>
+      <StateManagement />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
