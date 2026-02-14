@@ -8,8 +8,14 @@ const StateManagement = () => {
         State Management is the process and technique of maintaining and
         managing states in a component.
       </p>
+      <p>There are two types of states in React.</p>
       <ul>
-        <h2>Workflow</h2>
+        <li>Client side State</li>
+        <li>Server side State</li>
+      </ul>
+
+      <h2>Workflow</h2>
+      <ul>
         <li>Start simple with useState for local component needs.</li>
         <li>
           Lift state up to the common parent if nearby components need the same
@@ -39,6 +45,18 @@ const StateManagement = () => {
         we can add all the necessary states that will be needed throughout the
         application.
       </p>
+      <p>It's working is very similar to Context API, except that it doesn't require context wrappers.</p>
+
+      <h2>Day13: Tanstack Query</h2>
+      <p>
+        TanStack Query (formerly React Query) is a powerful data fetching and
+        state management library for React applications.
+      </p>
+      <p>It is used to manage server state.</p>
+      <p>
+        Server state is basically a state that is coming from the server (APIs).
+      </p>
+      <p>For managing a state that is coming from the server, Tanstack Query(formely React Query) is preferably used.</p>
     </div>
   );
 };
