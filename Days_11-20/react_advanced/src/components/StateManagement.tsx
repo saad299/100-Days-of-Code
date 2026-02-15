@@ -1,7 +1,7 @@
 const StateManagement = () => {
   return (
     <div>
-      <h1 className="text-2xl font-bold text-red-400 bg-green-500">
+      <h1 className="text-3xl font-bold">
         Day11: State Management
       </h1>
       <p>
@@ -14,7 +14,7 @@ const StateManagement = () => {
         <li>Server side State</li>
       </ul>
 
-      <h2>Workflow</h2>
+      <h2 className="text-3xl font-bold">Workflow</h2>
       <ul>
         <li>Start simple with useState for local component needs.</li>
         <li>
@@ -35,7 +35,7 @@ const StateManagement = () => {
         </li>
       </ul>
 
-      <h2>Day12: Zustand</h2>
+      <h2 className="text-3xl font-bold">Day12: Zustand</h2>
       <p>Zustand is a small, fast, and secure state manager for React.</p>
       <p>
         At the glance, it looks very similar to custom hook and Context API.
@@ -47,7 +47,7 @@ const StateManagement = () => {
       </p>
       <p>It's working is very similar to Context API, except that it doesn't require context wrappers.</p>
 
-      <h2>Day13: Tanstack Query</h2>
+      <h2 className="text-3xl font-bold">Day13: Tanstack Query</h2>
       <p>
         TanStack Query (formerly React Query) is a powerful data fetching and
         state management library for React applications.
@@ -57,6 +57,8 @@ const StateManagement = () => {
         Server state is basically a state that is coming from the server (APIs).
       </p>
       <p>For managing a state that is coming from the server, Tanstack Query(formely React Query) is preferably used.</p>
+
+      <h2 className="text-3xl font-bold">Day14: Pagination + Infinite Scroll</h2>
     </div>
   );
 };

@@ -84,6 +84,30 @@ node --watch filename.js
 ```
 This command will instantly show the result of the JS file once the TS file is done compiling into JS
 
-<!-- ## Day 7: Custom Hooks
+## Day 7: Custom Hooks
 For day7, I used the same `react_app` project
-For day 7, go to `Effect.jsx` in `Days_1-10_react/react_app/src/components` -->
+For day 7, go to `Effect.jsx` in `Days_1-10_react/react_app/src/components`
+
+## Day 8: Understanding Form Handling with TypeScript in React
+For day8, I used the same `react_app` project
+For day 8, go to `FormHandling.jsx` in `Days_1-10_react/react_app/src/components`
+Additionally, go to `react_tsx` folder in `Days_1-10_react` directory. go to `FormHandling.tsx` in `Days_1-10_react/react_tsx/src`
+
+## Day 9: Understanding the React Context API
+For day9, I used the same `react_app` project
+For day 9, go to `context` folder in `Days_1-10_react/react_app/src/components`
+
+## Day 10: Building a Weather App
+For day10, I used the same `react_app` project
+For day 10, go to `weather_app` folder in `Days_1-10_react/react_app/src/components`
+Additionally, go to `react_tsx` folder in `Days_1-10_react` directory. go to `weather_app` folder in `Days_1-10_react/react_tsx/src/components`
+
+## Day 11: Understanding State Management in React
+For day11, I created a new folder `Days_11_20` in `Days_1-10_react` directory. In it, I created `react_advanced` folder
+For day 11, go to `StateManagement.tsx` folder in `Days_11_20/react_advanced/src/components`
+
+## Day 12: Understanding Zustand
+For day12, I used the same `StateManagement.tsx` file in `Days_11_20/react_advanced/src/components`
+
+## Day 13: TanStack Query
+For day13, I used the same `StateManagement.tsx` file in `Days_11_20/react_advanced/src/components`
