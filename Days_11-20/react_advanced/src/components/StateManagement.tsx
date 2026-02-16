@@ -35,7 +35,7 @@ const StateManagement = () => {
         </li>
       </ul>
 
-      <h2 className="text-3xl font-bold">Day12: Zustand</h2>
+      <h2 className="text-3xl font-bold text-amber-700">Day12: Zustand</h2>
       <p>Zustand is a small, fast, and secure state manager for React.</p>
       <p>
         At the glance, it looks very similar to custom hook and Context API.
@@ -47,7 +47,7 @@ const StateManagement = () => {
       </p>
       <p>It's working is very similar to Context API, except that it doesn't require context wrappers.</p>
 
-      <h2 className="text-3xl font-bold">Day13: Tanstack Query</h2>
+      <h2 className="text-3xl font-bold text-sky-800">Day13: Tanstack Query</h2>
       <p>
         TanStack Query (formerly React Query) is a powerful data fetching and
         state management library for React applications.
@@ -56,9 +56,11 @@ const StateManagement = () => {
       <p>
         Server state is basically a state that is coming from the server (APIs).
       </p>
-      <p>For managing a state that is coming from the server, Tanstack Query(formely React Query) is preferably used.</p>
+      <p>For managing a state that is coming from the server, TanStack Query is preferably used.</p>
 
       <h2 className="text-3xl font-bold">Day14: Pagination + Infinite Scroll</h2>
+      <p>It is the technique of loading more data when the user scrolls down the page.</p>
+      <p>Either by <code>Pagination</code> where we load more data when the user clicks on the page number, or by <code>Infinite Scroll</code> where we load more data when the user scrolls down the page.</p>
     </div>
   );
 };
