@@ -24,6 +24,7 @@ const Home = () => {
         <p>https://www.geoapify.com/</p>
         <p>Exchange rate:</p>
         <p>https://www.exchangerate-api.com/</p>
+        <p>https://httpbin.org</p>
       </div>
 
       <div>

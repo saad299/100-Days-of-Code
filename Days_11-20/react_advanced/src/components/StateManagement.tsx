@@ -1,3 +1,5 @@
+import FileUpload from "./FileUpload";
+
 const StateManagement = () => {
   return (
     <div>
@@ -91,7 +93,6 @@ const StateManagement = () => {
         Data Based Routing is the new and modern approach introduced in React
         Router v6.4+.
       </p>
-      <br />
       <h2 className="text-3xl font-bold text-green-700">
         Day17: Forms with libraries
       </h2>
@@ -108,19 +109,7 @@ const StateManagement = () => {
       </p>
       <p>They provide features like validation, error handling, and more.</p>
 
-      <h2 className="text-3xl font-bold text-red-700">Day18: File Upload</h2>
-      <p>There are many libraries for handling file upload in React.</p>
-      <p>Some of the popular libraries are:</p>
-      <ul>
-        <li>React Dropzone</li>
-        <li>React File Upload</li>
-        <li>React Upload Widget</li>
-      </ul>
-      <p>
-        These libraries provide a lot of features for handling file upload in
-        React.
-      </p>
-      <p>They provide features like drag and drop, progress bar, and more.</p>
+      <FileUpload />
     </div>
   );
 };
