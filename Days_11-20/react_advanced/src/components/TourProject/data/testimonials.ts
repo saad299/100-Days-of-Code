@@ -1,4 +1,11 @@
-const testimonials = [
+interface Testimonial {
+  id: number;
+  name: string;
+  image: string;
+  text: string;
+}
+
+const testimonials: Testimonial[] = [
     {
         id: 1,
         name: "John Doe",

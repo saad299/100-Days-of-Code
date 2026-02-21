@@ -1,4 +1,15 @@
-const tours = [
+interface Tour {
+  id: number;
+  title: string;
+  name: string;
+  info: string;
+  destination: string;
+  rating: number;
+  price: string;
+  maxGroupSize: number;
+}
+
+const tours: Tour[] = [
   {
     id: 1,
     title: "Best of Paris in 7 Days Tour",
