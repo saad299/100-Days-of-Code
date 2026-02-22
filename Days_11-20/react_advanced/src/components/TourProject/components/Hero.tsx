@@ -26,12 +26,12 @@ export default function Hero() {
   };
 
   return (
-    <div className="mt-20 w-full h-[700px] bg-gray-200 shadow-2xl mx-auto overflow-hidden">
+    <div className="relative w-full h-[800px] bg-gray-200 shadow-2xl -mt-2 mx-auto overflow-hidden">
       <div id="carousel" className="relative h-full">
         {images.map((src, i) => (
           <div
             key={i}
-            className="item absolute top-1/2 -translate-y-1/2 w-[200px] h-[300px] rounded-2xl bg-cover bg-center shadow-xl transition-all duration-500"
+            className="item absolute top-1/2 -translate-y-1/2 w-50 h-75 rounded-2xl bg-cover bg-center shadow-xl transition-all duration-500"
             style={{ backgroundImage: `url(${src})` }}
           ></div>
         ))}

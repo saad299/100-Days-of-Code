@@ -8,6 +8,7 @@ import Navbar from "./components/TourProject/components/Navbar";
 import Destinations from "./components/TourProject/pages/Destinations";
 import Services from "./components/TourProject/pages/Services";
 import Booking from "./components/TourProject/pages/Booking";
+import Tours from "./components/TourProject/pages/Tours";
 
 
 const router = createBrowserRouter([
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
       {
         path: "destinations",
         element: <Destinations />
+      },
+      {
+        path: "tours",
+        element: <Tours />
       },
       {
         path: "booking",

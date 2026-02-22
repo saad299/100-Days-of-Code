@@ -4,6 +4,8 @@ interface Tour {
   name: string;
   info: string;
   destination: string;
+  city: string;
+  country: string;
   rating: number;
   price: string;
   maxGroupSize: number;
@@ -16,6 +18,8 @@ const tours: Tour[] = [
     name: "Discover the beauty of Paris",
     info: "Visit Eiffel Tower, Louvre...",
     destination: "Paris, France",
+    city: "Paris",
+    country: "France",
     rating: 4.7,
     price: "1,990",
     maxGroupSize: 15,
@@ -26,6 +30,8 @@ const tours: Tour[] = [
     name: "Explore Ireland",
     info: "Explore the Emerald Isle with visits to Dublin, Galway, and the Ring of Kerry.",
     destination: "Ireland",
+    city: "Dublin",
+    country: "Ireland",
     rating: 4.8,
     price: "3,800",
     maxGroupSize: 12,
@@ -36,6 +42,8 @@ const tours: Tour[] = [
     name: "Experience the beautiful neighbor of Austria",
     info: "Experience the beauty of Austria with visits to Salzburg and Vienna.",
     destination: "Salzburg & Vienna, Austria",
+    city: "Salzburg & Vienna",
+    country: "Austria",
     rating: 4.9,
     price: "2,600",
     maxGroupSize: 10,
@@ -46,6 +54,8 @@ const tours: Tour[] = [
     name: "Discover the aesthetics of Rome",
     info: "Discover the Eternal City with visits to the Colosseum, Vatican, and more.",
     destination: "Rome, Italy",
+    city: "Rome",
+    country: "Italy",
     rating: 4.6,
     price: "1,880",
     maxGroupSize: 12,
@@ -56,6 +66,8 @@ const tours: Tour[] = [
     name: "Explore the rich history and culture of Poland",
     info: "Explore the rich history and culture of Poland with visits to Warsaw, Krakow, and more.",
     destination: "Poland",  
+    city: "Warsaw",
+    country: "Poland",
     rating: 4.7,
     price: "2,500",
     maxGroupSize: 10,
@@ -66,6 +78,8 @@ const tours: Tour[] = [
     name: "Lisbon, Portugal",
     info: "Experience the vibrant culture and stunning architecture of Lisbon, Portugal.",
     destination: "Lisbon, Portugal",
+    city: "Lisbon",
+    country: "Portugal",
     rating: 4.8,
     price: "2,400",
     maxGroupSize: 8,
@@ -76,6 +90,8 @@ const tours: Tour[] = [
     name: "Discover the charm of Amsterdam",
     info: "Discover the charm of Amsterdam with visits to the Anne Frank House, Van Gogh Museum, and more.",
     destination: "Amsterdam, Netherlands",
+    city: "Amsterdam",
+    country: "Netherlands",
     rating: 4.6,
     price: "2,200",
     maxGroupSize: 8,
@@ -86,6 +102,8 @@ const tours: Tour[] = [
     name: "Explore the vibrant culture and stunning architecture of Barcelona, Spain.",
     info: "Experience the vibrant culture and stunning architecture of Barcelona, Spain.",
     destination: "Barcelona, Spain",
+    city: "Barcelona",
+    country: "Spain",
     rating: 4.7,
     price: "2,300",
     maxGroupSize: 8,
@@ -96,6 +114,8 @@ const tours: Tour[] = [
     title: "Explore Bali",
     info: "Discover the beauty of Bali with visits to Ubud, Seminyak, and more. Beaches, temples, rice terraces...",
     destination: "Bali, Indonesia",
+    city: "Bali",
+    country: "Indonesia",
     rating: 4.9,
     price: "2,500",
     maxGroupSize: 10,
@@ -106,6 +126,8 @@ const tours: Tour[] = [
     title: "Explore the city life of New York",
     info: "Get lost in the vibrant culture and stunning architecture of New York, USA.",
     destination: "New York, USA",
+    city: "New York",
+    country: "USA",
     rating: 4.8,
     price: "2,400",
     maxGroupSize: 8,

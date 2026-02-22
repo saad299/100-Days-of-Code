@@ -1,11 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
-// import axios from "axios";
+// import axios from "axios"
 
 const UNSPLASH_ACCESS_KEY = "";
 
-const fetchUnsplashImages = async (query = "city", count = 6) => {
+const fetchUnsplashImages = async (query = "city", count = 6, seed = "") => {
+  const seedParam = seed ? `&seed=${seed}` : "";
   const res = await fetch(
-    `https://api.unsplash.com/photos/random?count=${count}&query=${query}&client_id=${UNSPLASH_ACCESS_KEY}`,
+    `https://api.unsplash.com/photos/random?count=${count}&query=${query}&client_id=${UNSPLASH_ACCESS_KEY}${seedParam}`,
   );
 
   if (!res.ok) {
@@ -16,10 +17,10 @@ const fetchUnsplashImages = async (query = "city", count = 6) => {
   return data.map((img) => img.urls.regular);
 };
 
-export const useImages = (query = "city", count = 6) => {
+const useImages = (query = "city", count = 6, seed = "") => {
   return useQuery({
-    queryKey: ["unsplash-images", query, count],
-    queryFn: () => fetchUnsplashImages(query, count),
+    queryKey: ["unsplash-images", query, count, seed],
+    queryFn: () => fetchUnsplashImages(query, count, seed),
     staleTime: 1000 * 60 * 5,
     retry: 1,
   });
