@@ -113,10 +113,22 @@ For day12, I used the same `StateManagement.tsx` file in `Days_11_20/react_advan
 For day13, I used the same `StateManagement.tsx` file in `Days_11_20/react_advanced/src/components`
 
 ## Day 14: Pagination + Infinite Scroll
-For day13, I used the same `StateManagement.tsx` file in `Days_11_20/react_advanced/src/components`
+For day14, I used the same `StateManagement.tsx` file in `Days_11_20/react_advanced/src/components`
 
 ## Day 15: Performance Optimization
-For day13, I used the same `StateManagement.tsx` file in `Days_11_20/react_advanced/src/components`
+For day15, I used the same `StateManagement.tsx` file in `Days_11_20/react_advanced/src/components`
 
 ## Day 16: Routing in React
-For day13, I used the same `StateManagement.tsx` file in `Days_11_20/react_advanced/src/components`
+For day16, I used the same `StateManagement.tsx` file in `Days_11_20/react_advanced/src/components`
+
+## Day 17: Forms with libraries
+For day17, I used the same `StateManagement.tsx` file in `Days_11_20/react_advanced/src/components`
+
+## Day 18: Understanding File Uploads
+For day18, I used the same `StateManagement.tsx` file in `Days_11_20/react_advanced/src/components`
+
+## Day 19: Tour Project App
+For day19, I created a new folder in `src` of the `react_advanced` folder named `TourProject` and started working on Tour Project App
+
+## Day 20: Tour Project App
+For day20, I worked and completed the Tour Project App `Days_11_20/react_advanced/src/components/TourProject`
