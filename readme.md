@@ -111,3 +111,12 @@ For day12, I used the same `StateManagement.tsx` file in `Days_11_20/react_advan
 
 ## Day 13: TanStack Query
 For day13, I used the same `StateManagement.tsx` file in `Days_11_20/react_advanced/src/components`
+
+## Day 14: Pagination + Infinite Scroll
+For day13, I used the same `StateManagement.tsx` file in `Days_11_20/react_advanced/src/components`
+
+## Day 15: Performance Optimization
+For day13, I used the same `StateManagement.tsx` file in `Days_11_20/react_advanced/src/components`
+
+## Day 16: Routing in React
+For day13, I used the same `StateManagement.tsx` file in `Days_11_20/react_advanced/src/components`
