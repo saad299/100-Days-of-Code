@@ -1,3 +1,5 @@
+ // Day 21 and 22: Intro to backend, node.js and npm
+
 // const fs = require('fs');
 
 // // Write a file
@@ -34,17 +36,19 @@
 //   console.log('Server is running at http://localhost:3000');
 // });
 
+// Day 23: Intro to Express js
 const express = require('express');
 const app = express();
 
 app.get('/', (req, res) => {
-  res.send('<h1>Hello from Express!</h1>');
+  res.send('<h1>Hello from Express!</h1> <p>This is a paragraph from Express</p>');
+  // res.send(index.html)
 });
 
 app.get('/about', (req, res) => {
   res.send('<h1>This is the About page</h1>');
 });
 
-app.listen(3000, () => {
-  console.log('Server running at http://localhost:3000');
+app.listen(1, () => {
+  console.log('Server running at http://localhost:1');
 });
