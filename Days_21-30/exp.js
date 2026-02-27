@@ -134,6 +134,34 @@ exp_app.delete('/users/:id', (req, res) => {
   res.json({ message: 'User deleted' });
 });
 
+// Day 25: Middleware
+// It is a function that takes 3 arguments(request, response and next)
+// The following is an example of middleware.
+// Middleware 1 checks the request method and the url
+// Middleware 2 checks the age inputted in the headers. If less than 18, it denies access
+// Then in 'exp_app.get('/adults-only', checkAge, (_, res)', it uses 'checkAge' middleware
+// to show the 'adults-only' page if the age inputted in the headers is greater than 18.
+// Middleware 1 - Logger
+// exp_app.use((req, res, next) => {
+//   console.log(`New request: ${req.method} ${req.url}`);
+//   next();
+// });
+
+// // Middleware 2 - Age check
+// function checkAge(req, res, next) {
+//   const age = req.headers.age;
+//   if (age && age >= 18) {
+//     next();
+//   } else {
+//     res.status(403).send('Access denied. Must be 18+');
+//   }
+// }
+
+// exp_app.get('/home', (_, res) => res.send('Welcome Home!'));
+
+// exp_app.get('/adults-only', checkAge, (_, res) => {
+//   res.send('<h1>Welcome to the OnlyFans page!</h1>');
+// });
 
 exp_app.listen(3000, () => {
     console.log("Server running at http://localhost:3000");
