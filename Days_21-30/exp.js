@@ -5,7 +5,8 @@ const express = require("express");
 // const path = require("path")
 const exp_app = express();
 // It is a built-in middleware in Express that parses incoming requests with a JSON
-exp_app.use(express.json())
+// exp_app.use(express.json())
+exp_app.use(logger)
 
 
 
@@ -134,6 +135,9 @@ exp_app.delete('/users/:id', (req, res) => {
   res.json({ message: 'User deleted' });
 });
 
+
+
+
 // Day 25: Middleware
 // It is a function that takes 3 arguments(request, response and next)
 // The following is an example of middleware.
@@ -142,26 +146,35 @@ exp_app.delete('/users/:id', (req, res) => {
 // Then in 'exp_app.get('/adults-only', checkAge, (_, res)', it uses 'checkAge' middleware
 // to show the 'adults-only' page if the age inputted in the headers is greater than 18.
 // Middleware 1 - Logger
-// exp_app.use((req, res, next) => {
-//   console.log(`New request: ${req.method} ${req.url}`);
-//   next();
-// });
+function logger (req, _, next) {
+  console.log("Requesting...........");
+  console.log(`New request: Method:${req.method} ---- Page:${req.url}`);
+  next()
+};
 
-// // Middleware 2 - Age check
-// function checkAge(req, res, next) {
-//   const age = req.headers.age;
-//   if (age && age >= 18) {
-//     next();
-//   } else {
-//     res.status(403).send('Access denied. Must be 18+');
-//   }
-// }
+// Middleware 2 - Age check
+function checkAge(req, res, next) {
+  console.log("Get your age checked first......");
+  const age = req.headers.age;
+  if (age && age >= 18) {
+    next();
+  } else {
+    res.status(403).send('Go Back to Home Kid');
+    console.log("BLOCKED....... Must be 18+");
+    
+  }
+}
 
-// exp_app.get('/home', (_, res) => res.send('Welcome Home!'));
+exp_app.get('/home', (_, res) => {
+  res.send('Welcome Home!')
+  console.log("No issue accesing homepage");
+});
 
-// exp_app.get('/adults-only', checkAge, (_, res) => {
-//   res.send('<h1>Welcome to the OnlyFans page!</h1>');
-// });
+exp_app.get('/adults-only', checkAge, (_, res) => {
+  res.send('<h1>Welcome to the OnlyFans page!</h1>');
+  console.log("OnlyFans page accessed");
+});
+
 
 exp_app.listen(3000, () => {
     console.log("Server running at http://localhost:3000");
