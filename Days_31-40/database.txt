@@ -1,0 +1,6 @@
+Day 30: Introduction to database
+
+Database is used to store data coming from frontend in the form of tables
+
+Types of Database
+1. Relational Database
