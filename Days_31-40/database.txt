@@ -4,3 +4,6 @@ Database is used to store data coming from frontend in the form of tables
 
 Types of Database
 1. Relational Database
+2. Non-Relational Database
+
+1. Relational Database are structured in the form of rows and tables

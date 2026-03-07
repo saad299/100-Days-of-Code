@@ -1,52 +1,76 @@
 // import MongoDB driver
-const { MongoClient, ServerApiVersion } = require("mongodb");
+// const { MongoClient, ServerApiVersion } = require("mongodb");
+const mongoose = require("mongoose")
 const uri =
-  "mongodb+srv://hello:gyfguyfyf@cluster0.fkmn43w.mongodb.net/?appName=Cluster0";
+  "mongodb+srv://hello:gyfguyfyf@cluster0.fkmn43w.mongodb.net/MyDatabase?appName=Cluster0";
 
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  },
-});
+// Create a MongoClient with a MongoClientOptions object to set the Stable API version (when working with mongoose, we don't need to create a MongoClient instance, mongoose will handle it internally)
+// const client = new MongoClient(uri, {
+//   serverApi: {
+//     version: ServerApiVersion.v1,
+//     strict: true,
+//     deprecationErrors: true,
+//   },
+// });
+
+const userSchema = new mongoose.Schema({
+  name: String,
+  age: Number,
+  isWorking: Boolean,
+})
+
+const user = mongoose.model("User", userSchema)
+
+// async function run() {
+//     // connect to atlas cluster
+//     await client.connect();
+
+//     // get database
+//     const db = client.db("MyDatabase");
+//     // insert document
+//     await db.collection("users").insertOne({
+//       name: "Saad",
+//       age: 25,
+//     });
+
+//     // read document
+//     const users = await db.collection("users").find().toArray();
+//     // close the connection
+//     console.log(users);
+
+//     // await client.close()
+// }
+
+// run().catch(console.dir);
 
 async function run() {
-    // connect to atlas cluster
-    await client.connect();
+  await mongoose.connect(uri)
 
-    // get database
-    const db = client.db("MyDatabase");
-    // insert document
-    await db.collection("users").insertOne({
-      name: "Saad",
-      age: 25,
-    });
+  console.log("Connected");
+  
+  await user.create({ name: "Saad", age: 26, isWorking: false})
 
-    // read document
-    const users = await db.collection("users").find().toArray();
-    // close the connection
-    console.log(users);
-
-    // await client.close()
+  const users = await user.find()
+  console.log(users);
+  
+  await mongoose.disconnect()
 }
 
-run().catch(console.dir);
+run().catch(console.error)
 
 
 // express route
-const app = require("express")();
-const db = client.db("MyDatabase");
+// const app = require("express")();
+// const db = client.db("MyDatabase");
 
-app.get("/users", async (req, res) => {
-  const users = await db.collection("users").find().toArray();
-  res.json(users);
+// app.get("/users", async (req, res) => {
+//   const users = await db.collection("users").find().toArray();
+//   res.json(users);
 
-  console.log(users);
-});
+//   console.log(users);
+// });
 
-app.listen(3000)
+// app.listen(3000)
 
 // for creating connection with the MongoDB cluster database
 // const { MongoClient, ServerApiVersion } = require('mongodb');
