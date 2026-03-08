@@ -1,62 +1,39 @@
 // import MongoDB driver
-// const { MongoClient, ServerApiVersion } = require("mongodb");
-const mongoose = require("mongoose")
+const { MongoClient, ServerApiVersion } = require("mongodb");
+// const mongoose = require("mongoose")
 const uri =
   "mongodb+srv://hello:gyfguyfyf@cluster0.fkmn43w.mongodb.net/MyDatabase?appName=Cluster0";
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version (when working with mongoose, we don't need to create a MongoClient instance, mongoose will handle it internally)
-// const client = new MongoClient(uri, {
-//   serverApi: {
-//     version: ServerApiVersion.v1,
-//     strict: true,
-//     deprecationErrors: true,
-//   },
-// });
-
-const userSchema = new mongoose.Schema({
-  name: String,
-  age: Number,
-  isWorking: Boolean,
-})
-
-const user = mongoose.model("User", userSchema)
-
-// async function run() {
-//     // connect to atlas cluster
-//     await client.connect();
-
-//     // get database
-//     const db = client.db("MyDatabase");
-//     // insert document
-//     await db.collection("users").insertOne({
-//       name: "Saad",
-//       age: 25,
-//     });
-
-//     // read document
-//     const users = await db.collection("users").find().toArray();
-//     // close the connection
-//     console.log(users);
-
-//     // await client.close()
-// }
-
-// run().catch(console.dir);
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  },
+});
 
 async function run() {
-  await mongoose.connect(uri)
+    // connect to atlas cluster
+    await client.connect();
 
-  console.log("Connected");
-  
-  await user.create({ name: "Saad", age: 26, isWorking: false})
+    // get database
+    const db = client.db("MyDatabase");
+    // insert document
+    await db.collection("users").insertOne({
+      name: "Saad",
+      age: 25,
+    });
 
-  const users = await user.find()
-  console.log(users);
-  
-  await mongoose.disconnect()
+    // read document
+    const users = await db.collection("users").find().toArray();
+    // close the connection
+    console.log(users);
+
+    // await client.close()
 }
 
-run().catch(console.error)
+run().catch(console.dir);
 
 
 // express route
