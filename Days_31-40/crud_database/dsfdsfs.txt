@@ -1,0 +1,24 @@
+**Quick Start:**
+```bash
+# 1. Install deps
+npm install
+
+# 2. Copy env file
+cp .env.example .env
+
+# 3. Start (requires MongoDB running locally)
+npm run dev
+```
+
+**What each file does:**
+
+- **`server.js`** — connects to MongoDB, registers routes, starts Express
+- **`models/Todo.js`** — the Mongoose schema (think of it as your table definition). It defines that a Todo has a `title` (string, required) and `completed` (boolean, defaults to `false`)
+- **`routes/todos.js`** — the 5 CRUD operations: Create, Read All, Read One, Update, Delete
+- **`.env.example`** → copy to `.env` with your MongoDB URI
+
+**You have two MongoDB options:**
+1. **Local** — install MongoDB Community on your machine (free)
+2. **Cloud** — create a free cluster at [mongodb.com/atlas](https://www.mongodb.com/atlas) and paste the connection string into `.env`
+
+The README has curl examples so you can test every endpoint immediately. Once it's running, want to add things like input validation, pagination, or a frontend?

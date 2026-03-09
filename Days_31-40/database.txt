@@ -7,3 +7,12 @@ Types of Database
 2. Non-Relational Database
 
 1. Relational Database are structured in the form of rows and tables
+SQL is an example of Relational Database.
+We use it when we have structured data to store in the database
+We generally use Relational Database to store something like the user information
+
+
+2. Non-Relational or NoSQL Database are like JSON objects.
+MongoDB is an example of Non-Relational or NoSQL Database
+We use it when we have a data that can vary or change to store in the database
+We generally use Non-Relational or NoSQL Database to store something like social media post information
