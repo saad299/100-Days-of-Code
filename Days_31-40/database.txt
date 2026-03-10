@@ -16,3 +16,13 @@ We generally use Relational Database to store something like the user informatio
 MongoDB is an example of Non-Relational or NoSQL Database
 We use it when we have a data that can vary or change to store in the database
 We generally use Non-Relational or NoSQL Database to store something like social media post information
+
+
+Day 31: Authentication Part 1 (Hashing Password)
+Passwords are never saved in the same way as user typed in the password field in the frontend
+They are first converted into gibberish collection of characters called 'hash' and then it is send to the database
+For hashing the password, we generally use bcrypt library.
+The hashing is done in the backend regardless of what database we are using. The only difference would be how to send
+the the hashed password to the database. If it is MongoDB, different way would be used to send the hashed password,
+if it is SQL then different method will be used to send the hashed password to the database. But bcrypt library will
+be used to convert the password into hash characters.
