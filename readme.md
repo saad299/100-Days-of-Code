@@ -132,3 +132,94 @@ For day19, I created a new folder in `src` of the `react_advanced` folder named 
 
 ## Day 20: Tour Project App
 For day20, I worked and completed the Tour Project App `Days_11_20/react_advanced/src/components/TourProject`
+
+## Day 21: Intro to Backend, Node.js and npm
+For day21, I created a new folder `Days_21-30`. In it, I created `app.js` file to learn about backend development.
+- File operations with `fs` module
+- Path and OS modules
+- Basic HTTP server
+
+For day21, go to `app.js` in `Days_21-30` directory
+
+## Day 22: Node.js and npm (continued)
+For day22, I continued learning Node.js concepts in the same `app.js` file
+- File operations with `fs` module
+- Path and OS modules
+- Basic HTTP server
+
+For day22, go to `app.js` in `Days_21-30` directory
+
+## Day 23: Intro to Express.js
+For day23, I learned Express.js framework basics
+- Setting up Express server
+- Creating basic routes (GET, POST)
+- Running server on specific port
+
+For day23, go to `app.js` in `Days_21-30` directory
+
+## Day 24: Express.js (Advanced)
+For day24, I learned advanced Express.js concepts
+- Route parameters (`/users/:id`)
+- Query parameters (`/search?q=`)
+- POST requests with body parsing
+- Middleware basics
+- Hardcoded REST API with CRUD operations
+
+For day24, go to `exp.js` in `Days_21-30` directory
+
+## Day 25: Middleware
+For day25, I learned about middleware in Express.js
+- Logger middleware to log requests
+- Age check middleware for access control
+- Understanding middleware function parameters (req, res, next)
+
+For day25, go to `exp.js` in `Days_21-30` directory
+
+## Day 26: Library Management System (Project)
+For day26, I created a full modular Express application - Library Management System
+- Separate routes, controllers, middleware, and data folders
+- Books, Members, and Borrows management
+- Validation middleware
+- Authentication middleware
+- Modular routing structure
+
+For day26, go to `Days_21-30/library` directory
+- Main server: `library/app.js`
+- Routes: `library/routes/`
+- Controllers: `library/controllers/`
+- Middleware: `library/middleware/`
+- Data: `library/data/`
+
+## Day 27: Library Management System (continued)
+For day27, I continued working on the Library Management System
+- Books routes and controller
+- Members routes and controller
+- Borrows routes and controller
+
+For day27, go to `Days_21-30/library` directory
+
+## Day 28: Modular Routing
+For day28, I learned modular routing in Express.js
+- Separate route files for different resources
+- Controller pattern for business logic
+- Middleware for validation
+
+For day28, go to `Days_21-30/modular_routing` directory
+
+## Day 29: Modular Routing (continued)
+For day29, I continued working on modular routing
+- User routes and controller
+- Todo routes and controller
+- Logger and validation middleware
+
+For day29, go to `Days_21-30/modular_routing` directory
+
+## Day 30: Review and Practice
+For day30, I reviewed all the concepts learned in Days 21-30
+- Node.js basics
+- Express.js framework
+- Middleware
+- REST API design
+- Modular routing
+
+For day30, review all files in `Days_21-30` directory
