@@ -17,8 +17,14 @@ MongoDB is an example of Non-Relational or NoSQL Database
 We use it when we have a data that can vary or change to store in the database
 We generally use Non-Relational or NoSQL Database to store something like social media post information
 
+Day 36: Mongoose
+Mongoose is a Node.js library that provides a straight-forward, schema-based solution to model your application data.
+Mongoose is an Object Data Modeling (ODM) library for MongoDB, written in JavaScript.
+Mongoose is used to connect to MongoDB.
+Mongoose is used to create a schema and then it is used to create a model.
 
-Day 31: Authentication Part 1 (Hashing Password)
+
+Day 37: Authentication Part 1 (Hashing Password)
 Passwords are never saved in the same way as user typed in the password field in the frontend
 They are first converted into gibberish collection of characters called 'hash' and then it is send to the database
 For hashing the password, we generally use bcrypt library.
@@ -26,3 +32,7 @@ The hashing is done in the backend regardless of what database we are using. The
 the the hashed password to the database. If it is MongoDB, different way would be used to send the hashed password,
 if it is SQL then different method will be used to send the hashed password to the database. But bcrypt library will
 be used to convert the password into hash characters.
+
+Day 38: Authentication Part 2: JWT
+JSON Web Token (JWT) is an open standard for securely transmitting information between parties as JSON object.
+JWT is used to send the user information to the frontend.
