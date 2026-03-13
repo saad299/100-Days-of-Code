@@ -36,3 +36,7 @@ be used to convert the password into hash characters.
 Day 38: Authentication Part 2: JWT
 JSON Web Token (JWT) is an open standard for securely transmitting information between parties as JSON object.
 JWT is used to send the user information to the frontend.
+
+Day 39: Protected Routes (Auth Middleware)
+Protected routes are the routes that are only accessible to the user that is logged in.
+An authMiddleware.js middleware file authenticates the user that is logged in to access the protected routes.
