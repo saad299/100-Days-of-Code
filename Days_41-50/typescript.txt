@@ -1,0 +1,24 @@
+Day 42: Schema Validation
+
+**Why use schemas?**
+Schemas define expected data structures at runtime, providing type contracts beyond TypeScript's compile-time checks. They ensure consistency across codebases, APIs, and external data sources.
+
+**Why validate schemas?**
+Runtime validation catches invalid data (e.g., malformed JSON from APIs) that slips past static typing, preventing bugs, improving security (e.g., against injection), and enforcing data integrity.
+
+**How it's usually done:**
+Use libraries like:
+- **Zod**: Schema-first validation. `const schema = z.object({ name: z.string() }); const data = schema.parse(input);`
+- **Yup/Joi**: Fluent APIs for complex validation.
+- **io-ts**: FP-style runtime type checking.
+
+Example (Zod):
+```ts
+import { z } from 'zod';
+const UserSchema = z.object({
+  id: z.number(),
+  name: z.string().min(1),
+});
+const user = UserSchema.parse({ id: 1, name: 'Alice' }); // Valid
+// Throws ZodError on invalid data
+```
