@@ -22,3 +22,47 @@ const UserSchema = z.object({
 const user = UserSchema.parse({ id: 1, name: 'Alice' }); // Valid
 // Throws ZodError on invalid data
 ```
+
+Day 43: Error Handling + Async Wrapper
+
+**Backend Error Types & Handling:**
+- **Validation**: Bad input (e.g., ZodError). Handle: Return 400 Bad Request, detailed messages.
+- **Database/Network**: Connection/query fails. Handle: 5xx Server Error, retry logic.
+- **Auth**: Invalid tokens/permissions. Handle: 401/403, redirect to login.
+- **Business Logic**: Invalid state (e.g., insufficient balance). Handle: 400/422, user-friendly msg.
+- **Internal**: Unexpected (null refs). Handle: Log stack, generic 500.
+
+Use custom Error classes:
+```ts
+class AppError extends Error {
+  status: number;
+  constructor(msg: string, status: number = 500) {
+    super(msg); this.status = status;
+  }
+}
+```
+
+**Async Wrapper** (Express/TS backend):
+```ts
+async function asyncHandler(fn: Function) {
+  return (req: Request, res: Response, next: NextFunction) => {
+    Promise.resolve(fn(req, res, next)).catch(next);
+  };
+}
+
+// Usage:
+app.get('/users', asyncHandler(async (req, res) => {
+  const users = await getUsers(); // throws if DB error
+  res.json(users);
+}));
+```
+
+**Error Middleware** (central handling):
+```ts
+app.use((err: AppError, req: Request, res: Response, next: NextFunction) => {
+  console.error(err.stack);
+  res.status(err.status || 500).json({ error: err.message });
+});
+```
+
+Catches all, returns JSON errors, logs details.
