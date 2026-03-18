@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 // import axios from "axios"
 
-const UNSPLASH_ACCESS_KEY = "";
+const UNSPLASH_ACCESS_KEY = "ZtyH8c-n1NZfDQ9K3MjFehcX1nTIzXRZPOEXbj4gFYI";
 
 const fetchUnsplashImages = async (query = "city", count = 6, seed = "") => {
   const seedParam = seed ? `&seed=${seed}` : "";
