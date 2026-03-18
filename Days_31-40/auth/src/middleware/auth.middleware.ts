@@ -1,6 +1,10 @@
-const jwt = require("jsonwebtoken")
+import { Request, Response, NextFunction } from "express";
+import jwt, {JwtPayload} from "jsonwebtoken";
 
-const authMiddleware = (req, res, next) => {
+export interface AuthRequest extends Request {
+  user?: JwtPayload | string;
+}
+const authMiddleware = (req: AuthRequest, res: Response, next: NextFunction) => {
     const token = req.headers.authorization?.split(" ")[1];
     console.log(token)
 
@@ -13,7 +17,7 @@ const authMiddleware = (req, res, next) => {
   try {
     const decoded = jwt.verify(
       token,
-      process.env.JWT_SECRET
+      process.env.JWT_SECRET as string
     );
     req.user = decoded;
 
@@ -25,4 +29,4 @@ const authMiddleware = (req, res, next) => {
   }
 }
 
-module.exports = authMiddleware
+export default authMiddleware;

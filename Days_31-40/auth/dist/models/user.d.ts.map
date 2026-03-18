@@ -1,0 +1,1 @@
+{"version":3,"file":"user.d.ts","sourceRoot":"","sources":["../../src/models/user.ts"],"names":[],"mappings":"AAAA,OAAO,QAAQ,EAAE,EAAE,QAAQ,EAAE,MAAM,UAAU,CAAC;AAE9C,MAAM,WAAW,aAAc,SAAQ,QAAQ;IAC7C,IAAI,EAAE,MAAM,CAAA;IACZ,KAAK,EAAE,MAAM,CAAA;IACb,QAAQ,EAAE,MAAM,CAAA;CACjB;AAoBD,QAAA,MAAM,IAAI;;;;;;sBAAoD,CAAA;AAE9D,eAAe,IAAI,CAAC"}
