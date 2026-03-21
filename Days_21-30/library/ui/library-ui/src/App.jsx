@@ -557,8 +557,8 @@ export default function App() {
         </div>
         <div className="pb-12">
           {tab === "books" && <BooksSection token={token} />}
-          {tab === "members" && <MembersSection token={token} />}
           {tab === "borrows" && <BorrowsSection token={token} />}
+          {tab === "members" && <MembersSection token={token} />}
         </div>
       </div>
     </div>
