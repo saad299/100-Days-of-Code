@@ -1,7 +1,7 @@
 import axios, { AxiosError } from "axios"; // imported AxiosError for proper error typing instead of casting to generic Error
 import { useState } from "react";
 
-const API_URL = "http://localhost:3000/api";
+const API_URL = import.meta.env.VITE_API_URL;
 
 // ─── TYPES ────────────────────────────────────────────────────────────────────
 
@@ -184,7 +184,7 @@ const Dashboard = ({ users, loggedInUser, selectedUser, onSelectUser, onLogout }
             <h3 className="text-base font-semibold text-gray-700 mb-4">All Users</h3>
             <ul className="space-y-2">
               {users.map((user) => (
-                <li key={user.id} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
+                <li key={user._id} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
                   <div>
                     <p className="text-sm font-medium text-gray-800">{user.name}</p>
                     <p className="text-xs text-gray-400">{user.email}</p>
