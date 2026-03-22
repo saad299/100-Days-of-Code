@@ -13,14 +13,17 @@ const auth_route_1 = __importDefault(require("./routes/auth.route"));
 const user_routes_1 = __importDefault(require("./routes/user.routes"));
 const db_1 = __importDefault(require("./config/db"));
 const dotenv_1 = __importDefault(require("dotenv"));
+const cors_1 = __importDefault(require("cors"));
 dotenv_1.default.config();
 (0, db_1.default)();
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
+app.use((0, cors_1.default)());
 app.use("/api/auth", auth_route_1.default);
 app.use("/api/users", user_routes_1.default);
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
+exports.default = app;
 //# sourceMappingURL=server.js.map
