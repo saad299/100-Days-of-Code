@@ -1,0 +1,128 @@
+
+<style>
+  .section-label { font-size: 11px; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
+  .code-block { background: var(--color-background-secondary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); padding: 12px 14px; font-family: var(--font-mono); font-size: 13px; color: var(--color-text-primary); line-height: 1.6; }
+  .url-bar { display: flex; align-items: center; gap: 8px; background: var(--color-background-secondary); border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); padding: 8px 12px; font-family: var(--font-mono); font-size: 13px; }
+  .url-prefix { color: var(--color-text-tertiary); }
+  .url-input { border: none; background: transparent; font-family: var(--font-mono); font-size: 13px; color: var(--color-text-info); outline: none; flex: 1; min-width: 0; }
+  .card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1rem 1.25rem; margin-bottom: 12px; }
+  .db-row { display: flex; gap: 12px; padding: 8px 0; border-bottom: 0.5px solid var(--color-border-tertiary); font-size: 13px; align-items: flex-start; }
+  .db-row:last-child { border-bottom: none; }
+  .db-slug { font-family: var(--font-mono); color: var(--color-text-info); min-width: 140px; }
+  .db-content { color: var(--color-text-secondary); }
+  .rendered-page { border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); padding: 20px; min-height: 100px; }
+  .page-title { font-size: 20px; font-weight: 500; margin-bottom: 8px; }
+  .page-body { font-size: 14px; color: var(--color-text-secondary); line-height: 1.6; }
+  .page-meta { font-size: 12px; color: var(--color-text-tertiary); margin-bottom: 12px; }
+  .not-found { color: var(--color-text-danger); font-size: 14px; }
+  .highlight { background: var(--color-background-info); color: var(--color-text-info); padding: 1px 4px; border-radius: 3px; font-family: var(--font-mono); font-size: 12px; }
+  .arrow { color: var(--color-text-tertiary); font-size: 18px; text-align: center; margin: 4px 0; }
+  .slug-pill { display: inline-block; background: var(--color-background-info); color: var(--color-text-info); font-family: var(--font-mono); font-size: 12px; padding: 2px 8px; border-radius: var(--border-radius-md); }
+  .db-row.active { background: var(--color-background-success); border-radius: var(--border-radius-md); padding: 8px; margin: 0 -8px; }
+  .db-row.active .db-slug { color: var(--color-text-success); }
+</style>
+
+<div style="padding: 1rem 0; display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+
+  <div>
+    <div class="section-label">database (your content)</div>
+    <div class="card" id="db-display">
+      <div class="db-row" data-slug="javascript-tips">
+        <span class="db-slug">javascript-tips</span>
+        <span class="db-content">10 JS tips you need to know. JavaScript is full of hidden tricks...</span>
+      </div>
+      <div class="db-row" data-slug="learn-nextjs">
+        <span class="db-slug">learn-nextjs</span>
+        <span class="db-content">Getting started with Next.js. Next.js is a React framework...</span>
+      </div>
+      <div class="db-row" data-slug="css-grid-guide">
+        <span class="db-slug">css-grid-guide</span>
+        <span class="db-content">CSS Grid complete guide. CSS Grid is the most powerful layout...</span>
+      </div>
+    </div>
+
+    <div class="section-label" style="margin-top: 16px;">page.tsx — one file, never changes</div>
+    <div class="code-block">
+      <span style="color: var(--color-text-tertiary);">export default async function</span> BlogPost({ params }) {<br>
+      &nbsp;&nbsp;<span style="color: var(--color-text-tertiary);">const</span> slug = params.slug<br>
+      &nbsp;&nbsp;<span style="color: var(--color-text-tertiary);">const</span> post = <span style="color: var(--color-text-tertiary);">await</span> db.find({ slug })<br>
+      &nbsp;&nbsp;<span style="color: var(--color-text-tertiary);">if</span> (!post) <span style="color: var(--color-text-danger);">notFound()</span><br>
+      &nbsp;&nbsp;<span style="color: var(--color-text-tertiary);">return</span> &lt;Page data={post} /&gt;<br>
+      }
+    </div>
+  </div>
+
+  <div>
+    <div class="section-label">try a url</div>
+    <div class="url-bar">
+      <span class="url-prefix">myblog.com/blog/</span>
+      <input class="url-input" id="slug-input" placeholder="type a slug..." value="javascript-tips" />
+    </div>
+    <div class="arrow">↓</div>
+    <div style="font-size: 12px; color: var(--color-text-secondary); margin-bottom: 4px;">
+      next.js extracts: <span class="slug-pill" id="slug-display">javascript-tips</span>
+    </div>
+    <div class="arrow">↓</div>
+    <div style="font-size: 12px; color: var(--color-text-secondary); margin-bottom: 4px;">db lookup using slug</div>
+    <div class="arrow">↓</div>
+    <div class="section-label">rendered page</div>
+    <div class="rendered-page" id="rendered-output">
+    </div>
+  </div>
+
+</div>
+
+<script>
+const db = {
+  "javascript-tips": {
+    title: "10 JS tips you need to know",
+    author: "Ahmed",
+    date: "March 20, 2026",
+    body: "JavaScript is full of hidden tricks that can make your code cleaner and faster. From optional chaining to destructuring, here are 10 tips every developer should know."
+  },
+  "learn-nextjs": {
+    title: "Getting started with Next.js",
+    author: "Sara",
+    date: "March 15, 2026",
+    body: "Next.js is a React framework that gives you the best developer experience. It handles routing, server-rendering, and more out of the box."
+  },
+  "css-grid-guide": {
+    title: "CSS Grid complete guide",
+    author: "Ali",
+    date: "March 10, 2026",
+    body: "CSS Grid is the most powerful layout system in CSS. It works on two dimensions — rows and columns — unlike flexbox which is one-dimensional."
+  }
+};
+
+function render(slug) {
+  const post = db[slug];
+  const output = document.getElementById('rendered-output');
+  const slugDisplay = document.getElementById('slug-display');
+  const rows = document.querySelectorAll('.db-row');
+
+  slugDisplay.textContent = slug || '...';
+
+  rows.forEach(r => r.classList.remove('active'));
+
+  if (!slug) {
+    output.innerHTML = '<span class="not-found">type a slug above</span>';
+    return;
+  }
+
+  if (post) {
+    const activeRow = document.querySelector(`.db-row[data-slug="${slug}"]`);
+    if (activeRow) activeRow.classList.add('active');
+    output.innerHTML = `
+      <div class="page-title">${post.title}</div>
+      <div class="page-meta">by ${post.author} · ${post.date}</div>
+      <div class="page-body">${post.body}</div>
+    `;
+  } else {
+    output.innerHTML = `<span class="not-found">404 — no post found for "<b>${slug}</b>" in DB</span>`;
+  }
+}
+
+const input = document.getElementById('slug-input');
+input.addEventListener('input', () => render(input.value.trim()));
+render('javascript-tips');
+</script>
