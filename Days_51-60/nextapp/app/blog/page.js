@@ -1,12 +1,12 @@
 import Link from "next/link";
 import { getAllPosts } from "@/data/posts";
+import Fetching from "@/components/Fetching";
 
 function BlogPage() {
   const posts = getAllPosts();
 
   return (
     <main className="bg-[#0d0d0d] min-h-screen font-serif text-[#e8e8e8]">
-
       {/* Header */}
       <section className="max-w-5xl mx-auto px-8 pt-24 pb-12">
         <span className="text-xs uppercase tracking-[2px] text-[#c8a96e] font-bold mb-3 block">
@@ -16,7 +16,8 @@ function BlogPage() {
           All <span className="text-[#c8a96e]">Articles.</span>
         </h1>
         <p className="text-[#6a6a6a] text-base leading-relaxed max-w-lg">
-          {posts.length} posts on web development, design, and everything in between.
+          {posts.length} posts on web development, design, and everything in
+          between.
         </p>
       </section>
 
@@ -57,7 +58,10 @@ function BlogPage() {
           </article>
         ))}
       </section>
-
+      {/* Spacer between posts and fetching component */}
+      <div className="py-8">
+        <Fetching />
+      </div>
     </main>
   );
 }
