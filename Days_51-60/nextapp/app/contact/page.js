@@ -18,6 +18,7 @@ function ContactPage() {
 
   function handleSubmit(e) {
     e.preventDefault();
+    console.log(formData);
     // Wire up to your email/form service here
     setSubmitted(true);
   }
