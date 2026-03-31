@@ -1,31 +1,34 @@
 "use client";
 
-import { useState } from "react";
+import { submitAction } from "@/actions/form";
+import { useActionState } from "react";
 
 const contactInfo = [
-  { label: "Email", value: "hello@myblog.dev", href: "mailto:hello@myblog.dev" },
+  {
+    label: "Email",
+    value: "hello@myblog.dev",
+    href: "mailto:hello@myblog.dev",
+  },
   { label: "Twitter", value: "@yourhandle", href: "https://twitter.com" },
-  { label: "GitHub", value: "github.com/saad299", href: "https://github.com/saad299" },
+  {
+    label: "GitHub",
+    value: "github.com/saad299",
+    href: "https://github.com/saad299",
+  },
 ];
 
 function ContactPage() {
-  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
-  const [submitted, setSubmitted] = useState(false);
+  const [state, formAction, isPending] = useActionState(submitAction, {
+    success: false,
+    error: null,
+  });
 
-  function handleChange(e) {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  }
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    console.log(formData);
-    // Wire up to your email/form service here
-    setSubmitted(true);
-  }
+  // function handleSubmit(e) {
+  //   e.preventDefault();
+  // }
 
   return (
     <main className="bg-[#0d0d0d] min-h-screen font-serif text-[#e8e8e8]">
-
       {/* Header */}
       <section className="max-w-5xl mx-auto px-8 pt-24 pb-12">
         <span className="text-xs uppercase tracking-[2px] text-[#c8a96e] font-bold mb-3 block">
@@ -35,7 +38,8 @@ function ContactPage() {
           Let&apos;s <span className="text-[#c8a96e]">Talk.</span>
         </h1>
         <p className="text-[#6a6a6a] text-base leading-relaxed max-w-lg">
-          Have a question, a project idea, or just want to say hello? Fill out the form or reach out directly — I&apos;ll get back to you soon.
+          Have a question, a project idea, or just want to say hello? Fill out
+          the form or reach out directly — I&apos;ll get back to you soon.
         </p>
       </section>
 
@@ -46,7 +50,6 @@ function ContactPage() {
 
       {/* Content */}
       <section className="max-w-5xl mx-auto px-8 py-16 grid grid-cols-1 md:grid-cols-[1fr_1.6fr] gap-16">
-
         {/* Contact Info */}
         <div>
           <h2 className="text-lg font-bold tracking-tight mb-6 text-[#e8e8e8]">
@@ -75,32 +78,51 @@ function ContactPage() {
               Response Time
             </p>
             <p className="text-[#5a5a5a] text-sm leading-relaxed">
-              I typically reply within 1–2 business days. For urgent matters, Twitter DMs are fastest.
+              I typically reply within 1–2 business days. For urgent matters,
+              Twitter DMs are fastest.
             </p>
           </div>
         </div>
 
         {/* Form */}
         <div>
-          {submitted ? (
+          {state.success ? (
             <div className="bg-[#111] border border-[#c8a96e]/40 rounded-sm p-10 text-center h-full flex flex-col items-center justify-center gap-4">
               <div className="text-4xl">✉️</div>
-              <h3 className="text-xl font-bold text-[#e8e8e8]">Message Sent!</h3>
+              <h3 className="text-xl font-bold text-[#e8e8e8]">
+                Message Sent!
+              </h3>
               <p className="text-[#6a6a6a] text-sm max-w-xs leading-relaxed">
-                Thanks for reaching out. I&apos;ll get back to you as soon as possible.
+                Thanks for reaching out. I&apos;ll get back to you as soon as
+                possible.
               </p>
-              <button
-                onClick={() => { setSubmitted(false); setFormData({ name: "", email: "", message: "" }); }}
-                className="mt-4 text-xs uppercase tracking-wide text-[#c8a96e] hover:underline"
-              >
-                Send another message
-              </button>
+              <form action={formAction}>
+                {/* <input type="hidden" name="reset" value="true" /> */}
+                <button
+                  type="submit"
+                  // name="reset"
+                  // value="true"
+                  // onClick={() => window.location.reload()}
+                  className="mt-4 text-xs uppercase tracking-wide text-[#c8a96e] hover:underline"
+                >
+                  Send another message
+                </button>
+              </form>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+            <form action={formAction} className="flex flex-col gap-6">
+              {/* {state.error && (
+                <p className="text-red-400 text-sm">{state.error}</p>
+              )} */}
               {/* Name */}
+              {(!state.name || !state.email || !state.message) && (
+                <p className="text-red-500">Please input all fields</p>
+              )}
               <div className="flex flex-col gap-2">
-                <label htmlFor="name" className="text-xs uppercase tracking-[1.5px] text-[#6a6a6a] font-bold">
+                <label
+                  htmlFor="name"
+                  className="text-xs uppercase tracking-[1.5px] text-[#6a6a6a] font-bold"
+                >
                   Your Name
                 </label>
                 <input
@@ -108,8 +130,6 @@ function ContactPage() {
                   name="name"
                   type="text"
                   required
-                  value={formData.name}
-                  onChange={handleChange}
                   placeholder="John Doe"
                   className="bg-[#111] border border-[#2a2a2a] rounded-sm px-4 py-3 text-[#e8e8e8] text-sm placeholder-[#3a3a3a] focus:outline-none focus:border-[#c8a96e] transition-colors duration-200"
                 />
@@ -117,7 +137,10 @@ function ContactPage() {
 
               {/* Email */}
               <div className="flex flex-col gap-2">
-                <label htmlFor="email" className="text-xs uppercase tracking-[1.5px] text-[#6a6a6a] font-bold">
+                <label
+                  htmlFor="email"
+                  className="text-xs uppercase tracking-[1.5px] text-[#6a6a6a] font-bold"
+                >
                   Email Address
                 </label>
                 <input
@@ -125,8 +148,6 @@ function ContactPage() {
                   name="email"
                   type="email"
                   required
-                  value={formData.email}
-                  onChange={handleChange}
                   placeholder="john@example.com"
                   className="bg-[#111] border border-[#2a2a2a] rounded-sm px-4 py-3 text-[#e8e8e8] text-sm placeholder-[#3a3a3a] focus:outline-none focus:border-[#c8a96e] transition-colors duration-200"
                 />
@@ -134,7 +155,10 @@ function ContactPage() {
 
               {/* Message */}
               <div className="flex flex-col gap-2">
-                <label htmlFor="message" className="text-xs uppercase tracking-[1.5px] text-[#6a6a6a] font-bold">
+                <label
+                  htmlFor="message"
+                  className="text-xs uppercase tracking-[1.5px] text-[#6a6a6a] font-bold"
+                >
                   Message
                 </label>
                 <textarea
@@ -142,8 +166,6 @@ function ContactPage() {
                   name="message"
                   rows={6}
                   required
-                  value={formData.message}
-                  onChange={handleChange}
                   placeholder="What's on your mind?"
                   className="bg-[#111] border border-[#2a2a2a] rounded-sm px-4 py-3 text-[#e8e8e8] text-sm placeholder-[#3a3a3a] focus:outline-none focus:border-[#c8a96e] transition-colors duration-200 resize-none"
                 />
@@ -151,15 +173,15 @@ function ContactPage() {
 
               <button
                 type="submit"
-                className="bg-[#c8a96e] text-[#0d0d0d] px-8 py-3 text-sm font-bold uppercase tracking-wide hover:bg-[#e0bf82] transition-colors duration-200 rounded-sm self-start"
+                disabled={isPending}
+                className="bg-[#c8a96e] text-[#0d0d0d] px-8 py-3 text-sm font-bold uppercase tracking-wide hover:bg-[#e0bf82] transition-colors duration-200 rounded-sm self-start disabled:opacity-50"
               >
-                Send Message →
+                {isPending ? "Sending..." : "Send Message →"}
               </button>
             </form>
           )}
         </div>
       </section>
-
     </main>
   );
 }
