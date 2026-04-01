@@ -114,10 +114,10 @@ function ContactPage() {
               {/* {state.error && (
                 <p className="text-red-400 text-sm">{state.error}</p>
               )} */}
-              {/* Name */}
               {(!state.name || !state.email || !state.message) && (
                 <p className="text-red-500">Please input all fields</p>
               )}
+              {/* Name */}
               <div className="flex flex-col gap-2">
                 <label
                   htmlFor="name"
