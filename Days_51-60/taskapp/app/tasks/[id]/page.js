@@ -1,5 +1,6 @@
 import TaskForm from "@/components/TaskForm";
 import { getTaskById } from "@/actions/tasks";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 
 const TaskDetailsPage = async ({ params }) => {
   const { id } = await params;
@@ -7,8 +8,14 @@ const TaskDetailsPage = async ({ params }) => {
   const task = await getTaskById(id);
   return (
     <>
-      <h1>Task Details</h1>
-      <TaskForm task={task} />
+      <Card>
+        <CardHeader>
+          <CardTitle>Task Details</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <TaskForm task={task} />
+        </CardContent>
+      </Card>
     </>
   );
 };
