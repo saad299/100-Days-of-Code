@@ -1,5 +1,9 @@
 ## Classes and Objects
 
+## Class
+
+print("Class Example")
+print("-" * 20)
 class Person:
     def __init__(self, name, age):
         self.name = name
@@ -14,3 +18,4 @@ class Person:
 person = Person("Saad", 25)
 print(person)
 person.greet()
+print("=" * 20)
