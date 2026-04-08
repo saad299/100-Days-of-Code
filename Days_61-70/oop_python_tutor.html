@@ -1,0 +1,247 @@
+
+<style>
+  .tutor-wrap { padding: 1rem 0; font-size: 15px; }
+  .topic-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 1.5rem; }
+  .topic-btn { background: var(--color-background-secondary); border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); padding: 10px 12px; cursor: pointer; text-align: left; font-size: 13px; color: var(--color-text-primary); transition: border-color 0.15s; }
+  .topic-btn:hover { border-color: var(--color-border-primary); }
+  .topic-btn.active { border: 1.5px solid #534AB7; background: #EEEDFE; color: #3C3489; }
+  .code-block { background: var(--color-background-secondary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); padding: 1rem; font-family: var(--font-mono); font-size: 13px; line-height: 1.6; margin: 1rem 0; white-space: pre; overflow-x: auto; color: var(--color-text-primary); }
+  .lesson-area { min-height: 80px; line-height: 1.7; color: var(--color-text-primary); }
+  .lesson-area p { margin: 0 0 0.75rem; }
+  .quiz-area { margin-top: 1.5rem; border-top: 0.5px solid var(--color-border-tertiary); padding-top: 1.25rem; }
+  .opt-btn { display: block; width: 100%; text-align: left; background: var(--color-background-primary); border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); padding: 9px 14px; margin-bottom: 8px; cursor: pointer; font-size: 14px; color: var(--color-text-primary); transition: background 0.1s; }
+  .opt-btn:hover { background: var(--color-background-secondary); }
+  .opt-btn.correct { background: #EAF3DE; border-color: #639922; color: #27500A; }
+  .opt-btn.wrong { background: #FCEBEB; border-color: #A32D2D; color: #501313; }
+  .feedback { font-size: 13px; margin-top: 8px; color: var(--color-text-secondary); }
+  .ask-row { display: flex; gap: 8px; margin-top: 1.5rem; }
+  .ask-row input { flex: 1; font-size: 14px; }
+  .ask-row button { white-space: nowrap; }
+  .loading-dots::after { content: ''; animation: dots 1.2s steps(3, end) infinite; }
+  @keyframes dots { 0%,20%{content:'.'} 40%{content:'..'} 60%,100%{content:'...'} }
+  .section-label { font-size: 12px; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+  .progress { display: flex; gap: 6px; margin-bottom: 1.25rem; }
+  .pip { width: 8px; height: 8px; border-radius: 50%; background: var(--color-border-secondary); }
+  .pip.done { background: #534AB7; }
+</style>
+
+<div class="tutor-wrap">
+  <div class="section-label">Choose a topic</div>
+  <div class="topic-grid" id="topics">
+    <button class="topic-btn" onclick="loadTopic(0)">What is OOP?</button>
+    <button class="topic-btn" onclick="loadTopic(1)">Classes & Objects</button>
+    <button class="topic-btn" onclick="loadTopic(2)">__init__ & self</button>
+    <button class="topic-btn" onclick="loadTopic(3)">Inheritance</button>
+    <button class="topic-btn" onclick="loadTopic(4)">Encapsulation</button>
+    <button class="topic-btn" onclick="loadTopic(5)">Polymorphism</button>
+  </div>
+
+  <div class="progress" id="progress">
+    <div class="pip" id="p0"></div><div class="pip" id="p1"></div>
+    <div class="pip" id="p2"></div><div class="pip" id="p3"></div>
+    <div class="pip" id="p4"></div><div class="pip" id="p5"></div>
+  </div>
+
+  <div class="lesson-area" id="lesson"><span style="color:var(--color-text-secondary)">Pick a topic above to start learning.</span></div>
+  <div id="code-area"></div>
+  <div class="quiz-area" id="quiz" style="display:none"></div>
+
+  <div class="ask-row">
+    <input type="text" id="q-input" placeholder="Ask anything about this topic..." />
+    <button onclick="askQuestion()">Ask ↗</button>
+  </div>
+</div>
+
+<script>
+const topics = [
+  {
+    title: "What is OOP?",
+    intro: "OOP stands for Object-Oriented Programming. It's a way of writing code by modeling the world as objects — things that have data (attributes) and can do things (methods).\n\nInstead of writing a long list of instructions, you describe real-world entities as blueprints (classes) and create instances (objects) from them.",
+    code: null,
+    quiz: {
+      q: "Which of these best describes OOP?",
+      opts: ["Writing code top to bottom, step by step", "Organizing code around objects that have data and behavior", "Only using functions with no variables", "Writing code only in loops"],
+      ans: 1, exp: "OOP organizes code around objects — bundles of data (attributes) and behavior (methods)."
+    }
+  },
+  {
+    title: "Classes & Objects",
+    intro: "A class is a blueprint. An object is an instance created from that blueprint.\n\nThink of a class as the cookie cutter, and objects as the actual cookies.",
+    code: `class Dog:          # blueprint
+    name = "Buddy"  # attribute
+    def bark(self):  # method
+        print("Woof!")
+
+my_dog = Dog()       # object (instance)
+my_dog.bark()        # Woof!`,
+    quiz: {
+      q: "What is the relationship between a class and an object?",
+      opts: ["They are the same thing", "A class is a blueprint; an object is an instance of it", "An object is a blueprint; a class is an instance", "Classes are only for storing data"],
+      ans: 1, exp: "Correct! Class = blueprint. Object = a specific thing made from that blueprint."
+    }
+  },
+  {
+    title: "__init__ & self",
+    intro: "__init__ is a special method called automatically when you create an object. It sets up the object's initial data.\n\nself refers to the current object. It lets the object access and store its own data.",
+    code: `class Dog:
+    def __init__(self, name, age):
+        self.name = name   # store on THIS object
+        self.age = age
+
+    def introduce(self):
+        print(f"I'm {self.name}, {self.age} years old.")
+
+d1 = Dog("Buddy", 3)
+d2 = Dog("Max", 5)
+d1.introduce()   # I'm Buddy, 3 years old.
+d2.introduce()   # I'm Max, 5 years old.`,
+    quiz: {
+      q: "What does `self` refer to inside a method?",
+      opts: ["The class itself", "The current object (instance)", "The parent class", "Python's built-in self variable"],
+      ans: 1, exp: "self refers to the specific object calling the method — it lets each object access its own data."
+    }
+  },
+  {
+    title: "Inheritance",
+    intro: "Inheritance lets a new class reuse code from an existing class. The child class gets all the parent's attributes and methods, and can add or override them.\n\nUse super() to call the parent's __init__ inside a child class.",
+    code: `class Animal:
+    def __init__(self, name):
+        self.name = name
+
+    def speak(self):
+        print("...")
+
+class Dog(Animal):         # Dog inherits Animal
+    def speak(self):       # override parent method
+        print(f"{self.name} says Woof!")
+
+class Cat(Animal):
+    def speak(self):
+        print(f"{self.name} says Meow!")
+
+Dog("Rex").speak()   # Rex says Woof!
+Cat("Luna").speak()  # Luna says Meow!`,
+    quiz: {
+      q: "What does a child class inherit from the parent?",
+      opts: ["Nothing — it starts fresh", "Only attributes, not methods", "All attributes and methods of the parent", "Only the __init__ method"],
+      ans: 2, exp: "A child class inherits all attributes and methods from the parent, and can override or extend them."
+    }
+  },
+  {
+    title: "Encapsulation",
+    intro: "Encapsulation means bundling data and methods together, and controlling access to them.\n\nIn Python, prefix an attribute with _ (convention: protected) or __ (name mangling: private) to signal it shouldn't be accessed directly from outside.",
+    code: `class BankAccount:
+    def __init__(self, balance):
+        self.__balance = balance  # 'private'
+
+    def deposit(self, amount):
+        if amount > 0:
+            self.__balance += amount
+
+    def get_balance(self):
+        return self.__balance
+
+acc = BankAccount(1000)
+acc.deposit(500)
+print(acc.get_balance())  # 1500
+# acc.__balance → AttributeError (can't access directly)`,
+    quiz: {
+      q: "What is the main purpose of encapsulation?",
+      opts: ["To make code run faster", "To bundle data with methods and control access", "To allow multiple inheritance", "To shorten variable names"],
+      ans: 1, exp: "Encapsulation bundles data with the methods that operate on it, and controls what's accessible from outside."
+    }
+  },
+  {
+    title: "Polymorphism",
+    intro: "Polymorphism means the same method name can behave differently on different classes.\n\nYou can call .speak() on a Dog or Cat without knowing which one it is — Python figures it out at runtime.",
+    code: `class Dog:
+    def speak(self): return "Woof"
+
+class Cat:
+    def speak(self): return "Meow"
+
+class Duck:
+    def speak(self): return "Quack"
+
+animals = [Dog(), Cat(), Duck()]
+
+for a in animals:
+    print(a.speak())
+# Woof
+# Meow
+# Quack`,
+    quiz: {
+      q: "Polymorphism allows you to...",
+      opts: ["Write one class that does everything", "Use the same method name across different classes with different behaviors", "Prevent a method from being called", "Only inherit from one parent"],
+      ans: 1, exp: "Polymorphism lets different classes implement the same method name differently — the right one is called based on the object's type."
+    }
+  }
+];
+
+const seen = new Set();
+let current = -1;
+
+function loadTopic(i) {
+  current = i;
+  seen.add(i);
+  document.querySelectorAll('.topic-btn').forEach((b,j) => b.classList.toggle('active', j===i));
+  for(let k=0;k<6;k++) document.getElementById('p'+k).classList.toggle('done', seen.has(k));
+
+  const t = topics[i];
+  document.getElementById('lesson').innerHTML = t.intro.split('\n').map(l => l ? `<p>${l}</p>` : '').join('');
+  
+  const ca = document.getElementById('code-area');
+  ca.innerHTML = t.code ? `<div class="code-block">${t.code}</div>` : '';
+
+  const qa = document.getElementById('quiz');
+  qa.style.display = 'block';
+  renderQuiz(t.quiz);
+}
+
+function renderQuiz(q) {
+  const qa = document.getElementById('quiz');
+  qa.innerHTML = `<div class="section-label">Quick check</div><p style="font-size:14px;font-weight:500;margin:0 0 12px">${q.q}</p>` +
+    q.opts.map((o,i) => `<button class="opt-btn" onclick="checkAns(${i})">${o}</button>`).join('') +
+    `<div class="feedback" id="fb"></div>`;
+}
+
+function checkAns(i) {
+  const t = topics[current];
+  const btns = document.querySelectorAll('.opt-btn');
+  btns.forEach(b => b.disabled = true);
+  btns[i].classList.add(i === t.quiz.ans ? 'correct' : 'wrong');
+  if(i !== t.quiz.ans) btns[t.quiz.ans].classList.add('correct');
+  document.getElementById('fb').textContent = t.quiz.exp;
+}
+
+async function askQuestion() {
+  const inp = document.getElementById('q-input');
+  const val = inp.value.trim();
+  if(!val) return;
+  inp.value = '';
+
+  const topicCtx = current >= 0 ? `The user is learning about "${topics[current].title}" in Python OOP.` : 'The user is learning Python OOP basics.';
+  const lesson = document.getElementById('lesson');
+  lesson.innerHTML += `<p style="color:var(--color-text-secondary);font-size:13px">Q: ${val}</p><p id="ans-stream" style="font-size:14px"><span class="loading-dots"></span></p>`;
+  
+  try {
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 350,
+        system: `You are a concise Python OOP tutor for beginners. ${topicCtx} Answer in 2-4 sentences max. Use simple language. If showing code, keep it very short (3-6 lines). No markdown headers. Plain text only.`,
+        messages: [{role:"user", content: val}]
+      })
+    });
+    const data = await res.json();
+    const ans = data.content?.[0]?.text || "Couldn't get a response.";
+    document.getElementById('ans-stream').textContent = ans;
+  } catch(e) {
+    document.getElementById('ans-stream').textContent = "Error reaching the API.";
+  }
+}
+
+document.getElementById('q-input').addEventListener('keydown', e => { if(e.key==='Enter') askQuestion(); });
+</script>
