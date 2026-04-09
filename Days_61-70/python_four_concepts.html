@@ -1,0 +1,172 @@
+
+<style>
+  .tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.5rem; }
+  .tab { padding: 6px 14px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); font-size: 14px; cursor: pointer; background: transparent; color: var(--color-text-secondary); transition: all 0.15s; }
+  .tab.active { background: var(--color-background-info); color: var(--color-text-info); border-color: transparent; font-weight: 500; }
+  .tab:hover:not(.active) { background: var(--color-background-secondary); }
+  .panel { display: none; }
+  .panel.active { display: block; }
+  .card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1rem 1.25rem; margin-bottom: 12px; }
+  .card h3 { font-size: 15px; font-weight: 500; margin: 0 0 6px; color: var(--color-text-primary); }
+  .card p { font-size: 14px; color: var(--color-text-secondary); margin: 0 0 10px; line-height: 1.6; }
+  pre { background: var(--color-background-tertiary); border-radius: var(--border-radius-md); padding: 10px 14px; font-size: 13px; font-family: var(--font-mono); overflow-x: auto; margin: 0; color: var(--color-text-primary); line-height: 1.6; }
+  .badge { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: var(--border-radius-md); margin-bottom: 8px; }
+  .badge-blue { background: var(--color-background-info); color: var(--color-text-info); }
+  .badge-green { background: var(--color-background-success); color: var(--color-text-success); }
+  .badge-amber { background: var(--color-background-warning); color: var(--color-text-warning); }
+  .badge-red { background: var(--color-background-danger); color: var(--color-text-danger); }
+  .analogy { border-left: 3px solid var(--color-border-info); padding-left: 12px; margin-bottom: 12px; font-size: 14px; color: var(--color-text-secondary); font-style: italic; line-height: 1.6; }
+</style>
+
+<h2 class="sr-only">Interactive guide to four core Python concepts: modules and packages, exception handling, file I/O and JSON, and virtual environments and pip</h2>
+
+<div style="padding: 1rem 0 0;">
+  <div class="tabs">
+    <button class="tab active" onclick="show('modules')">Modules & packages</button>
+    <button class="tab" onclick="show('exceptions')">Exception handling</button>
+    <button class="tab" onclick="show('fileio')">File I/O & JSON</button>
+    <button class="tab" onclick="show('venv')">Virtual envs & pip</button>
+  </div>
+
+  <div id="modules" class="panel active">
+    <div class="card">
+      <span class="badge badge-blue">Concept</span>
+      <h3>What is a module?</h3>
+      <p>A <strong>module</strong> is just a <code>.py</code> file. It holds functions, classes, or variables you can reuse in other files. Instead of writing the same code twice, you import it.</p>
+      <div class="analogy">Think of it like a toolbox — you pick up the toolbox and use the tools inside whenever you need them.</div>
+      <pre>import math
+print(math.sqrt(16))   # 4.0
+
+from math import pi
+print(pi)              # 3.14159...</pre>
+    </div>
+    <div class="card">
+      <span class="badge badge-blue">Concept</span>
+      <h3>What is a package?</h3>
+      <p>A <strong>package</strong> is a folder of modules. It groups related modules together. The folder needs an <code>__init__.py</code> file (can be empty) to tell Python it's a package.</p>
+      <pre>myapp/
+  __init__.py
+  utils.py
+  database.py
+
+# Importing from a package
+from myapp import utils
+from myapp.database import connect</pre>
+    </div>
+  </div>
+
+  <div id="exceptions" class="panel">
+    <div class="card">
+      <span class="badge badge-amber">Concept</span>
+      <h3>What is exception handling?</h3>
+      <p>When something goes wrong in your code (dividing by zero, file not found, bad input), Python raises an <strong>exception</strong>. If you don't catch it, your program crashes. Exception handling lets you deal with errors gracefully.</p>
+      <div class="analogy">Like a safety net — if a tightrope walker slips, the net catches them instead of letting them fall.</div>
+    </div>
+    <div class="card">
+      <span class="badge badge-amber">Syntax</span>
+      <h3>try / except / else / finally</h3>
+      <pre>try:
+    result = 10 / 0         # risky code goes here
+except ZeroDivisionError:
+    print("Can't divide by zero!")
+except ValueError as e:
+    print(f"Bad value: {e}")
+else:
+    print("No error! Result:", result)  # runs only if no error
+finally:
+    print("This always runs")           # cleanup code</pre>
+    </div>
+    <div class="card">
+      <span class="badge badge-amber">Tip</span>
+      <h3>Raising your own exceptions</h3>
+      <pre>def set_age(age):
+    if age < 0:
+        raise ValueError("Age can't be negative")
+    return age</pre>
+    </div>
+  </div>
+
+  <div id="fileio" class="panel">
+    <div class="card">
+      <span class="badge badge-green">Concept</span>
+      <h3>Reading and writing files</h3>
+      <p>Python can read and write files with the built-in <code>open()</code> function. Always use <code>with</code> — it automatically closes the file even if an error happens.</p>
+      <pre># Writing to a file
+with open("notes.txt", "w") as f:
+    f.write("Hello, file!")
+
+# Reading from a file
+with open("notes.txt", "r") as f:
+    content = f.read()
+    print(content)   # Hello, file!</pre>
+      <p style="margin-top:10px;">Common modes: <code>"r"</code> read, <code>"w"</code> write (overwrites), <code>"a"</code> append, <code>"rb"</code> read binary.</p>
+    </div>
+    <div class="card">
+      <span class="badge badge-green">JSON</span>
+      <h3>Working with JSON</h3>
+      <p>JSON is a common format for storing and sharing data. Python's <code>json</code> module converts between Python dicts and JSON text.</p>
+      <pre>import json
+
+data = {"name": "Alice", "age": 30}
+
+# Dict → JSON string (serialize)
+json_str = json.dumps(data)
+
+# JSON string → Dict (deserialize)
+parsed = json.loads(json_str)
+
+# Save to file / load from file
+with open("data.json", "w") as f:
+    json.dump(data, f)
+
+with open("data.json", "r") as f:
+    loaded = json.load(f)</pre>
+    </div>
+  </div>
+
+  <div id="venv" class="panel">
+    <div class="card">
+      <span class="badge badge-red">Concept</span>
+      <h3>What is pip?</h3>
+      <p><strong>pip</strong> is Python's package installer. Use it to install third-party libraries that don't come with Python.</p>
+      <pre># In your terminal (not in Python)
+pip install requests
+pip install pandas numpy
+pip uninstall requests
+pip list                   # see installed packages</pre>
+    </div>
+    <div class="card">
+      <span class="badge badge-red">Concept</span>
+      <h3>What is a virtual environment?</h3>
+      <p>A <strong>virtual environment</strong> is an isolated Python workspace. Different projects can have different package versions without conflicting with each other.</p>
+      <div class="analogy">Like separate apartments — each project has its own space with its own stuff, so they don't mess with each other.</div>
+      <pre># Create a virtual environment
+python -m venv myenv
+
+# Activate it
+source myenv/bin/activate    # Mac/Linux
+myenv\Scripts\activate       # Windows
+
+# Now install packages — they stay inside myenv
+pip install flask
+
+# Save your dependencies
+pip freeze > requirements.txt
+
+# Someone else can replicate your setup
+pip install -r requirements.txt
+
+# Deactivate when done
+deactivate</pre>
+    </div>
+  </div>
+</div>
+
+<script>
+  function show(id) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    event.target.classList.add('active');
+  }
+</script>
