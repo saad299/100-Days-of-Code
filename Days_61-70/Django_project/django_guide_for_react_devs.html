@@ -1,0 +1,471 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.wrap{font-family:var(--font-sans);padding:1rem 0}
+.nav{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1.5rem}
+.nav-btn{font-size:12px;padding:5px 10px;border-radius:20px;border:0.5px solid var(--color-border-secondary);background:transparent;color:var(--color-text-secondary);cursor:pointer;transition:all .15s}
+.nav-btn.active{background:var(--color-background-info);color:var(--color-text-info);border-color:transparent}
+.section{display:none}.section.active{display:block}
+.topic{margin-bottom:1.25rem;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden}
+.topic-hd{padding:10px 14px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;background:var(--color-background-secondary);user-select:none}
+.topic-hd:hover{background:var(--color-background-tertiary)}
+.topic-title{font-size:14px;font-weight:500;color:var(--color-text-primary)}
+.topic-sub{font-size:12px;color:var(--color-text-secondary);margin-top:2px}
+.chevron{font-size:12px;color:var(--color-text-tertiary);transition:transform .2s}
+.topic.open .chevron{transform:rotate(180deg)}
+.topic-body{display:none;padding:14px;border-top:0.5px solid var(--color-border-tertiary)}
+.topic.open .topic-body{display:block}
+.tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;margin-bottom:8px;font-weight:500}
+.tag.react{background:var(--color-background-info);color:var(--color-text-info)}
+.tag.django{background:var(--color-background-success);color:var(--color-text-success)}
+.tag.note{background:var(--color-background-warning);color:var(--color-text-warning)}
+.body-text{font-size:13px;color:var(--color-text-secondary);line-height:1.6;margin-bottom:10px}
+.body-text:last-child{margin-bottom:0}
+pre{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px 12px;font-size:12px;font-family:var(--font-mono);overflow-x:auto;margin:8px 0;border:0.5px solid var(--color-border-tertiary);white-space:pre;color:var(--color-text-primary)}
+.file-tree{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px 12px;font-size:12px;font-family:var(--font-mono);border:0.5px solid var(--color-border-tertiary);line-height:1.8}
+.ft-dir{color:var(--color-text-info)}
+.ft-file{color:var(--color-text-primary)}
+.ft-comment{color:var(--color-text-tertiary);font-family:var(--font-sans);font-size:11px}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}
+.compare-box{border-radius:var(--border-radius-md);padding:8px 10px;font-size:12px}
+.compare-box.react-box{background:var(--color-background-info);border:0.5px solid var(--color-border-info)}
+.compare-box.django-box{background:var(--color-background-success);border:0.5px solid var(--color-border-success)}
+.compare-box .label{font-size:11px;font-weight:500;margin-bottom:4px}
+.compare-box.react-box .label{color:var(--color-text-info)}
+.compare-box.django-box .label{color:var(--color-text-success)}
+.compare-box pre{background:transparent;border:none;padding:0;margin:0;font-size:11px}
+.pill-row{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}
+.pill{font-size:11px;padding:3px 8px;border-radius:10px;background:var(--color-background-secondary);border:0.5px solid var(--color-border-secondary);color:var(--color-text-secondary);font-family:var(--font-mono)}
+.section-title{font-size:16px;font-weight:500;color:var(--color-text-primary);margin-bottom:4px}
+.section-desc{font-size:13px;color:var(--color-text-secondary);margin-bottom:1rem;line-height:1.5}
+.ask-btn{font-size:12px;padding:4px 10px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-secondary);background:transparent;color:var(--color-text-info);cursor:pointer;margin-top:8px}
+.ask-btn:hover{background:var(--color-background-info)}
+</style>
+
+<div class="wrap">
+<h2 class="sr-only">Django guide for React/Next.js developers — interactive reference</h2>
+
+<div class="nav" id="nav"></div>
+<div id="sections"></div>
+</div>
+
+<script>
+const data = [
+  {
+    id:"setup", label:"1. Project setup",
+    desc:"Equivalent to create-next-app — but generates a Python project structure.",
+    topics:[
+      {
+        title:"django-admin startproject",
+        sub:"Like create-next-app for Django",
+        body:`<span class="tag django">Django</span>
+<p class="body-text">Run this once to scaffold the project. Replace <code>mysite</code> with your project name.</p>
+<pre>django-admin startproject mysite
+cd mysite
+python manage.py runserver</pre>
+<p class="body-text">The <code>.</code> at the end keeps the folder structure flat (recommended):</p>
+<pre>django-admin startproject mysite .</pre>`
+      },
+      {
+        title:"Development server",
+        sub:"Equivalent to npm run dev",
+        body:`<span class="tag django">Django</span>
+<p class="body-text">Starts at <strong>http://127.0.0.1:8000</strong> — hot-reloads Python files automatically.</p>
+<pre>python manage.py runserver
+
+# Custom port
+python manage.py runserver 8080</pre>`
+      },
+      {
+        title:"Generated file structure",
+        sub:"What each file does",
+        body:`<div class="file-tree">
+<span class="ft-dir">mysite/</span>
+├── <span class="ft-file">manage.py</span>       <span class="ft-comment">← CLI tool (like package.json scripts)</span>
+└── <span class="ft-dir">mysite/</span>
+    ├── <span class="ft-file">__init__.py</span>  <span class="ft-comment">← marks this as a Python package</span>
+    ├── <span class="ft-file">settings.py</span> <span class="ft-comment">← all config (DB, apps, middleware…)</span>
+    ├── <span class="ft-file">urls.py</span>     <span class="ft-comment">← root URL router (like app/layout routes)</span>
+    ├── <span class="ft-file">asgi.py</span>     <span class="ft-comment">← async server entry point</span>
+    └── <span class="ft-file">wsgi.py</span>     <span class="ft-comment">← sync server entry point (default)</span>
+</div>
+<p class="body-text" style="margin-top:8px"><code>settings.py</code> is the most important file — you'll be in it constantly. Think of it as a combination of <code>.env</code>, <code>next.config.js</code>, and app config.</p>`
+      }
+    ]
+  },
+  {
+    id:"apps", label:"2. Apps",
+    desc:"Django splits a project into 'apps' — feature modules. Think of them like feature folders in a Next.js project, but more self-contained.",
+    topics:[
+      {
+        title:"Creating an app",
+        sub:"python manage.py startapp",
+        body:`<span class="tag django">Django</span>
+<p class="body-text">An app is a feature module: <code>blog</code>, <code>users</code>, <code>shop</code>, etc.</p>
+<pre>python manage.py startapp blog</pre>
+<div class="file-tree">
+<span class="ft-dir">blog/</span>
+├── <span class="ft-file">migrations/</span>  <span class="ft-comment">← DB schema changes</span>
+├── <span class="ft-file">admin.py</span>     <span class="ft-comment">← register models for admin panel</span>
+├── <span class="ft-file">apps.py</span>      <span class="ft-comment">← app config (name, etc)</span>
+├── <span class="ft-file">models.py</span>    <span class="ft-comment">← database models</span>
+├── <span class="ft-file">tests.py</span>
+└── <span class="ft-file">views.py</span>     <span class="ft-comment">← your request handlers</span>
+</div>`
+      },
+      {
+        title:"Registering in INSTALLED_APPS",
+        sub:"Required step after creating an app",
+        body:`<span class="tag note">Important</span>
+<p class="body-text">Django won't see your app until you register it in <code>settings.py</code>. This is a common gotcha for beginners.</p>
+<pre># mysite/settings.py
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    ...
+    'blog',  # ← add your app here
+]</pre>`
+      },
+      {
+        title:"Why split into apps?",
+        sub:"The reasoning behind the pattern",
+        body:`<div class="compare">
+<div class="compare-box react-box"><div class="label">Next.js way</div><pre>app/
+  blog/
+  users/
+  shop/</pre></div>
+<div class="compare-box django-box"><div class="label">Django way</div><pre>blog/   (full app)
+users/  (full app)
+shop/   (full app)</pre></div>
+</div>
+<p class="body-text">Each Django app is <em>self-contained</em>: its own models, views, URLs, templates, and migrations travel together. Apps can also be reused across projects or installed from PyPI (like <code>django-allauth</code>).</p>`
+      }
+    ]
+  },
+  {
+    id:"views", label:"3. Views",
+    desc:"Views are Django's equivalent of API route handlers or React Server Component data-fetching logic. They receive a request and return a response.",
+    topics:[
+      {
+        title:"What a view function is",
+        sub:"A Python function that handles a request",
+        body:`<div class="compare">
+<div class="compare-box react-box"><div class="label">Next.js API route</div><pre>export async function GET(req) {
+  return Response.json({msg:'hi'})
+}</pre></div>
+<div class="compare-box django-box"><div class="label">Django view</div><pre>def my_view(request):
+    return HttpResponse("hi")</pre></div>
+</div>
+<p class="body-text">Every view takes a <code>request</code> object as its first argument and must return a response object.</p>`
+      },
+      {
+        title:"The request object",
+        sub:"What it contains",
+        body:`<span class="tag django">Django</span>
+<p class="body-text">The <code>request</code> object is similar to Next.js <code>Request</code>, but richer:</p>
+<pre>request.method       # 'GET', 'POST', 'PUT'…
+request.GET          # query params dict  (?q=hello → {'q':'hello'})
+request.POST         # form data dict
+request.FILES        # uploaded files
+request.user         # logged-in user (or AnonymousUser)
+request.path         # '/blog/posts/1'
+request.headers      # HTTP headers dict
+request.session      # server-side session data
+request.COOKIES      # cookie dict</pre>`
+      },
+      {
+        title:"HttpResponse",
+        sub:"The raw response object",
+        body:`<span class="tag django">Django</span>
+<pre>from django.http import HttpResponse
+
+def hello(request):
+    return HttpResponse("&lt;h1&gt;Hello world&lt;/h1&gt;")
+
+# With status code
+def not_found(request):
+    return HttpResponse("Not found", status=404)</pre>
+<p class="body-text">Fine for simple cases, but you'd never manually write HTML strings in practice — that's what <code>render()</code> is for.</p>`
+      },
+      {
+        title:"render() — the shortcut you'll always use",
+        sub:"Replaces manually building HttpResponse",
+        body:`<span class="tag django">Django</span>
+<p class="body-text"><code>render(request, template_name, context)</code> loads a template, injects your data, and returns an <code>HttpResponse</code> — all in one line.</p>
+<pre>from django.shortcuts import render
+
+def post_list(request):
+    posts = Post.objects.all()
+    return render(request, 'blog/post_list.html', {
+        'posts': posts,
+        'title': 'All Posts',
+    })</pre>
+<p class="body-text">That dict is the <strong>context</strong> — it's how you pass data to your template (covered in section 6).</p>`
+      }
+    ]
+  },
+  {
+    id:"urls", label:"4. URLs",
+    desc:"Django's URL system is explicit and centralized — no file-system routing. You declare every URL pattern in Python.",
+    topics:[
+      {
+        title:"What urls.py does",
+        sub:"Maps URL patterns to view functions",
+        body:`<div class="compare">
+<div class="compare-box react-box"><div class="label">Next.js (file-based)</div><pre>app/
+  blog/
+    page.tsx     → /blog
+    [id]/
+      page.tsx   → /blog/123</pre></div>
+<div class="compare-box django-box"><div class="label">Django (explicit)</div><pre>urlpatterns = [
+  path('blog/', views.list),
+  path('blog/&lt;int:id&gt;/', views.detail),
+]</pre></div>
+</div>
+<p class="body-text">No magic. Every route is manually declared. More verbose, but completely explicit — no surprises about what URL maps to what.</p>`
+      },
+      {
+        title:"The path() function",
+        sub:"pattern, view, name",
+        body:`<span class="tag django">Django</span>
+<pre>from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('posts/', views.post_list, name='post-list'),
+    path('posts/&lt;int:pk&gt;/', views.post_detail, name='post-detail'),
+    path('posts/&lt;slug:slug&gt;/', views.post_by_slug, name='post-slug'),
+]</pre>
+<p class="body-text">URL converters: <code>&lt;int:pk&gt;</code> captures an integer, <code>&lt;str:name&gt;</code> a string, <code>&lt;slug:slug&gt;</code> a slug, <code>&lt;uuid:id&gt;</code> a UUID. The captured value is passed as a keyword argument to the view.</p>`
+      },
+      {
+        title:"App-level urls.py",
+        sub:"Create one per app",
+        body:`<span class="tag django">Django</span>
+<p class="body-text">By default, apps don't have a <code>urls.py</code> — you create it yourself. This is the app-level router.</p>
+<pre># blog/urls.py  (create this file)
+from django.urls import path
+from . import views
+
+app_name = 'blog'  # namespace — important!
+
+urlpatterns = [
+    path('', views.post_list, name='list'),
+    path('&lt;int:pk&gt;/', views.post_detail, name='detail'),
+]</pre>`
+      },
+      {
+        title:"include() — wiring app URLs into the project",
+        sub:"The main urls.py delegates to each app",
+        body:`<span class="tag django">Django</span>
+<pre># mysite/urls.py  (project root)
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('blog/', include('blog.urls')),
+    # /blog/ → blog/urls.py handles the rest
+    # /blog/  → blog:list
+    # /blog/5/ → blog:detail
+]</pre>
+<p class="body-text">Think of this as mounting a sub-router. All blog URLs now live under <code>/blog/</code>.</p>`
+      },
+      {
+        title:"The name parameter and why it matters",
+        sub:"Reverse URL resolution — never hardcode URLs",
+        body:`<span class="tag note">Best practice</span>
+<p class="body-text">Naming a URL lets you reference it by name instead of hardcoding the string. If the URL ever changes, nothing breaks.</p>
+<pre># In a template (with app namespace)
+&lt;a href="{% url 'blog:detail' pk=post.pk %}"&gt;Read more&lt;/a&gt;
+
+# In a view (Python)
+from django.urls import reverse
+url = reverse('blog:detail', kwargs={'pk': 5})
+# → '/blog/5/'</pre>
+<p class="body-text">The format is <code>namespace:name</code> — the namespace is the <code>app_name</code> set in the app's <code>urls.py</code>.</p>`
+      }
+    ]
+  },
+  {
+    id:"templates", label:"5. Templates",
+    desc:"Django's template language (DTL) is like JSX's less powerful cousin — intentionally limited so logic stays in views. Think of it as a structured version of .html files with Handlebars-style syntax.",
+    topics:[
+      {
+        title:"Folder structure",
+        sub:"Where Django looks for templates",
+        body:`<span class="tag note">Convention to follow</span>
+<p class="body-text">Put templates inside each app in a <code>templates/app_name/</code> subfolder. The double-nesting prevents naming collisions between apps.</p>
+<div class="file-tree">
+<span class="ft-dir">blog/</span>
+└── <span class="ft-dir">templates/</span>
+    └── <span class="ft-dir">blog/</span>          <span class="ft-comment">← namespace folder</span>
+        ├── <span class="ft-file">base.html</span>
+        ├── <span class="ft-file">post_list.html</span>
+        └── <span class="ft-file">post_detail.html</span>
+</div>
+<p class="body-text">Django finds them via <code>APP_DIRS: True</code> in <code>settings.py</code> (enabled by default). You reference them as <code>'blog/post_list.html'</code>.</p>`
+      },
+      {
+        title:"{{ variable }} — output data",
+        sub:"Like {expression} in JSX",
+        body:`<div class="compare">
+<div class="compare-box react-box"><div class="label">JSX</div><pre>&lt;h1&gt;{post.title}&lt;/h1&gt;
+&lt;p&gt;By {post.author.name}&lt;/p&gt;</pre></div>
+<div class="compare-box django-box"><div class="label">DTL</div><pre>&lt;h1&gt;{{ post.title }}&lt;/h1&gt;
+&lt;p&gt;By {{ post.author.name }}&lt;/p&gt;</pre></div>
+</div>
+<p class="body-text">Dot notation works for dict keys, object attributes, and method calls (without parentheses). Django tries each in order.</p>`
+      },
+      {
+        title:"{% tag %} — logic",
+        sub:"Like JSX control flow but in the template",
+        body:`<span class="tag django">Django</span>
+<pre>{# This is a comment — not rendered #}
+
+{% if user.is_authenticated %}
+  &lt;p&gt;Hello, {{ user.username }}&lt;/p&gt;
+{% else %}
+  &lt;a href="/login"&gt;Log in&lt;/a&gt;
+{% endif %}
+
+{% for post in posts %}
+  &lt;h2&gt;{{ post.title }}&lt;/h2&gt;
+{% empty %}
+  &lt;p&gt;No posts yet.&lt;/p&gt;
+{% endfor %}</pre>
+<p class="body-text">Every block tag needs a closing tag: <code>{% endif %}</code>, <code>{% endfor %}</code>, <code>{% endblock %}</code>, etc.</p>`
+      },
+      {
+        title:"Filters",
+        sub:"Transform variables inline with |",
+        body:`<span class="tag django">Django</span>
+<p class="body-text">Filters are applied with the pipe character. Think of them as one-argument utility functions.</p>
+<pre>{{ name|upper }}             {# JOHN DOE #}
+{{ name|lower }}             {# john doe #}
+{{ name|title }}             {# John Doe #}
+{{ bio|truncatewords:20 }}   {# first 20 words… #}
+{{ posts|length }}           {# 5 #}
+{{ date|date:"M d, Y" }}     {# Jan 01, 2025 #}
+{{ content|linebreaks }}     {# \n → &lt;p&gt; tags #}
+{{ price|floatformat:2 }}    {# 9.50 #}
+{{ value|default:"N/A" }}    {# fallback if empty #}</pre>`
+      },
+      {
+        title:"Template inheritance",
+        sub:"base.html + {% extends %} + {% block %}",
+        body:`<div class="compare">
+<div class="compare-box react-box"><div class="label">Next.js layout</div><pre>// app/layout.tsx
+export default function Layout({children}) {
+  return &lt;html&gt;...{children}&lt;/html&gt;
+}</pre></div>
+<div class="compare-box django-box"><div class="label">Django base template</div><pre>{# base.html #}
+&lt;html&gt;
+&lt;body&gt;
+  {% block content %}
+  {% endblock %}
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+</div>
+<pre>{# blog/post_list.html #}
+{% extends "blog/base.html" %}
+
+{% block content %}
+  &lt;h1&gt;All Posts&lt;/h1&gt;
+  {% for post in posts %}
+    &lt;p&gt;{{ post.title }}&lt;/p&gt;
+  {% endfor %}
+{% endblock %}</pre>
+<p class="body-text"><code>{% extends %}</code> must be the very first line. You can define multiple named blocks in <code>base.html</code> (e.g. <code>block title</code>, <code>block sidebar</code>, <code>block scripts</code>).</p>`
+      }
+    ]
+  },
+  {
+    id:"context", label:"6. Views + Templates",
+    desc:"The glue layer. Views prepare data, package it in a dict, and render() injects it into the template. This is Django's one-way data flow.",
+    topics:[
+      {
+        title:"The context dictionary",
+        sub:"How data flows from view to template",
+        body:`<div class="compare">
+<div class="compare-box react-box"><div class="label">Next.js (props / RSC)</div><pre>// page.tsx
+const posts = await getPosts()
+return &lt;PostList posts={posts} /&gt;</pre></div>
+<div class="compare-box django-box"><div class="label">Django</div><pre># views.py
+posts = Post.objects.all()
+context = {'posts': posts}
+return render(request, 'template.html', context)</pre></div>
+</div>
+<p class="body-text">The context dict keys become variable names in the template. <code>{'posts': posts, 'title': 'Blog'}</code> gives you <code>{{ posts }}</code> and <code>{{ title }}</code> in the template.</p>`
+      },
+      {
+        title:"How render() injects context",
+        sub:"The full picture end-to-end",
+        body:`<span class="tag django">Django</span>
+<pre># views.py
+from django.shortcuts import render, get_object_or_404
+
+def post_detail(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    related = Post.objects.filter(
+        category=post.category
+    ).exclude(pk=pk)[:3]
+
+    return render(request, 'blog/post_detail.html', {
+        'post': post,
+        'related_posts': related,
+        'page_title': post.title,
+    })</pre>
+<pre>{# blog/post_detail.html #}
+{% extends "blog/base.html" %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+  &lt;h1&gt;{{ post.title }}&lt;/h1&gt;
+  &lt;p&gt;{{ post.body }}&lt;/p&gt;
+
+  &lt;h3&gt;Related posts&lt;/h3&gt;
+  {% for p in related_posts %}
+    &lt;a href="{% url 'blog:detail' pk=p.pk %}"&gt;
+      {{ p.title }}
+    &lt;/a&gt;
+  {% endfor %}
+{% endblock %}</pre>
+<p class="body-text"><code>get_object_or_404</code> is the Django equivalent of a 404 boundary — if the post doesn't exist it automatically returns a 404 response.</p>
+<button class="ask-btn" onclick="sendPrompt('Show me a complete working Django app with a model, view, URL, and template for a simple blog')">Show me a full working example ↗</button>`
+      }
+    ]
+  }
+];
+
+const nav = document.getElementById('nav');
+const sections = document.getElementById('sections');
+
+data.forEach((sec, si) => {
+  const btn = document.createElement('button');
+  btn.className = 'nav-btn' + (si===0?' active':'');
+  btn.textContent = sec.label;
+  btn.onclick = () => {
+    document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('sec-'+sec.id).classList.add('active');
+  };
+  nav.appendChild(btn);
+
+  const div = document.createElement('div');
+  div.className = 'section' + (si===0?' active':'');
+  div.id = 'sec-'+sec.id;
+  div.innerHTML = `<p class="section-title">${sec.label}</p><p class="section-desc">${sec.desc}</p>`;
+
+  sec.topics.forEach((t,ti) => {
+    const topic = document.createElement('div');
+    topic.className = 'topic' + (ti===0?' open':'');
+    topic.innerHTML = `<div class="topic-hd"><div><div class="topic-title">${t.title}</div><div class="topic-sub">${t.sub}</div></div><span class="chevron">▼</span></div><div class="topic-body">${t.body}</div>`;
+    topic.querySelector('.topic-hd').onclick = () => topic.classList.toggle('open');
+    div.appendChild(topic);
+  });
+
+  sections.appendChild(div);
+});
+</script>

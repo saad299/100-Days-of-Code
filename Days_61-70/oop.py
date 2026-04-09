@@ -1,3 +1,5 @@
+import json
+
 # class Car:
 #     def __init__(self, brand, model, year, speed):
 #         self.brand = brand
@@ -33,6 +35,7 @@
 
 print("-" * 20)
 
+
 class Book:
     def __init__(self, title, author, genre):
         self.title = title
@@ -55,25 +58,38 @@ class Book:
         print(f"Genre: {self.genre}")
         print(f"Is borrowed: {self.is_borrowed}")
 
+
 class Library:
     def __init__(self, name):
         self.name = name
         self.books = []
-        
+
     def add_book(self, book):
         self.books.append(book)
-        
+
     def remove_book(self, book):
         self.books.remove(book)
-        
+
     def show_books(self):
         for book in self.books:
             book.show_info()
 
+
 lib = Library("My Library")
 book1 = Book("The Great Gatsby", "F. Scott Fitzgerald", "Fiction")
 book2 = Book("To Kill a Mockingbird", "Harper Lee", "Fiction")
-lib.add_book(book1)
+
+with open("books.json", "w") as f:
+    json.dump([book1.__dict__, book2.__dict__], f)
+
+with open("books.json", "r") as f:
+    books_file = json.load(f)
+
+loaded_books = [Book(b["title"], b["author"], b["genre"]) for b in books_file]
+
+# lib.add_book(book1)
+lib.add_book(loaded_books[0])
+
 lib.add_book(book2)
 lib.show_books()
 print("---Borrowed---")
