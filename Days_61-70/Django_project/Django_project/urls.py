@@ -18,11 +18,16 @@ from django.contrib import admin
 from django.urls import path, include
 from django.http import HttpResponse
 
-def hello(request):
-    return HttpResponse("<h1 style='color: blue;'>Hello World</h1>")
+def hello(_):
+    return HttpResponse("<body style='background-color: lightgray;'><div style='background-color: yellow; padding: 20px;'><h1 style='color: blue;'>Hello World</h1></div></body>")
+
+def dashboard(_):
+    return HttpResponse("<body style='background-color: lightgray;'><div style='background-color: magenta; padding: 20px;'><h1 style='color: red;'>This is Dashboard Routing</h1></div></body>")
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', hello),
-    path('app/', include('my_first_django_app.urls')),
+    path('', include('my_first_django_app.urls'), name='home'),
+    path('hello/', hello),
+    path('dashboard/', dashboard),
+    path('app/', include('my_first_django_app.urls', namespace='app'), name='app'),
 ]
