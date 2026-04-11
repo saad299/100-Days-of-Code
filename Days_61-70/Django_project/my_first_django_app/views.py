@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from .models import Post
 
 
 # Create your views here.
@@ -9,7 +10,16 @@ def app(_):
 
 def home(request):
     data = {"name": "John", "message_count": 5}
+    posts = Post.objects.all().order_by("-created_at")
     return render(request, "home.html", data)
+
+def posts(request):
+    posts = Post.objects.all().order_by("-created_at")
+    return render(request, "posts.html", {"posts": posts})
+
+def post(request, id):
+    post = Post.objects.get(id=id)
+    return render(request, "post.html", {"post": post})
 
 
 def about(request):
