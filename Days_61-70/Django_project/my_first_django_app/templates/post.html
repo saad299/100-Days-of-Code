@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+    <article>
+        <h1>{{ post.title }}</h1>
+        <small>{{ post.created_at|date:"F d, Y" }}</small>
+        <div class="content">
+            <p>{{ post.content }}</p>
+        </div>
+        <a href="{% url 'my_first_django_app:posts' %}">← Back to all posts</a>
+    </article>
+{% endblock %}
