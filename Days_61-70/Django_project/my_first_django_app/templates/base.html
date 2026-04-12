@@ -3,18 +3,75 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{% block title %}My Site {% endblock %}</title>
+    <title>{% block title %}My Site{% endblock %}</title>
   </head>
-  <body>
-    <nav>
-      <a href="{% url 'my_first_django_app:home' %}">Home</a>
-      <a href="{% url 'my_first_django_app:about' %}">About</a>
-      <a href="{% url 'my_first_django_app:posts' %}">Posts</a>
-      <!-- <a href="{% url 'my_first_django_app:app' %}">App</a> -->
+  <body style="margin: 0; padding: 0; background: #faf9f7; color: #1a1a1a; font-family: 'Georgia', serif; min-height: 100vh; display: flex; flex-direction: column;">
+
+    <nav style="background: #1a1a1a; padding: 0 24px;">
+      <div style="max-width: 760px; margin: 0 auto; display: flex; align-items: center; gap: 32px; height: 56px;">
+        <a href="{% url 'my_first_django_app:home' %}"
+           style="font-family: 'Helvetica Neue', sans-serif; font-size: 0.78rem; font-weight: 700;
+                  color: #fff; text-decoration: none; text-transform: uppercase; letter-spacing: 0.1em;
+                  {% if request.resolver_match.url_name == 'home' %}
+                    color: #fff; padding-bottom: 2px; border-bottom: 2px solid #c0392b;
+                  {% else %}
+                    color: #aaa;
+                  {% endif %}">
+          Home
+        </a>
+        <a href="{% url 'my_first_django_app:about' %}"
+           style="font-family: 'Helvetica Neue', sans-serif; font-size: 0.78rem; font-weight: 700;
+                  color: #aaa; text-decoration: none; text-transform: uppercase; letter-spacing: 0.1em;
+                  {% if request.resolver_match.url_name == 'about' %}
+                      color: #fff; padding-bottom: 2px; border-bottom: 2px solid #c0392b;
+                  {% else %}
+                      color: #aaa;
+                  {% endif %}">
+          About
+        </a>
+        <a href="{% url 'my_first_django_app:posts' %}"
+           style="font-family: 'Helvetica Neue', sans-serif; font-size: 0.78rem; font-weight: 700;
+                  color: #aaa; text-decoration: none; text-transform: uppercase; letter-spacing: 0.1em;
+                  {% if request.resolver_match.url_name == 'posts' %}
+                      color: #fff; padding-bottom: 2px; border-bottom: 2px solid #c0392b;
+                  {% else %}
+                      color: #aaa;
+                  {% endif %}">
+          Posts
+        </a>
+        <a href="{% url 'my_first_django_app:contact' %}"
+           style="font-family: 'Helvetica Neue', sans-serif; font-size: 0.78rem; font-weight: 700;
+                  color: #aaa; text-decoration: none; text-transform: uppercase; letter-spacing: 0.1em;
+                  {% if request.resolver_match.url_name == 'contact' %}
+                      color: #fff; padding-bottom: 2px; border-bottom: 2px solid #c0392b;
+                  {% else %}
+                      color: #aaa;
+                  {% endif %}">
+          Contact
+        </a>
+        {% comment %} <a href="{% url 'my_first_django_app:app' %}"
+           style="font-family: 'Helvetica Neue', sans-serif; font-size: 0.78rem; font-weight: 700;
+                  color: #aaa; text-decoration: none; text-transform: uppercase; letter-spacing: 0.1em;">
+          App
+        </a> {% endcomment %}
+      </div>
     </nav>
-    <main>{% block content %} {% endblock %}</main>
-    <footer>
-        This is a footer
+
+    <main style="flex: 1;">
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer style="background: #1a1a1a; margin-top: 80px;">
+      <div style="max-width: 760px; margin: 0 auto; padding: 24px; display: flex; align-items: center; justify-content: space-between;">
+        <span style="font-family: 'Helvetica Neue', sans-serif; font-size: 0.75rem;
+                     color: #555; text-transform: uppercase; letter-spacing: 0.08em;">
+          This is a footer
+        </span>
+        <span style="font-family: 'Helvetica Neue', sans-serif; font-size: 0.75rem; color: #c0392b; letter-spacing: 0.05em;">
+          &#9632;
+        </span>
+      </div>
     </footer>
+
   </body>
 </html>
