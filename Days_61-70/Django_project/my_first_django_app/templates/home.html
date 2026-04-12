@@ -1,8 +1,127 @@
 {% extends "base.html" %} 
 
-{% block title %}Home{% endblock %} 
+{% comment %} {% block title %}Home{% endblock %} 
 
 {% block content %}
     <h1>Welcome, {{ name }}</h1>
     <p>You have {{ message_count }} new messages.</p>
+{% endblock %} {% endcomment %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div style="font-family: 'Georgia', serif;">
+
+    <!-- Hero -->
+    <div style="background: #1a1a1a; padding: 80px 24px;">
+        <div style="max-width: 760px; margin: 0 auto;">
+            <p style="font-family: 'Helvetica Neue', sans-serif; font-size: 0.78rem;
+                      font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em;
+                      color: #c0392b; margin: 0 0 20px 0;">
+                Welcome
+            </p>
+            <h1 style="font-size: clamp(2.8rem, 6vw, 4.5rem); font-weight: 900; color: #faf9f7;
+                       margin: 0 0 24px 0; letter-spacing: -2px; line-height: 1.05;">
+                Thoughts, stories,<br>and ideas.
+            </h1>
+            <p style="font-size: 1.15rem; color: #888; line-height: 1.75;
+                      max-width: 520px; margin: 0 0 40px 0;">
+                A personal blog covering topics worth writing about.
+                Pull up a chair and stay a while.
+            </p>
+            <a href="{% url 'my_first_django_app:posts' %}"
+               style="font-family: 'Helvetica Neue', sans-serif; font-size: 0.85rem;
+                      font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+                      background: #c0392b; color: #fff; text-decoration: none;
+                      padding: 12px 28px; display: inline-block;">
+                Read all posts →
+            </a>
+        </div>
+    </div>
+
+    <!-- Recent Posts -->
+    <div style="max-width: 760px; margin: 0 auto; padding: 60px 24px;">
+
+        <div style="display: flex; align-items: baseline; justify-content: space-between;
+                    border-bottom: 3px solid #1a1a1a; padding-bottom: 16px; margin-bottom: 40px;">
+            <h2 style="font-size: 1.4rem; font-weight: 900; color: #1a1a1a; margin: 0;
+                       letter-spacing: -0.5px;">
+                Recent Posts
+            </h2>
+            <a href="{% url 'my_first_django_app:posts' %}"
+               style="font-family: 'Helvetica Neue', sans-serif; font-size: 0.75rem;
+                      font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+                      color: #c0392b; text-decoration: none; border-bottom: 2px solid #c0392b;
+                      padding-bottom: 2px;">
+                View all
+            </a>
+        </div>
+
+        {% for post in posts %}
+        <div style="display: flex; gap: 32px; align-items: flex-start;
+                    padding-bottom: 32px; margin-bottom: 32px; border-bottom: 1px solid #e5e5e5;">
+            <div style="font-family: 'Helvetica Neue', sans-serif; font-size: 0.75rem;
+                        font-weight: 700; color: #ccc; text-transform: uppercase;
+                        letter-spacing: 0.06em; min-width: 64px; padding-top: 6px;">
+                {{ post.created_at|date:"M d" }}
+            </div>
+            <div style="flex: 1;">
+                <h3 style="font-size: 1.25rem; font-weight: 700; color: #1a1a1a;
+                           margin: 0 0 8px 0; letter-spacing: -0.3px; line-height: 1.3;">
+                    {{ post.title }}
+                </h3>
+                <p style="font-size: 0.975rem; color: #666; line-height: 1.7;
+                           margin: 0 0 14px 0;">
+                    {{ post.content|truncatewords:20 }}
+                </p>
+                <a href="{% url 'my_first_django_app:post' post.id %}"
+                   style="font-family: 'Helvetica Neue', sans-serif; font-size: 0.78rem;
+                          font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+                          color: #c0392b; text-decoration: none; border-bottom: 2px solid #c0392b;
+                          padding-bottom: 2px;">
+                    Read more →
+                </a>
+            </div>
+        </div>
+        {% empty %}
+        <p style="font-family: 'Helvetica Neue', sans-serif; color: #aaa; font-size: 1rem;
+                  text-align: center; padding: 60px 0; letter-spacing: 0.03em;">
+            No posts yet. <a href="{% url 'my_first_django_app:create_post' %}"
+                              style="color: #c0392b; text-decoration: none;
+                                     border-bottom: 1px solid #c0392b;">
+                Create the first one.
+            </a>
+        </p>
+        {% endfor %}
+
+    </div>
+
+    <!-- About Strip -->
+    <div style="background: #f0ede8; border-top: 3px solid #1a1a1a;">
+        <div style="max-width: 760px; margin: 0 auto; padding: 48px 24px;
+                    display: flex; align-items: center; justify-content: space-between;
+                    flex-wrap: wrap; gap: 24px;">
+            <div>
+                <p style="font-family: 'Helvetica Neue', sans-serif; font-size: 0.75rem;
+                          font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
+                          color: #888; margin: 0 0 8px 0;">
+                    About this blog
+                </p>
+                <p style="font-size: 1.05rem; color: #1a1a1a; margin: 0;
+                           line-height: 1.65; max-width: 480px;">
+                    A space for writing about things that matter.
+                    Built with Django, styled with care.
+                </p>
+            </div>
+            <a href="{% url 'my_first_django_app:about' %}"
+               style="font-family: 'Helvetica Neue', sans-serif; font-size: 0.85rem;
+                      font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+                      color: #1a1a1a; text-decoration: none; border: 2px solid #1a1a1a;
+                      padding: 10px 24px; white-space: nowrap;">
+                About me
+            </a>
+        </div>
+    </div>
+
+</div>
 {% endblock %}
