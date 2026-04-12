@@ -1,13 +1,16 @@
 {% extends "base.html" %} 
 
+{% comment %} 
 {% block title %}Posts{% endblock %} 
 
 {% block content %}
-    <h1>Blog Posts</h1>
+<body style="background-color: olive;">
+    <h1 style="color: skyblue;">Blog Posts</h1>
+    <a href="{% url 'my_first_django_app:create_post' %}" title="Create new post" style="display: inline-block; margin-bottom: 20px; text-decoration: none; color: red">+ Create a new post</a>
     {% for post in posts %}
     <div>
         <h2>{{ post.title }}</h2>
-        <small>{{ post.created_at|date:"F d, Y" }}</small>
+        <p>Posted on: <small>{{ post.created_at|date:"F d, Y" }}</small></p>
         <p>{{ post.content }}</p>
         <a href="{% url 'my_first_django_app:post' post.id %}" title="Read more">Read more</a>
         <!-- <a href="{% url 'my_first_django_app:posts' %}" title="Back to all posts">← Back to all posts</a> -->
@@ -15,4 +18,61 @@
     {% empty %}
     <p>No posts available.</p>
     {% endfor %}
+</body>
+{% endblock %} {% endcomment %}
+
+{% block title %}Posts{% endblock %}
+
+{% block content %}
+<div style="max-width: 760px; margin: 60px auto; padding: 0 24px; font-family: 'Georgia', serif;">
+
+    <div style="border-bottom: 3px solid #1a1a1a; padding-bottom: 20px; margin-bottom: 48px;">
+        <h1 style="font-size: 3rem; font-weight: 900; color: #1a1a1a; margin: 0 0 16px 0; letter-spacing: -1.5px; line-height: 1;">
+            Blog Posts
+        </h1>
+        <a href="{% url 'my_first_django_app:create_post' %}"
+           title="Create new post"
+           style="display: inline-block; background: #1a1a1a; color: #fff; text-decoration: none;
+                  padding: 10px 22px; font-family: 'Helvetica Neue', sans-serif; font-size: 0.85rem;
+                  font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase;
+                  transition: background 0.2s;">
+            + Create a new post
+        </a>
+    </div>
+
+    {% for post in posts %}
+    <div style="padding-bottom: 40px; margin-bottom: 40px; border-bottom: 1px solid #e5e5e5;">
+
+        <h2 style="font-size: 1.7rem; font-weight: 700; color: #1a1a1a; margin: 0 0 8px 0;
+                   letter-spacing: -0.5px; line-height: 1.25;">
+            {{ post.title }}
+        </h2>
+
+        <p style="margin: 0 0 14px 0;">
+            <small style="font-family: 'Helvetica Neue', sans-serif; font-size: 0.78rem;
+                          color: #888; text-transform: uppercase; letter-spacing: 0.08em;">
+                {{ post.created_at|date:"F d, Y" }}
+            </small>
+        </p>
+
+        <p style="font-size: 1.05rem; color: #444; line-height: 1.75; margin: 0 0 20px 0;">
+            {{ post.content }}
+        </p>
+
+        <a href="{% url 'my_first_django_app:post' post.id %}"
+           title="Read more"
+           style="font-family: 'Helvetica Neue', sans-serif; font-size: 0.85rem; font-weight: 700;
+                  color: #c0392b; text-decoration: none; letter-spacing: 0.04em;
+                  text-transform: uppercase; border-bottom: 2px solid #c0392b; padding-bottom: 2px;">
+            Read more →
+        </a>
+    </div>
+    {% empty %}
+    <p style="font-family: 'Helvetica Neue', sans-serif; color: #aaa; font-size: 1rem;
+              text-align: center; padding: 60px 0; letter-spacing: 0.03em;">
+        No posts available.
+    </p>
+    {% endfor %}
+
+</div>
 {% endblock %}

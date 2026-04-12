@@ -1,8 +1,10 @@
 {% extends "base.html" %}
 
-{% block title %}{{ post.title }}{% endblock %}
+{% comment %} {% block title %}{{ post.title }}{% endblock %}
 
 {% block content %}
+    <a href="{% url 'my_first_django_app:update_post' post.id %}">Edit</a>
+    <a href="{% url 'my_first_django_app:delete_post' post.id %}">Delete</a>
     <article>
         <h1>{{ post.title }}</h1>
         <small>{{ post.created_at|date:"F d, Y" }}</small>
@@ -11,4 +13,54 @@
         </div>
         <a href="{% url 'my_first_django_app:posts' %}">← Back to all posts</a>
     </article>
+{% endblock %} {% endcomment %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+<div style="max-width: 760px; margin: 60px auto; padding: 0 24px; font-family: 'Georgia', serif;">
+
+    <!-- Admin Actions -->
+    <div style="display: flex; gap: 12px; margin-bottom: 48px;">
+        <a href="{% url 'my_first_django_app:update_post' post.id %}"
+           title="Edit post"
+           style="font-family: 'Helvetica Neue', sans-serif; font-size: 0.78rem; font-weight: 700;
+                  text-transform: uppercase; letter-spacing: 0.08em; text-decoration: none;
+                  color: #1a1a1a; border: 2px solid #1a1a1a; padding: 8px 18px;">
+            Edit
+        </a>
+        <a href="{% url 'my_first_django_app:delete_post' post.id %}"
+           title="Delete post"
+           style="font-family: 'Helvetica Neue', sans-serif; font-size: 0.78rem; font-weight: 700;
+                  text-transform: uppercase; letter-spacing: 0.08em; text-decoration: none;
+                  color: #c0392b; border: 2px solid #c0392b; padding: 8px 18px;">
+            Delete
+        </a>
+    </div>
+
+    <article>
+        <div style="border-bottom: 3px solid #1a1a1a; padding-bottom: 20px; margin-bottom: 28px;">
+            <h1 style="font-size: 2.6rem; font-weight: 900; color: #1a1a1a; margin: 0 0 12px 0;
+                       letter-spacing: -1.5px; line-height: 1.1;">
+                {{ post.title }}
+            </h1>
+            <small style="font-family: 'Helvetica Neue', sans-serif; font-size: 0.78rem;
+                          color: #888; text-transform: uppercase; letter-spacing: 0.08em;">
+                {{ post.created_at|date:"F d, Y" }}
+            </small>
+        </div>
+
+        <div style="font-size: 1.1rem; color: #333; line-height: 1.85; margin-bottom: 48px;">
+            <p style="margin: 0;">{{ post.content }}</p>
+        </div>
+
+        <a href="{% url 'my_first_django_app:posts' %}"
+           style="font-family: 'Helvetica Neue', sans-serif; font-size: 0.85rem; font-weight: 700;
+                  color: #c0392b; text-decoration: none; letter-spacing: 0.04em;
+                  text-transform: uppercase; border-bottom: 2px solid #c0392b; padding-bottom: 2px;">
+            ← Back to all posts
+        </a>
+    </article>
+
+</div>
 {% endblock %}
