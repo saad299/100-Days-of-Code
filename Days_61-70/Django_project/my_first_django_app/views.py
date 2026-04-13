@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.decorators import login_required
 from .models import Post, Contact
 from .forms import PostForm, RegisterUser, LoginUser
 
@@ -21,12 +22,13 @@ def posts(request):
     return render(request, "posts.html", {"posts": posts})
 
 
+# @login_required
 def post(request, id):
     # post = Post.objects.get(id=id)
     post = get_object_or_404(Post, id=id)
     return render(request, "post.html", {"post": post})
 
-
+@login_required
 def create_post(request):
     if request.method == "POST":
         form = PostForm(request.POST)
@@ -37,7 +39,7 @@ def create_post(request):
         form = PostForm()
     return render(request, "create_post.html", {"form": form})
 
-
+@login_required
 def update_post(request, id):
     post = Post.objects.get(id=id)
     if request.method == "POST":
@@ -49,7 +51,7 @@ def update_post(request, id):
         form = PostForm(instance=post)
     return render(request, "update_post.html", {"form": form, "post": post})
 
-
+@login_required
 def delete_post(request, id):
     post = get_object_or_404(Post, id=id)
     if request.method == "POST":
@@ -83,7 +85,7 @@ def register(request):
             return redirect("my_first_django_app:posts")
     else:
         form = RegisterUser()
-    return render(request, "register.html", {"form": form})
+    return render(request, "registration/signup.html", {"form": form})
 
 def loginUser(request):
     if request.method == "POST":
@@ -96,9 +98,13 @@ def loginUser(request):
                 login(request, user)
                 return redirect("my_first_django_app:posts")
             else:
-                return render(request, "login.html", {"form": form, "error": "Invalid credentials"})
+                return render(request, "registration/login.html", {"form": form, "error": "Invalid credentials"})
         else:
-            return render(request, "login.html", {"form": form})
+            return render(request, "registration/login.html", {"form": form})
     else:
         form = LoginUser()
-        return render(request, "login.html", {"form": form})
+        return render(request, "registration/login.html", {"form": form})
+
+def logoutUser(request):
+    logout(request)
+    return redirect("my_first_django_app:posts")
