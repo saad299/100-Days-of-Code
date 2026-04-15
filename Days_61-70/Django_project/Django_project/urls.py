@@ -31,4 +31,5 @@ urlpatterns = [
     path('dashboard/', dashboard),
     path('app/', include('my_first_django_app.urls', namespace='app'), name='app'),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('api/', include('my_first_django_app.urls')),
 ]
