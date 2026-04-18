@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Applications for {{ job.title }}{% endblock %}
+
+{% block content %}
+<h1>Applications for {{ job.title }}</h1>
+<a href="{% url 'jobs_app:employer_dashboard' %}">Back to Dashboard</a>
+
+{% if applications %}
+    {% for application in applications %}
+        <div>
+            <h2>{{ application.user.username }}</h2>
+            <p>Applied: {{application.applied_at|date:"M d, Y"}}</p>
+
+            {%if application.candidate_profile%}
+            <p>Skills: {{application.user.candidate_profile.skills}}</p>
+            <p>Experience: {{application.user.candidate_profile.experience_years}} years</p>
+            {%endif%}
+        </div>
+    {% endfor %}
+{% endif %}
+{% endblock %}
