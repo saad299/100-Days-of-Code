@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Applications for {{ job.title }}{% endblock %}
+
+{% block content %}
+<h1>Applications for {{ job.title }}</h1>
+<a href="{% url 'jobs_app:employer_dashboard' %}">Back to Dashboard</a>
+
+{% if applications %}
+    {% for application in applications %}
+        <div>
+            <h2>{{ application.user.username }}</h2>
+            <p>Applied: {{application.applied_at|date:"M d, Y"}}</p>
+
+            {%if application.candidate_profile%}
+                <p>Skills: {{application.user.candidate_profile.skills}}</p>
+                <p>Experience: {{application.user.candidate_profile.experience_years}} years</p>
+                {%if application.user.candidate_profile.github_url%}
+                    <a href="{{application.user.candidate_profile.github_url}}" target="_blank">Github</a>
+                {%endif%}
+                {%if application.user.candidate_profile.portfolio_url%}
+                    <a href="{{application.user.candidate_profile.portfolio_url}}" target="_blank">Portfolio</a>
+                {%endif%}
+                {%if application.user.candidate_profile.linkedin_url%}
+                    <a href="{{application.user.candidate_profile.linkedin_url}}" target="_blank">LinkedIn</a>
+                {%endif%}
+                {%if application.user.candidate_profile.resume%}
+                    <a href="{{application.user.candidate_profile.resume}}" target="_blank">Download Resume</a>
+                {%endif%}
+            {%endif%}
+
+            <h3>Cover Letter</h3>
+            <p>{{application.cover_letter}}</p>
+
+            <form method="post" action="{% url 'jobs_app:update_application_status' application.id %}">
+                {% csrf_token %}
+                <label for="status">Status:</label>
+                <select name="status" id="status">
+                    {% for value, label in application_status_choices %}
+                        <option value="{{ value }}" {% if application.status == value %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                    <option value="pending" {% if application.status == "pending" %}selected{% endif %}>Pending</option>
+                    <option value="reviewed" {% if application.status == "reviewed" %}selected{% endif %}>Reviewed</option>
+                    <option value="accepted" {% if application.status == "accepted" %}selected{% endif %}>Accepted</option>
+                    <option value="rejected" {% if application.status == "rejected" %}selected{% endif %}>Rejected</option>
+                </select>
+                <button type="submit">Update Status</button>
+            </form>
+            <p>Current Status: <strong>{{ application.get_status_display }}</strong></p>
+        </div>
+        <hr />
+    {% endfor %}
+{% else %}
+    <p>No applications found yet for this job.</p>
+{% endif %}
+{% endblock %}

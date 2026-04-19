@@ -8,7 +8,6 @@ from .models import Job, Job_Application
 class JobAdmin(admin.ModelAdmin):
     list_display = [
         "title",
-        "employer",
         "job_type",
         "experience_level",
         "is_active",
@@ -30,15 +29,15 @@ class JobAdmin(admin.ModelAdmin):
 class JobApplicationAdmin(admin.ModelAdmin):
     list_display = [
         "job",
-        "applicant",
+        "user",
         "status",
         "applied_at",
     ]
     list_filter = [
         "status",
     ]
-    search_field = [
+    search_fields = [
         "job__title",
-        "candidate__username",
-        "candidate",
+        "user__username",
+        "user",
     ]

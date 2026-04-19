@@ -1,10 +1,10 @@
 from turtle import textinput
 from django import forms
-from django.contrib.auth import UserCreationForm
+# from django.contrib.auth import UserCreationForm
 from .models import Job, Job_Application
 
 
-class JobForm(UserCreationForm):
+class JobForm(forms.ModelForm):
     class Meta:
         model = Job
         fields = [
@@ -14,12 +14,12 @@ class JobForm(UserCreationForm):
             "job_type",
             "salary_min",
             "salary_max",
-            "company",
+            # "company",
             "experience_level",
             "tech_stack",
-            "is_remote",
-            "is_onsite",
-            "is_hybrid",
+            # "is_remote",
+            # "is_onsite",
+            # "is_hybrid",
             "is_active",
             "deadline"
         ]

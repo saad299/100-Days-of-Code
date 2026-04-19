@@ -1,14 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Count
-from accounts.decorators import employer_required
+from accounts_app.decorators import employer_required, candidate_required
 from .models import Job, Job_Application
 from .forms import JobForm, ApplicationStatusForm
 
 # Create your views here.
 
-def job_list(required):
+def jobs_applications(request):
     jobs = Job.objects.filter(is_active=True).select_related('employer_profile')
-    return render(request, "jobs_app/job_list.html", {"jobs": jobs}) 
+    return render(request, "jobs_app/job_applications.html", {"jobs": jobs})
     
 
 @employer_required
@@ -17,6 +17,11 @@ def employer_dashboard(request):
         application_count=Count("job_application")
     )
     return render(request, "jobs_app/employer_dashboard.html", {"jobs": jobs})
+
+@candidate_required
+def candidate_dashboard(request):
+    applications = Job_Application.objects.filter(user=request.user).select_related('job')
+    return render(request, "jobs_app/candidate_dashboard.html", {"applications": applications})
 
 
 @employer_required

@@ -11,7 +11,7 @@ def register_employer(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('employer_dashboard')
+            return redirect('jobs_app:employer_dashboard')
     else:
         form = EmployerRegistrationForm()
     return render(request, 'accounts_app/register_employer.html', {'form': form})
@@ -22,7 +22,7 @@ def register_candidate(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('candidate_dashboard')
+            return redirect('jobs_app:candidate_dashboard')
     else:
         form = CandidateRegistrationForm()
     return render(request, 'accounts_app/register_candidate.html', {'form': form})
