@@ -16,7 +16,7 @@ class EmployerRegistrationForm(UserCreationForm):
         if commit:
             user.save()
             user.employer_profile.company_name = self.cleaned_data['company_name']
-            user.employer_profile.company_website = self.cleaned_data('company_website', '')
+            user.employer_profile.company_website = self.cleaned_data['company_website']
             user.employer_profile.save()
         return user
 
