@@ -1,21 +1,22 @@
 {% extends 'base.html' %}
 
-{% block title %}Employer Dashboard{% endblock %} {% block content %}
+{% block title %}Employer Dashboard{% endblock %}
+
+{% block content %}
 <div>
   <h1>Job Listings</h1>
   <a href="{% url 'jobs_app:post_job' %}">Post a Job</a>
 </div>
-{% endblock %} {% if jobs %}
+
+{% if jobs %}
 <table>
   <thead>
     <tr>
       <th>Title</th>
-      <th>Company</th>
       <th>Status</th>
-      <th>Location</th>
+      <th>Posted</th>
       <th>Applications</th>
       <th>Actions</th>
-      <th>Posted</th>
     </tr>
   </thead>
   <tbody>
@@ -26,7 +27,7 @@
       <td>{{ job.created_at|date:"M d, Y" }}</td>
       <td>
         <a href="{% url 'jobs_app:job_applications' job.id %}">
-          {{job.application_count}} application {{job.application|pluralize}}
+          {{ job.application_count }} application{{ job.application_count|pluralize }}
         </a>
       </td>
       <td>
@@ -38,9 +39,7 @@
   </tbody>
 </table>
 {% else %}
-<p>
-  You haven't posted a job yet.
-  <a href="{% url 'jobs_app:post_job' %}">Post a Job</a>
-</p>
+<p>You haven't posted a job yet. <a href="{% url 'jobs_app:post_job' %}">Post a Job</a></p>
 {% endif %}
+
 {% endblock %}
