@@ -22,6 +22,11 @@ class Job(models.Model):
         ("lead", "Lead / Manager"),
     ]
 
+    employer = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="jobs"
+    )
     title = models.CharField(max_length=200)
     description = models.TextField()
     location = models.CharField(max_length=100)
@@ -61,7 +66,7 @@ class Job_Application(models.Model):
     user = models.ForeignKey(
         "accounts_app.User", on_delete=models.CASCADE, related_name="applications"
     )
-    cover_letter = models.CharField(max_length=50)
+    cover_letter = models.TextField(max_length=1000)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="applied")
     applied_at = models.DateTimeField(auto_now_add=True)
 

@@ -1,4 +1,3 @@
-from turtle import textinput
 from django import forms
 # from django.contrib.auth import UserCreationForm
 from .models import Job, Job_Application

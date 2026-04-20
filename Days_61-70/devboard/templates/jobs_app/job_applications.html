@@ -12,7 +12,7 @@
             <h2>{{ application.user.username }}</h2>
             <p>Applied: {{application.applied_at|date:"M d, Y"}}</p>
 
-            {%if application.candidate_profile%}
+            {%if application.user.candidate_profile%}
                 <p>Skills: {{application.user.candidate_profile.skills}}</p>
                 <p>Experience: {{application.user.candidate_profile.experience_years}} years</p>
                 {%if application.user.candidate_profile.github_url%}
@@ -36,9 +36,9 @@
                 {% csrf_token %}
                 <label for="status">Status:</label>
                 <select name="status" id="status">
-                    {% for value, label in application_status_choices %}
+                    {% comment %} {% for value, label in application_status_choices %}
                         <option value="{{ value }}" {% if application.status == value %}selected{% endif %}>{{ label }}</option>
-                    {% endfor %}
+                    {% endfor %} {% endcomment %}
                     <option value="pending" {% if application.status == "pending" %}selected{% endif %}>Pending</option>
                     <option value="reviewed" {% if application.status == "reviewed" %}selected{% endif %}>Reviewed</option>
                     <option value="accepted" {% if application.status == "accepted" %}selected{% endif %}>Accepted</option>

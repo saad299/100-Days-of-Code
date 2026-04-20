@@ -7,14 +7,14 @@ from .forms import JobForm, ApplicationStatusForm
 # Create your views here.
 
 def jobs_applications(request):
-    jobs = Job.objects.filter(is_active=True).select_related('employer_profile')
+    jobs = Job.objects.filter(is_active=True).select_related('employer__employer_profile')
     return render(request, "jobs_app/job_applications.html", {"jobs": jobs})
     
 
 @employer_required
 def employer_dashboard(request):
     jobs = Job.objects.filter(employer=request.user).annotate(
-        application_count=Count("job_application")
+        application_count=Count("applications")
     )
     return render(request, "jobs_app/employer_dashboard.html", {"jobs": jobs})
 
@@ -29,39 +29,39 @@ def create_job(request):
     if request.method == "POST":
         form = JobForm(request.POST)
         if form.is_valid():
-            job = form.save()
+            job = form.save(commit=False)
             job.employer = request.user
             job.save()
-            return redirect("employer_dashboard")
+            return redirect("jobs_app:employer_dashboard")
     else:
         form = JobForm()
-        return render(request, "jobs_app/create_job.html", {"form": form})
+    return render(request, "jobs_app/post_job.html", {"form": form})
 
 
 @employer_required
 def edit_job(request, id):
     job = get_object_or_404(Job, id=id)
     if job.employer != request.user:
-        return redirect("employer_dashboard")
+        return redirect("jobs_app:employer_dashboard")
 
     if request.method == "POST":
         form = JobForm(request.POST, instance=job)
         if form.is_valid():
             form.save()
-            return redirect("employer_dashboard")
+            return redirect("jobs_app:employer_dashboard")
     else:
         form = JobForm(instance=job)
-        return render(request, "jobs_app/edit_job.html", {"form": form})
+    return render(request, "jobs_app/edit_job.html", {"form": form})
 
 
 @employer_required
 def delete_job(request, id):
     job = get_object_or_404(Job, id=id)
     if job.employer != request.user:
-        return redirect("employer_dashboard")
+        return redirect("jobs_app:employer_dashboard")
     if request.method == "POST":
         job.delete()
-        return redirect("employer_dashboard")
+        return redirect("jobs_app:employer_dashboard")
     return render(request, "jobs_app/delete_job.html", {"job": job})
 
 
@@ -69,8 +69,8 @@ def delete_job(request, id):
 def application_list(request, id):
     job = get_object_or_404(Job, id=id)
     if job.employer != request.user:
-        return redirect("employer_dashboard")
-    applications = job.applications.select_related("candidate_profile")
+        return redirect("jobs_app:employer_dashboard")
+    applications = job.applications.select_related("user__candidate_profile")
     return render(
         request,
         "jobs_app/application_list.html",
@@ -81,13 +81,13 @@ def application_list(request, id):
     )
 
 
-def update_application_status(request, application_id):
-    application = get_object_or_404(Job_Application, id=application_id)
+def update_application_status(request, id):
+    application = get_object_or_404(Job_Application, id=id)
     if request.method == "POST":
         form = ApplicationStatusForm(request.POST, instance=application)
         if form.is_valid():
             form.save()
-            return redirect("application_list")
+            return redirect("jobs_app:job_applications", id=application.job.id)
         else:
             return render(
                 request, "jobs_app/update_application_status.html", {"form": form}

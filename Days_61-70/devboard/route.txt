@@ -1,0 +1,51 @@
+
+---
+
+**`localhost:8000/`** → hits `jobs_app` (mounted at root) → `jobs_applications` view → probably shows job listings
+
+---
+
+**As an Employer:**
+```
+localhost:8000/accounts/register/employer  → register
+localhost:8000/accounts/login              → login
+        ↓
+localhost:8000/dashboard                   → employer_dashboard
+        ↓
+localhost:8000/post                        → create a job
+localhost:8000/edit/<id>                   → edit a job
+localhost:8000/delete/<id>                 → delete a job
+localhost:8000/applications/<id>           → view applications for a job
+localhost:8000/applications/status/<id>    → update application status (shortlist/reject etc.)
+```
+
+---
+
+**As a Candidate:**
+```
+localhost:8000/accounts/register/candidate → register
+localhost:8000/accounts/login              → login
+        ↓
+localhost:8000/candidate/dashboard         → candidate_dashboard (their applications)
+```
+
+---
+
+**Two issues to be aware of:**
+
+1. **After login, Django redirects to `/accounts/profile/` by default** — this route doesn't exist in your app so it'll **404**. You need to add this to `settings.py`:
+```python
+LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = '/accounts/login'
+```
+
+2. **After logout**, Django similarly needs:
+```python
+LOGOUT_REDIRECT_URL = '/accounts/login'
+```
+
+Otherwise your login/logout redirects will break.
+
+
+Saad770
+Sa@dinc@#6789
