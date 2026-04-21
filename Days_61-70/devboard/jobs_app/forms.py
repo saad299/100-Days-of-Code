@@ -46,3 +46,15 @@ class ApplicationStatusForm(forms.ModelForm):
     class Meta:
         model = Job_Application
         fields = ["status"]
+
+class ApplicationForm(forms.ModelForm):
+    class Meta:
+        model = Job_Application
+        fields = ["resume", "cover_letter"]
+
+        widgets = {
+            'cover_letter': forms.Textarea(attrs={
+                'rows': 10,
+                'placeholder': 'Write a cover letter... Tell why you are a great fit for this position!'
+            })
+        }
