@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.db.models import Count
+from django.db.models import Count, Q
+from django.db import IntegrityError
+from django.contrib.auth.decorators import login_required
 from accounts_app.decorators import employer_required, candidate_required
 from .models import Job, Job_Application
-from .forms import JobForm, ApplicationStatusForm
+from .forms import JobForm, ApplicationStatusForm, ApplicationForm
 
 # Create your views here.
 
