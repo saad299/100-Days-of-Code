@@ -11,3 +11,5 @@ db.sqlite3
 *.log
 
 Add Django Authentication.md
+
+views_explained.md
