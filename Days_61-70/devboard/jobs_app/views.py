@@ -34,7 +34,6 @@ from rest_framework import viewsets
 from rest_framework import isAuthenticated, AllowAny
 
 
-
 # =============================================================================
 # SECTION 1: API VIEWS (REST Framework)
 # =============================================================================
@@ -45,6 +44,7 @@ from rest_framework import isAuthenticated, AllowAny
 # JobViewSet
 # =============================================================================
 
+
 # API ViewSet that automatically creates API endpoints for Job model
 # Provides list, create, retrieve, update, and delete operations
 class JobViewSet(viewsets.ModelViewSet):
@@ -52,18 +52,19 @@ class JobViewSet(viewsets.ModelViewSet):
 
     # Returns only active jobs with employer profile data to reduce database queries
     def get_queryset(self):
-        return Job.objects.filter(is_active=True).select_related('employer__employer_profile')
+        return Job.objects.filter(is_active=True).select_related(
+            "employer__employer_profile"
+        )
 
     # Sets permissions: anyone can view jobs, but only logged-in users can create/edit
     def get_permissions(self):
-        if self.action in ['list', 'retrieve']:
+        if self.action in ["list", "retrieve"]:
             return [AllowAny()]
         return [isAuthenticated()]
 
     # Automatically sets the current user as employer when creating a new job
     def perform_create(self, serializer):
         serializer.save(employer=self.request.user)
-
 
 
 # =============================================================================
@@ -81,29 +82,32 @@ class JobViewSet(viewsets.ModelViewSet):
 # job_detail()                  ← View single job (public)
 # =============================================================================
 
+
 # Shows a list of all active job postings to candidates
 # This is the main page where candidates browse available jobs
 def jobs_applications(request):
-    jobs = Job.objects.filter(is_active=True).select_related('employer__employer_profile')
+    jobs = Job.objects.filter(is_active=True).select_related(
+        "employer__employer_profile"
+    )
     return render(request, "jobs_app/job_applications.html", {"jobs": jobs})
 
 
 # Shows a searchable and filterable list of all active jobs
 # Candidates can search by keyword, location, job type, and experience level
 def job_list(request):
-    jobs = Job.objects.filter(is_active).select_related('employer__employer_profile')
+    jobs = Job.objects.filter(is_active).select_related("employer__employer_profile")
 
     # search and filter
-    keyword = request.GET.get('keyword', '')
-    location = request.GET.get('location', '')
-    job_type = request.GET.get('job_type', '')
-    experience_level = request.GET.get('experience_level', '')
+    keyword = request.GET.get("keyword", "")
+    location = request.GET.get("location", "")
+    job_type = request.GET.get("job_type", "")
+    experience_level = request.GET.get("experience_level", "")
 
     if keyword:
         jobs = jobs.filter(
-            Q(title__icontains=keyword) |
-            Q(description__icontains=keyword) |
-            Q(tech_stack__icontains=keyword)
+            Q(title__icontains=keyword)
+            | Q(description__icontains=keyword)
+            | Q(tech_stack__icontains=keyword)
         ).distinct()
 
         if location:
@@ -122,9 +126,9 @@ def job_list(request):
             "job_type": job_type,
             "experience_level": experience_level,
             "job_type_choices": Job.JOB_TYPE_CHOICES,
-            "experience_level_choices": Job.EXPERIENCE_CHOICES
+            "experience_level_choices": Job.EXPERIENCE_CHOICES,
         }
-        
+
         return render(request, "jobs_app/job_list.html", context)
 
 
@@ -133,18 +137,14 @@ def job_list(request):
 def job_detail(request, id):
     job = get_object_or_404(Job, id=id, is_active=True)
     existing_application = None
-    
+
     if request.user.is_authenticated and request.user.is_candidate():
         existing_application = Application.objects.filter(
-            job=job,
-            candidate=request.user
+            job=job, candidate=request.user
         ).first()
-        
-    context = {
-        "job": job,
-        "existing_application": existing_application
-    }
-    
+
+    context = {"job": job, "existing_application": existing_application}
+
     return render(request, "jobs_app/job_detail.html", context)
 
 
@@ -161,6 +161,7 @@ def job_detail(request, id):
 # candidate_dashboard()         ← View my applications
 # =============================================================================
 
+
 # Allows candidates to apply for a job
 # Prevents duplicate applications from the same candidate
 # Only candidates can access this page
@@ -168,13 +169,10 @@ def job_detail(request, id):
 def apply_job(request, id):
     job = get_object_or_404(Job, id=id, is_active=True)
 
-    if Application.objects.filter(
-        job=job,
-        candidate=request.user
-    ).exists():
-        return redirect('job_detail', id=id)
+    if Application.objects.filter(job=job, candidate=request.user).exists():
+        return redirect("job_detail", id=id)
 
-    if request.method == 'POST':
+    if request.method == "POST":
         form = ApplicationForm(request.POST)
         if form.is_valid():
             try:
@@ -182,23 +180,27 @@ def apply_job(request, id):
                 application.job = job
                 application.candidate = request.user
                 application.save()
-                return redirect('job_detail', id=id)
+                return redirect("job_detail", id=id)
             except IntegrityError:
-                return redirect('job_detail', id=id)
+                return redirect("job_detail", id=id)
         else:
             form = ApplicationForm()
 
-        return render(request, 'jobs_app/apply_job.html', {'form': form, 'job': job})
+        return render(request, "jobs_app/apply_job.html", {"form": form, "job": job})
 
-        return render(request, 'jobs_app/apply_job.html', {'form': form, 'job': job})
+        return render(request, "jobs_app/apply_job.html", {"form": form, "job": job})
 
 
 # Shows the candidate's dashboard with all jobs they have applied to
 # Only candidates can access this page
 @candidate_required
 def candidate_dashboard(request):
-    applications = Job_Application.objects.filter(user=request.user).select_related('job')
-    return render(request, "jobs_app/candidate_dashboard.html", {"applications": applications})
+    applications = Job_Application.objects.filter(user=request.user).select_related(
+        "job"
+    )
+    return render(
+        request, "jobs_app/candidate_dashboard.html", {"applications": applications}
+    )
 
 
 # =============================================================================
@@ -218,9 +220,10 @@ def candidate_dashboard(request):
 # create_job()                  ← Post new job
 # edit_job()                    ← Modify job
 # delete_job()                  ← Remove job
-# application_list()            ← View applicants for my job
+# job_applications()            ← View job applicant for the job
 # update_application_status()   ← Accept/reject applications
 # =============================================================================
+
 
 # Shows the employer's dashboard with all their posted jobs
 # and counts how many applications each job has received
@@ -287,14 +290,14 @@ def delete_job(request, id):
 # Employers can see applicant details for their own jobs only
 # Only employers can access this page
 @employer_required
-def application_list(request, id):
+def job_applications(request, id):
     job = get_object_or_404(Job, id=id)
     if job.employer != request.user:
         return redirect("jobs_app:employer_dashboard")
     applications = job.applications.select_related("user__candidate_profile")
     return render(
         request,
-        "jobs_app/application_list.html",
+        "jobs_app/job_applications.html",
         {
             "job": job,
             "applications": applications,
