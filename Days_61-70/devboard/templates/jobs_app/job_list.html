@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{%block title%}Browse Jobs{%endblock%}
+
+{%block content%}
+<h1>Browse Developer Jobs</h1>
+
+<!-- Search and Filter Form -->
+<form method="get" action="{% url 'jobs_app:job_list' %}">
+    <input
+        type="text"
+        name="keyword"
+        value="{{keyword}}"
+        placeholder="Search by title, skill, or keyword..."
+    >
+    <input
+        type="text"
+        name="location"
+        value="{{location}}"
+        placeholder="location"
+    >
+    <label for="jb">Choose Job Type</label>
+    <select name="job_type" id="jb">
+        <option value="">All Job Types</option>
+        {% for value, label in job_type_choices %}
+        <option value="{{value}}" {% if job_type == value %}selected{% endif %}>
+            {{label}}
+        </option>
+        {% endfor %}
+    </select>
+    <label for="exp">Choose Experience Type</label>
+    <select name="experience_level" id="exp">
+        <option value="">All Experience Levels</option>
+        {% for value, label in experience_choices %}
+        <option value="{{value}}" {% if experience_level == value %}selected{% endif %}>
+            {{label}}
+        </option>
+        {% endfor %}
+    </select>
+    <button type="submit">Search</button>
+    <a href="{% url 'jobs_app:job_list' %}"></a>
+</form>
+
+<!-- Results Count -->
+<p>{{ jobs.count }} job{{ jobs.count|pluralize }} found</p>
+
+<!-- Job Listings -->
+{% if jobs %}
+    {% for job in jobs %}
+        <div>
+            <h2>
+                <a href="{% url 'jobs_app:job_detail' job.id %}">{{ job.title }}</a>
+            </h2>
+            {% if job.employer.employer_profile %}
+                <p>Company: {{ job.employer.employer_profile.company_name }}</p>
+            {% endif %}
+            <p>{{ job.location }}</p>
+            <p>{{ job.get_job_type_display }} · {{ job.get_experience_level_display }}</p>
+ 
+            {% if job.salary_min and job.salary_max %}
+                <p>${{ job.salary_min|floatformat:0 }} – ${{ job.salary_max|floatformat:0 }}</p>
+            {% endif %}
+
+            <!-- Tech Stack Tags -->
+            <div>
+                {% for tech in job.get_tech_stack_list %}
+                    <span>{{ tech }}</span>
+                {% endfor %}
+            </div>
+
+            {% if job.deadline %}
+            <p>Apply by: {{ job.deadline|date:"M d, Y" }}</p>
+        {% endif %}
+ 
+        <a href="{% url 'job_detail' job.pk %}">View Details</a>
+        </div>
+        <hr />
+    {% endfor %}
+    {% else %}
+    <p>No jobs found matching your search. <a href="{% url 'jobs_app:job_list' %}">Clear filters</a></p>
+{% endif %}
+{% endblock %}
+
+
+{%endblock%}
