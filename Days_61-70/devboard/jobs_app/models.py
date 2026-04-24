@@ -69,6 +69,7 @@ class Job_Application(models.Model):
     cover_letter = models.TextField(max_length=1000)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="applied")
     applied_at = models.DateTimeField(auto_now_add=True)
+    resume = models.FileField(upload_to='resumes/', blank=True, null=True)
 
     class Meta:
         ordering = ["-applied_at"]

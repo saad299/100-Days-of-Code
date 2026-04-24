@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ job.title }} — DevBoard{% endblock %}
+
+{% block content %}
+<a href="{% url 'job_list' %}">← Back to Jobs</a>
+
+<div>
+    <!-- Job Header -->
+    <h1>{{ job.title }}</h1>
+
+    {% if job.employer.employer_profile %}
+        <h2>{{ job.employer.employer_profile.company_name }}</h2>
+        {% if job.employer.employer_profile.company_website %}
+            <a href="{{ job.employer.employer_profile.company_website }}" target="_blank">
+                {{ job.employer.employer_profile.company_website }}
+            </a>
+        {% endif %}
+        {% if job.employer.employer_profile.company_logo %}
+            <img src="{{ job.employer.employer_profile.company_logo.url }}" alt="Company Logo" width="80">
+        {% endif %}
+    {% endif %}
+
+    <!-- Job Meta -->
+    <p>{{ job.location }}</p>
+    <p>{{ job.get_job_type_display }}</p>
+    <p>{{ job.get_experience_level_display }}</p>
+
+    {% if job.salary_min and job.salary_max %}
+        <p>Salary: ${{ job.salary_min|floatformat:0 }} – ${{ job.salary_max|floatformat:0 }}</p>
+    {% endif %}
+
+    {% if job.deadline %}
+        <p>Application Deadline: {{ job.deadline|date:"M d, Y" }}</p>
+    {% endif %}
+
+    <p>Posted: {{ job.created_at|date:"M d, Y" }}</p>
+
+    <!-- Tech Stack -->
+    <div>
+        <strong>Tech Stack:</strong>
+        {% for tech in job.get_tech_stack_list %}
+            <span>{{ tech }}</span>
+        {% endfor %}
+    </div>
+
+    <!-- Job Description -->
+    <h3>About the Role</h3>
+    <p>{{ job.description|linebreaks }}</p>
+
+    <!-- Apply Section — four states -->
+    <div>
+        {% if not request.user.is_authenticated %}
+            <!-- State 1: not logged in -->
+            <a href="{% url 'login' %}?next={{ request.path }}">Login to Apply</a>
+
+        {% elif request.user.is_employer %}
+            <!-- State 2: logged in as employer -->
+            <!-- employers don't see an apply button -->
+
+        {% elif existing_application %}
+            <!-- State 3: already applied -->
+            <p>
+                ✓ You applied on {{ existing_application.applied_at|date:"M d, Y" }}
+            </p>
+            <p>
+                Status:
+                <strong>{{ existing_application.get_status_display }}</strong>
+            </p>
+
+        {% else %}
+            <!-- State 4: logged in candidate, hasn't applied -->
+            <a href="{% url 'apply_job' job.pk %}">Apply Now</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
