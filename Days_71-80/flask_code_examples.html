@@ -1,0 +1,161 @@
+
+<style>
+.tab-bar { display:flex; gap:8px; margin-bottom:1rem; }
+.tab { padding:6px 14px; font-size:13px; border-radius:var(--border-radius-md); border:0.5px solid var(--color-border-secondary); background:transparent; color:var(--color-text-secondary); cursor:pointer; transition:all .15s; }
+.tab.active { background:var(--color-background-info); color:var(--color-text-info); border-color:transparent; font-weight:500; }
+.tab:hover:not(.active) { background:var(--color-background-secondary); }
+.section { display:none; }
+.section.active { display:block; }
+.card { background:var(--color-background-primary); border:0.5px solid var(--color-border-tertiary); border-radius:var(--border-radius-lg); margin-bottom:12px; overflow:hidden; }
+.card-header { padding:10px 16px; border-bottom:0.5px solid var(--color-border-tertiary); display:flex; align-items:center; justify-content:space-between; }
+.card-label { font-size:13px; font-weight:500; color:var(--color-text-primary); }
+.badge { font-size:11px; padding:3px 8px; border-radius:20px; font-weight:500; }
+.badge-get { background:#E6F1FB; color:#0C447C; }
+.badge-post { background:#E1F5EE; color:#085041; }
+.badge-del { background:#FCEBEB; color:#791F1F; }
+.badge-ret { background:#EEEDFE; color:#3C3489; }
+pre { margin:0; padding:14px 16px; font-family:var(--font-mono); font-size:12.5px; line-height:1.7; color:var(--color-text-primary); background:var(--color-background-secondary); overflow-x:auto; white-space:pre; }
+.kw { color:#534AB7; }
+.fn { color:#0F6E56; }
+.st { color:#993C1D; }
+.cm { color:var(--color-text-tertiary); }
+.ask-btn { margin-top:8px; font-size:12px; padding:5px 12px; border-radius:var(--border-radius-md); border:0.5px solid var(--color-border-secondary); background:transparent; color:var(--color-text-secondary); cursor:pointer; }
+.ask-btn:hover { background:var(--color-background-secondary); }
+</style>
+
+<div style="padding:1rem 0 0;">
+  <div class="tab-bar">
+    <button class="tab active" onclick="show('routes',this)">Routes</button>
+    <button class="tab" onclick="show('requests',this)">Requests</button>
+    <button class="tab" onclick="show('responses',this)">Responses</button>
+  </div>
+
+  <div id="routes" class="section active">
+
+    <div class="card">
+      <div class="card-header"><span class="card-label">Basic route</span><span class="badge badge-get">GET</span></div>
+      <pre><span class="kw">from</span> flask <span class="kw">import</span> Flask
+app = Flask(__name__)
+
+<span class="fn">@app.route</span>(<span class="st">'/hello'</span>)
+<span class="kw">def</span> <span class="fn">hello</span>():
+    <span class="kw">return</span> <span class="st">'Hello, World!'</span></pre>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="card-label">Route with URL parameter</span><span class="badge badge-get">GET</span></div>
+      <pre><span class="fn">@app.route</span>(<span class="st">'/user/&lt;username&gt;'</span>)
+<span class="kw">def</span> <span class="fn">profile</span>(username):
+    <span class="kw">return</span> <span class="st">f'Profile of {username}'</span>
+
+<span class="cm"># Visit /user/alice → "Profile of alice"</span></pre>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="card-label">Route with multiple methods</span><span class="badge badge-get">GET</span><span class="badge badge-post" style="margin-left:4px">POST</span></div>
+      <pre><span class="fn">@app.route</span>(<span class="st">'/login'</span>, methods=[<span class="st">'GET'</span>, <span class="st">'POST'</span>])
+<span class="kw">def</span> <span class="fn">login</span>():
+    <span class="kw">if</span> request.method == <span class="st">'POST'</span>:
+        <span class="kw">return</span> <span class="st">'Logging in...'</span>
+    <span class="kw">return</span> <span class="st">'Show login form'</span></pre>
+    </div>
+
+    <button class="ask-btn" onclick="sendPrompt('What are typed URL converters in Flask routes like &lt;int:id&gt;?')">What are typed URL converters? ↗</button>
+  </div>
+
+  <div id="requests" class="section">
+
+    <div class="card">
+      <div class="card-header"><span class="card-label">Query params (URL ?key=value)</span><span class="badge badge-get">GET</span></div>
+      <pre><span class="kw">from</span> flask <span class="kw">import</span> request
+
+<span class="fn">@app.route</span>(<span class="st">'/search'</span>)
+<span class="kw">def</span> <span class="fn">search</span>():
+    query = request.args.get(<span class="st">'q'</span>, <span class="st">''</span>)
+    <span class="kw">return</span> <span class="st">f'Searching for: {query}'</span>
+
+<span class="cm"># GET /search?q=flask → "Searching for: flask"</span></pre>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="card-label">Form data</span><span class="badge badge-post">POST</span></div>
+      <pre><span class="fn">@app.route</span>(<span class="st">'/login'</span>, methods=[<span class="st">'POST'</span>])
+<span class="kw">def</span> <span class="fn">login</span>():
+    username = request.form[<span class="st">'username'</span>]
+    password = request.form[<span class="st">'password'</span>]
+    <span class="kw">return</span> <span class="st">f'Welcome, {username}'</span></pre>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="card-label">JSON body</span><span class="badge badge-post">POST</span></div>
+      <pre><span class="fn">@app.route</span>(<span class="st">'/api/user'</span>, methods=[<span class="st">'POST'</span>])
+<span class="kw">def</span> <span class="fn">create_user</span>():
+    data = request.get_json()
+    name = data[<span class="st">'name'</span>]
+    <span class="kw">return</span> <span class="st">f'Created user: {name}'</span>
+
+<span class="cm"># Body: {"name": "Alice"} → "Created user: Alice"</span></pre>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="card-label">Headers &amp; cookies</span><span class="badge badge-get">GET</span></div>
+      <pre>token = request.headers.get(<span class="st">'Authorization'</span>)
+lang  = request.headers.get(<span class="st">'Accept-Language'</span>)
+uid   = request.cookies.get(<span class="st">'user_id'</span>)</pre>
+    </div>
+
+    <button class="ask-btn" onclick="sendPrompt('How do I handle file uploads using request.files in Flask?')">How do I handle file uploads? ↗</button>
+  </div>
+
+  <div id="responses" class="section">
+
+    <div class="card">
+      <div class="card-header"><span class="card-label">Plain text / HTML string</span><span class="badge badge-ret">return</span></div>
+      <pre><span class="fn">@app.route</span>(<span class="st">'/hello'</span>)
+<span class="kw">def</span> <span class="fn">hello</span>():
+    <span class="kw">return</span> <span class="st">'&lt;h1&gt;Hello!&lt;/h1&gt;'</span>  <span class="cm"># 200 OK by default</span></pre>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="card-label">JSON response</span><span class="badge badge-ret">return</span></div>
+      <pre><span class="kw">from</span> flask <span class="kw">import</span> jsonify
+
+<span class="fn">@app.route</span>(<span class="st">'/api/status'</span>)
+<span class="kw">def</span> <span class="fn">status</span>():
+    <span class="kw">return</span> jsonify(status=<span class="st">'ok'</span>, version=<span class="st">'1.0'</span>)
+
+<span class="cm"># → {"status": "ok", "version": "1.0"}</span></pre>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="card-label">Custom status code</span><span class="badge badge-ret">return</span></div>
+      <pre><span class="fn">@app.route</span>(<span class="st">'/api/user'</span>, methods=[<span class="st">'POST'</span>])
+<span class="kw">def</span> <span class="fn">create</span>():
+    <span class="kw">return</span> jsonify(msg=<span class="st">'Created'</span>), <span class="st">201</span>
+
+<span class="fn">@app.route</span>(<span class="st">'/missing'</span>)
+<span class="kw">def</span> <span class="fn">missing</span>():
+    <span class="kw">return</span> jsonify(error=<span class="st">'Not found'</span>), <span class="st">404</span></pre>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="card-label">Redirect</span><span class="badge badge-ret">return</span></div>
+      <pre><span class="kw">from</span> flask <span class="kw">import</span> redirect, url_for
+
+<span class="fn">@app.route</span>(<span class="st">'/old-page'</span>)
+<span class="kw">def</span> <span class="fn">old</span>():
+    <span class="kw">return</span> redirect(url_for(<span class="st">'hello'</span>))  <span class="cm"># 302</span></pre>
+    </div>
+
+    <button class="ask-btn" onclick="sendPrompt('How do I set custom response headers and cookies in Flask?')">How do I set custom headers & cookies? ↗</button>
+  </div>
+</div>
+
+<script>
+function show(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>

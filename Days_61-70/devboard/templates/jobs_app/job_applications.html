@@ -1,56 +1,90 @@
 {% extends 'base.html' %}
 
-{% block title %}Applications for {{ job.title }}{% endblock %}
+{% block title %}Applications — {{ job.title }} — DevBoard{% endblock %}
 
 {% block content %}
-<h1>Applications for {{ job.title }}</h1>
-<a href="{% url 'jobs_app:employer_dashboard' %}">Back to Dashboard</a>
+
+<a href="{% url 'jobs_app:employer_dashboard' %}" class="text-blue-500 hover:underline text-sm">← Back to Dashboard</a>
+
+<div class="mt-6 mb-8">
+    <h1 class="text-2xl font-bold text-gray-900">Applications for {{ job.title }}</h1>
+    <p class="text-gray-500 text-sm mt-1">{{ applications.count }} application{{ applications.count|pluralize }} received</p>
+</div>
 
 {% if applications %}
-    {% for application in applications %}
-        <div>
-            <h2>{{ application.user.username }}</h2>
-            <p>Applied: {{application.applied_at|date:"M d, Y"}}</p>
+    <div class="space-y-4">
+        {% for application in applications %}
+        <div class="bg-white rounded-xl border border-gray-200 p-6">
+            <div class="flex items-start justify-between gap-4">
+                <div class="flex-1">
+                    <h2 class="text-lg font-semibold text-gray-900">{{ application.candidate.username }}</h2>
+                    <p class="text-gray-400 text-sm mt-0.5">Applied {{ application.applied_at|date:"M d, Y" }}</p>
 
-            {%if application.user.candidate_profile%}
-                <p>Skills: {{application.user.candidate_profile.skills}}</p>
-                <p>Experience: {{application.user.candidate_profile.experience_years}} years</p>
-                {%if application.user.candidate_profile.github_url%}
-                    <a href="{{application.user.candidate_profile.github_url}}" target="_blank">Github</a>
-                {%endif%}
-                {%if application.user.candidate_profile.portfolio_url%}
-                    <a href="{{application.user.candidate_profile.portfolio_url}}" target="_blank">Portfolio</a>
-                {%endif%}
-                {%if application.user.candidate_profile.linkedin_url%}
-                    <a href="{{application.user.candidate_profile.linkedin_url}}" target="_blank">LinkedIn</a>
-                {%endif%}
-                {%if application.user.candidate_profile.resume%}
-                    <a href="{{application.user.candidate_profile.resume}}" target="_blank">Download Resume</a>
-                {%endif%}
-            {%endif%}
+                    {% if application.candidate.candidate_profile %}
+                        <div class="mt-3 flex flex-wrap gap-2 text-sm text-gray-600">
+                            <span>{{ application.candidate.candidate_profile.experience_years }} years experience</span>
+                            {% if application.candidate.candidate_profile.github_url %}
+                                <a href="{{ application.candidate.candidate_profile.github_url }}" target="_blank" class="text-blue-500 hover:underline">GitHub</a>
+                            {% endif %}
+                            {% if application.candidate.candidate_profile.portfolio_url %}
+                                <a href="{{ application.candidate.candidate_profile.portfolio_url }}" target="_blank" class="text-blue-500 hover:underline">Portfolio</a>
+                            {% endif %}
+                            {% if application.candidate.candidate_profile.resume %}
+                                <a href="{{ application.candidate.candidate_profile.resume.url }}" target="_blank" class="text-blue-500 hover:underline">Resume</a>
+                            {% endif %}
+                        </div>
 
-            <h3>Cover Letter</h3>
-            <p>{{application.cover_letter}}</p>
+                        <div class="flex flex-wrap gap-1.5 mt-2">
+                            {% for skill in application.candidate.candidate_profile.get_skills_list %}
+                                <span class="bg-blue-50 text-blue-700 text-xs px-2 py-0.5 rounded-full">{{ skill }}</span>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
 
-            <form method="post" action="{% url 'jobs_app:update_application_status' application.id %}">
-                {% csrf_token %}
-                <label for="status">Status:</label>
-                <select name="status" id="status">
-                    {% comment %} {% for value, label in application_status_choices %}
-                        <option value="{{ value }}" {% if application.status == value %}selected{% endif %}>{{ label }}</option>
-                    {% endfor %} {% endcomment %}
-                    <option value="pending" {% if application.status == "pending" %}selected{% endif %}>Pending</option>
-                    <option value="reviewed" {% if application.status == "reviewed" %}selected{% endif %}>Reviewed</option>
-                    <option value="accepted" {% if application.status == "accepted" %}selected{% endif %}>Accepted</option>
-                    <option value="rejected" {% if application.status == "rejected" %}selected{% endif %}>Rejected</option>
-                </select>
-                <button type="submit">Update Status</button>
-            </form>
-            <p>Current Status: <strong>{{ application.get_status_display }}</strong></p>
+                    <div class="mt-4">
+                        <p class="text-sm font-medium text-gray-700 mb-1">Cover Letter</p>
+                        <p class="text-gray-600 text-sm leading-relaxed bg-gray-50 rounded-md p-3">
+                            {{ application.cover_letter }}
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Status Update -->
+                <div class="shrink-0 text-right">
+                    <p class="text-xs text-gray-400 mb-2">Current Status</p>
+                    {% if application.status == 'pending' %}
+                        <span class="bg-gray-100 text-gray-600 text-xs font-medium px-3 py-1 rounded-full">Pending</span>
+                    {% elif application.status == 'reviewed' %}
+                        <span class="bg-blue-100 text-blue-700 text-xs font-medium px-3 py-1 rounded-full">Reviewed</span>
+                    {% elif application.status == 'accepted' %}
+                        <span class="bg-green-100 text-green-700 text-xs font-medium px-3 py-1 rounded-full">Accepted</span>
+                    {% elif application.status == 'rejected' %}
+                        <span class="bg-red-100 text-red-600 text-xs font-medium px-3 py-1 rounded-full">Rejected</span>
+                    {% endif %}
+
+                    <form method="post" action="{% url 'jobs_app:update_application_status' application.pk %}" class="mt-3">
+                        {% csrf_token %}
+                        <select name="status" class="border border-gray-300 rounded-md text-sm px-2 py-1.5 mb-2 w-full">
+                            <option value="pending" {% if application.status == 'pending' %}selected{% endif %}>Pending</option>
+                            <option value="reviewed" {% if application.status == 'reviewed' %}selected{% endif %}>Reviewed</option>
+                            <option value="accepted" {% if application.status == 'accepted' %}selected{% endif %}>Accepted</option>
+                            <option value="rejected" {% if application.status == 'rejected' %}selected{% endif %}>Rejected</option>
+                        </select>
+                        <button type="submit"
+                                class="w-full bg-gray-800 hover:bg-gray-900 text-white text-xs font-medium px-4 py-1.5 rounded-md">
+                            Update Status
+                        </button>
+                    </form>
+                </div>
+            </div>
         </div>
-        <hr />
-    {% endfor %}
+        {% endfor %}
+    </div>
 {% else %}
-    <p>No applications found yet for this job.</p>
+    <div class="text-center py-20 bg-white rounded-xl border border-gray-200">
+        <p class="text-gray-400 text-lg mb-1">No applications yet</p>
+        <p class="text-gray-400 text-sm">Applications will appear here once candidates start applying</p>
+    </div>
 {% endif %}
+
 {% endblock %}
