@@ -1,0 +1,258 @@
+
+<style>
+  .tabs { display: flex; gap: 8px; margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .tab { padding: 6px 14px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); font-size: 13px; cursor: pointer; background: transparent; color: var(--color-text-secondary); }
+  .tab.active { background: var(--color-background-secondary); color: var(--color-text-primary); font-weight: 500; border-color: var(--color-border-primary); }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .panel { border-radius: var(--border-radius-lg); border: 0.5px solid var(--color-border-tertiary); overflow: hidden; }
+  .panel-header { padding: 8px 14px; font-size: 12px; font-weight: 500; border-bottom: 0.5px solid var(--color-border-tertiary); background: var(--color-background-secondary); }
+  .express .panel-header { color: #1D9E75; }
+  .flask .panel-header { color: #185FA5; }
+  pre { margin: 0; padding: 14px; font-size: 12px; font-family: var(--font-mono); line-height: 1.7; overflow-x: auto; color: var(--color-text-primary); background: transparent; }
+  .kw { color: #B5559C; }
+  .fn { color: #185FA5; }
+  .str { color: #1D9E75; }
+  .cm { color: var(--color-text-tertiary); }
+  .num { color: #BA7517; }
+  .section-title { font-size: 13px; font-weight: 500; color: var(--color-text-secondary); margin: 0 0 10px; }
+  .hidden { display: none; }
+</style>
+
+<h2 class="sr-only">Side-by-side comparison of Express.js and Flask code patterns</h2>
+
+<div style="padding: 1rem 0;">
+  <div class="tabs" id="tabs">
+    <button class="tab active" onclick="show('setup')">Setup</button>
+    <button class="tab" onclick="show('routes')">Routes</button>
+    <button class="tab" onclick="show('params')">URL params</button>
+    <button class="tab" onclick="show('query')">Query strings</button>
+    <button class="tab" onclick="show('body')">Request body</button>
+    <button class="tab" onclick="show('middleware')">Middleware</button>
+    <button class="tab" onclick="show('static')">Static files</button>
+    <button class="tab" onclick="show('error')">Error handling</button>
+  </div>
+
+  <div id="setup">
+    <div class="grid">
+      <div class="panel express">
+        <div class="panel-header">Node.js + Express</div>
+        <pre><span class="cm">// install: npm install express</span>
+
+<span class="kw">const</span> express = <span class="fn">require</span>(<span class="str">'express'</span>)
+<span class="kw">const</span> app = <span class="fn">express</span>()
+
+app.<span class="fn">listen</span>(<span class="num">3000</span>, () => {
+  console.<span class="fn">log</span>(<span class="str">'Running on port 3000'</span>)
+})</pre>
+      </div>
+      <div class="panel flask">
+        <div class="panel-header">Python + Flask</div>
+        <pre><span class="cm"># install: pip install flask</span>
+
+<span class="kw">from</span> flask <span class="kw">import</span> Flask
+
+app = Flask(__name__)
+
+<span class="kw">if</span> __name__ == <span class="str">'__main__'</span>:
+    app.<span class="fn">run</span>(port=<span class="num">3000</span>)</pre>
+      </div>
+    </div>
+  </div>
+
+  <div id="routes" class="hidden">
+    <div class="grid">
+      <div class="panel express">
+        <div class="panel-header">Node.js + Express</div>
+        <pre>app.<span class="fn">get</span>(<span class="str">'/'</span>, (req, res) => {
+  res.<span class="fn">send</span>(<span class="str">'Hello World'</span>)
+})
+
+app.<span class="fn">post</span>(<span class="str">'/users'</span>, (req, res) => {
+  res.<span class="fn">json</span>({ status: <span class="str">'created'</span> })
+})
+
+app.<span class="fn">put</span>(<span class="str">'/users'</span>, (req, res) => { ... })
+app.<span class="fn">delete</span>(<span class="str">'/users'</span>, (req, res) => { ... })</pre>
+      </div>
+      <div class="panel flask">
+        <div class="panel-header">Python + Flask</div>
+        <pre><span class="kw">@</span>app.<span class="fn">route</span>(<span class="str">'/'</span>)
+<span class="kw">def</span> <span class="fn">home</span>():
+    <span class="kw">return</span> <span class="str">'Hello World'</span>
+
+<span class="kw">@</span>app.<span class="fn">route</span>(<span class="str">'/users'</span>, methods=[<span class="str">'POST'</span>])
+<span class="kw">def</span> <span class="fn">create_user</span>():
+    <span class="kw">return</span> { <span class="str">'status'</span>: <span class="str">'created'</span> }
+
+<span class="cm"># methods=['PUT'] / methods=['DELETE']</span></pre>
+      </div>
+    </div>
+  </div>
+
+  <div id="params" class="hidden">
+    <div class="grid">
+      <div class="panel express">
+        <div class="panel-header">Node.js + Express</div>
+        <pre>app.<span class="fn">get</span>(<span class="str">'/users/:id'</span>, (req, res) => {
+  <span class="kw">const</span> { id } = req.params
+  res.<span class="fn">send</span>(`User ${id}`)
+})</pre>
+      </div>
+      <div class="panel flask">
+        <div class="panel-header">Python + Flask</div>
+        <pre><span class="kw">@</span>app.<span class="fn">route</span>(<span class="str">'/users/&lt;id&gt;'</span>)
+<span class="kw">def</span> <span class="fn">get_user</span>(id):
+    <span class="kw">return</span> <span class="fn">f</span><span class="str">'User {id}'</span>
+
+<span class="cm"># typed: /users/&lt;int:id&gt;</span></pre>
+      </div>
+    </div>
+  </div>
+
+  <div id="query" class="hidden">
+    <div class="grid">
+      <div class="panel express">
+        <div class="panel-header">Node.js + Express</div>
+        <pre><span class="cm">// GET /search?q=flask&page=2</span>
+
+app.<span class="fn">get</span>(<span class="str">'/search'</span>, (req, res) => {
+  <span class="kw">const</span> { q, page } = req.query
+  res.<span class="fn">json</span>({ q, page })
+})</pre>
+      </div>
+      <div class="panel flask">
+        <div class="panel-header">Python + Flask</div>
+        <pre><span class="cm"># GET /search?q=flask&page=2</span>
+
+<span class="kw">from</span> flask <span class="kw">import</span> request
+
+<span class="kw">@</span>app.<span class="fn">route</span>(<span class="str">'/search'</span>)
+<span class="kw">def</span> <span class="fn">search</span>():
+    q = request.args.<span class="fn">get</span>(<span class="str">'q'</span>)
+    page = request.args.<span class="fn">get</span>(<span class="str">'page'</span>)
+    <span class="kw">return</span> { <span class="str">'q'</span>: q, <span class="str">'page'</span>: page }</pre>
+      </div>
+    </div>
+  </div>
+
+  <div id="body" class="hidden">
+    <div class="grid">
+      <div class="panel express">
+        <div class="panel-header">Node.js + Express</div>
+        <pre><span class="cm">// parse JSON bodies</span>
+app.<span class="fn">use</span>(express.<span class="fn">json</span>())
+
+app.<span class="fn">post</span>(<span class="str">'/login'</span>, (req, res) => {
+  <span class="kw">const</span> { email, password } = req.body
+  res.<span class="fn">json</span>({ email })
+})</pre>
+      </div>
+      <div class="panel flask">
+        <div class="panel-header">Python + Flask</div>
+        <pre><span class="cm"># Flask parses JSON automatically</span>
+<span class="kw">from</span> flask <span class="kw">import</span> request
+
+<span class="kw">@</span>app.<span class="fn">route</span>(<span class="str">'/login'</span>, methods=[<span class="str">'POST'</span>])
+<span class="kw">def</span> <span class="fn">login</span>():
+    data = request.<span class="fn">get_json</span>()
+    email = data[<span class="str">'email'</span>]
+    <span class="kw">return</span> { <span class="str">'email'</span>: email }</pre>
+      </div>
+    </div>
+  </div>
+
+  <div id="middleware" class="hidden">
+    <div class="grid">
+      <div class="panel express">
+        <div class="panel-header">Node.js + Express</div>
+        <pre><span class="cm">// global middleware</span>
+app.<span class="fn">use</span>((req, res, next) => {
+  console.<span class="fn">log</span>(req.method, req.url)
+  <span class="fn">next</span>()
+})
+
+<span class="cm">// route-level middleware</span>
+app.<span class="fn">get</span>(<span class="str">'/dashboard'</span>, authMiddleware, handler)</pre>
+      </div>
+      <div class="panel flask">
+        <div class="panel-header">Python + Flask</div>
+        <pre><span class="cm"># runs before every request</span>
+<span class="kw">@</span>app.<span class="fn">before_request</span>
+<span class="kw">def</span> <span class="fn">log_request</span>():
+    <span class="fn">print</span>(request.method, request.path)
+
+<span class="cm"># route-level: use a decorator</span>
+<span class="kw">@</span>app.<span class="fn">route</span>(<span class="str">'/dashboard'</span>)
+<span class="kw">@</span><span class="fn">login_required</span>
+<span class="kw">def</span> <span class="fn">dashboard</span>(): ...</pre>
+      </div>
+    </div>
+  </div>
+
+  <div id="static" class="hidden">
+    <div class="grid">
+      <div class="panel express">
+        <div class="panel-header">Node.js + Express</div>
+        <pre><span class="cm">// serve files from /public folder</span>
+app.<span class="fn">use</span>(express.<span class="fn">static</span>(<span class="str">'public'</span>))
+
+<span class="cm">// access: http://localhost:3000/image.png</span></pre>
+      </div>
+      <div class="panel flask">
+        <div class="panel-header">Python + Flask</div>
+        <pre><span class="cm"># Flask serves /static folder by default</span>
+app = Flask(__name__)
+
+<span class="cm"># access: http://localhost:5000/static/image.png</span>
+<span class="cm"># custom folder:</span>
+app = <span class="fn">Flask</span>(__name__,
+    static_folder=<span class="str">'public'</span>)</pre>
+      </div>
+    </div>
+  </div>
+
+  <div id="error" class="hidden">
+    <div class="grid">
+      <div class="panel express">
+        <div class="panel-header">Node.js + Express</div>
+        <pre><span class="cm">// 4-arg signature = error handler</span>
+app.<span class="fn">use</span>((err, req, res, next) => {
+  res.<span class="fn">status</span>(<span class="num">500</span>).<span class="fn">json</span>({
+    error: err.message
+  })
+})
+
+<span class="cm">// 404</span>
+app.<span class="fn">use</span>((req, res) => {
+  res.<span class="fn">status</span>(<span class="num">404</span>).<span class="fn">send</span>(<span class="str">'Not found'</span>)
+})</pre>
+      </div>
+      <div class="panel flask">
+        <div class="panel-header">Python + Flask</div>
+        <pre><span class="kw">from</span> flask <span class="kw">import</span> jsonify
+
+<span class="kw">@</span>app.<span class="fn">errorhandler</span>(<span class="num">500</span>)
+<span class="kw">def</span> <span class="fn">server_error</span>(err):
+    <span class="kw">return</span> <span class="fn">jsonify</span>({ <span class="str">'error'</span>: <span class="fn">str</span>(err) }), <span class="num">500</span>
+
+<span class="cm"># 404</span>
+<span class="kw">@</span>app.<span class="fn">errorhandler</span>(<span class="num">404</span>)
+<span class="kw">def</span> <span class="fn">not_found</span>(err):
+    <span class="kw">return</span> <span class="str">'Not found'</span>, <span class="num">404</span></pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('[id]').forEach(el => {
+    if (['setup','routes','params','query','body','middleware','static','error'].includes(el.id)) {
+      el.classList.add('hidden');
+    }
+  });
+  document.getElementById(id).classList.remove('hidden');
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+}
+</script>

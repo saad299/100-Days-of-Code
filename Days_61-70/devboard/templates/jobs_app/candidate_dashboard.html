@@ -1,67 +1,66 @@
 {% extends 'base.html' %}
 
-{% block title %}My Applications{% endblock %}
+{% block title %}My Applications — DevBoard{% endblock %}
 
 {% block content %}
-<h2>My Applications</h2>
 
-<p>{{ applications.count }} application{{ applications.count|pluralize }} submitted</p>
+<div class="mb-8">
+    <h1 class="text-2xl font-bold text-gray-900">My Applications</h1>
+    <p class="text-gray-500 text-sm mt-1">Track the status of your job applications</p>
+</div>
 
 {% if applications %}
-    <table>
-        <thead>
-            <tr>
-                <th>Job Title</th>
-                <th>Company</th>
-                <th>Location</th>
-                <th>Applied On</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for application in applications %}
-            <tr>
-                <td>
-                    <a href="{% url 'job_detail' application.job.pk %}">
-                        {{ application.job.title }}
-                    </a>
-                </td>
-                <td>
-                    {% if application.job.employer.employer_profile %}
-                        {{ application.job.employer.employer_profile.company_name }}
-                    {% endif %}
-                </td>
-                <td>{{ application.job.location }}</td>
-                <td>{{ application.applied_at|date:"M d, Y" }}</td>
-                <td>
-                    {% if application.status == 'pending' %}
-                        <span>Pending</span>
-                    {% elif application.status == 'reviewed' %}
-                        <span>Reviewed</span>
-                    {% elif application.status == 'accepted' %}
-                        <span>Accepted</span>
-                    {% elif application.status == 'rejected' %}
-                        <span>Rejected</span>
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-{% else %}
-    <p>You haven't applied to any jobs yet.</p>
-    <a href="{% url 'job_list' %}">Browse Jobs</a>
-{% endif %}
-{% endblock %}
-
-
-{% comment %} {% for application in applications %}
-    <div>
-        <h3>{{ application.job.title }}</h3>
-        <p>Status: {{ application.status }}</p>
-        <p>Applied: {{ application.applied_at }}</p>
+    <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+        <table class="w-full text-sm">
+            <thead class="bg-gray-50 border-b border-gray-200">
+                <tr>
+                    <th class="text-left px-6 py-3 text-gray-600 font-medium">Job Title</th>
+                    <th class="text-left px-6 py-3 text-gray-600 font-medium">Company</th>
+                    <th class="text-left px-6 py-3 text-gray-600 font-medium">Location</th>
+                    <th class="text-left px-6 py-3 text-gray-600 font-medium">Applied On</th>
+                    <th class="text-left px-6 py-3 text-gray-600 font-medium">Status</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+                {% for application in applications %}
+                <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4 font-medium text-gray-900">
+                        <a href="{% url 'jobs_app:job_detail' application.job.pk %}" class="hover:text-blue-600">
+                            {{ application.job.title }}
+                        </a>
+                    </td>
+                    <td class="px-6 py-4 text-gray-600">
+                        {% if application.job.employer.employer_profile %}
+                            {{ application.job.employer.employer_profile.company_name }}
+                        {% endif %}
+                    </td>
+                    <td class="px-6 py-4 text-gray-500">{{ application.job.location }}</td>
+                    <td class="px-6 py-4 text-gray-500">{{ application.applied_at|date:"M d, Y" }}</td>
+                    <td class="px-6 py-4">
+                        {% if application.status == 'pending' %}
+                            <span class="bg-gray-100 text-gray-600 text-xs font-medium px-2.5 py-1 rounded-full">Pending</span>
+                        {% elif application.status == 'reviewed' %}
+                            <span class="bg-blue-100 text-blue-700 text-xs font-medium px-2.5 py-1 rounded-full">Reviewed</span>
+                        {% elif application.status == 'accepted' %}
+                            <span class="bg-green-100 text-green-700 text-xs font-medium px-2.5 py-1 rounded-full">✓ Accepted</span>
+                        {% elif application.status == 'rejected' %}
+                            <span class="bg-red-100 text-red-600 text-xs font-medium px-2.5 py-1 rounded-full">Not Selected</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
-{% empty %}
-    <p>No applications yet.</p>
-{% endfor %}
-{% endblock %} {% endcomment %}
+{% else %}
+    <div class="text-center py-20 bg-white rounded-xl border border-gray-200">
+        <p class="text-gray-400 text-lg mb-2">No applications yet</p>
+        <p class="text-gray-400 text-sm mb-6">Start applying to jobs to track them here</p>
+        <a href="{% url 'jobs_app:job_list' %}"
+           class="bg-blue-500 hover:bg-blue-600 text-white font-medium px-6 py-3 rounded-md">
+            Browse Jobs
+        </a>
+    </div>
+{% endif %}
+
+{% endblock %}

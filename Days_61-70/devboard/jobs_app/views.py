@@ -25,13 +25,13 @@ from .models import Job, Job_Application
 from .forms import JobForm, ApplicationStatusForm, ApplicationForm
 
 # Import serializer to convert Job model data to JSON format for API
-from .serilizers import JobSerializer
+from .serializers import JobSerializer
 
 # Import viewsets to create automatic API endpoints (list, create, update, delete)
 from rest_framework import viewsets
 
 # Import permission classes to control who can access our API
-from rest_framework import isAuthenticated, AllowAny
+from rest_framework import permissions
 
 
 # =============================================================================
@@ -95,7 +95,7 @@ def jobs_applications(request):
 # Shows a searchable and filterable list of all active jobs
 # Candidates can search by keyword, location, job type, and experience level
 def job_list(request):
-    jobs = Job.objects.filter(is_active).select_related("employer__employer_profile")
+    jobs = Job.objects.filter(is_active=True).select_related("employer__employer_profile")
 
     # search and filter
     keyword = request.GET.get("keyword", "")
@@ -119,17 +119,17 @@ def job_list(request):
         if experience_level:
             jobs = jobs.filter(experience_level=experience_level)
 
-        context = {
-            "jobs": jobs,
-            "keyword": keyword,
-            "location": location,
-            "job_type": job_type,
-            "experience_level": experience_level,
-            "job_type_choices": Job.JOB_TYPE_CHOICES,
-            "experience_level_choices": Job.EXPERIENCE_CHOICES,
-        }
+    context = {
+        "jobs": jobs,
+        "keyword": keyword,
+        "location": location,
+        "job_type": job_type,
+        "experience_level": experience_level,
+        "job_type_choices": Job.JOB_TYPE_CHOICES,
+        "experience_level_choices": Job.EXPERIENCE_CHOICES,
+    }
 
-        return render(request, "jobs_app/job_list.html", context)
+    return render(request, "jobs_app/job_list.html", context)
 
 
 # Shows detailed information about a specific job
@@ -139,8 +139,8 @@ def job_detail(request, id):
     existing_application = None
 
     if request.user.is_authenticated and request.user.is_candidate():
-        existing_application = Application.objects.filter(
-            job=job, candidate=request.user
+        existing_application = Job_Application.objects.filter(
+            job=job, user=request.user
         ).first()
 
     context = {"job": job, "existing_application": existing_application}

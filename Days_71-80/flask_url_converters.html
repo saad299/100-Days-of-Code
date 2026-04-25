@@ -1,0 +1,84 @@
+
+<style>
+.card { background:var(--color-background-primary); border:0.5px solid var(--color-border-tertiary); border-radius:var(--border-radius-lg); margin-bottom:10px; overflow:hidden; }
+.card-head { display:flex; align-items:center; gap:12px; padding:10px 16px; border-bottom:0.5px solid var(--color-border-tertiary); }
+.badge { font-size:12px; font-weight:500; padding:3px 10px; border-radius:20px; font-family:var(--font-mono); }
+.badge-int    { background:#E6F1FB; color:#0C447C; }
+.badge-float  { background:#EEEDFE; color:#3C3489; }
+.badge-str    { background:#E1F5EE; color:#085041; }
+.badge-path   { background:#FAEEDA; color:#633806; }
+.badge-uuid   { background:#FAECE7; color:#712B13; }
+.label { font-size:13px; font-weight:500; color:var(--color-text-primary); }
+.desc  { font-size:12px; color:var(--color-text-secondary); margin-left:auto; }
+pre { margin:0; padding:12px 16px; font-size:12.5px; font-family:var(--font-mono); line-height:1.7; background:var(--color-background-secondary); color:var(--color-text-primary); }
+.kw { color:#534AB7; }
+.fn { color:#0F6E56; }
+.st { color:#993C1D; }
+.cm { color:var(--color-text-tertiary); }
+.err { background:#FCEBEB; border-left:3px solid #E24B4A; padding:10px 16px; font-size:13px; color:#791F1F; border-radius:0 0 var(--border-radius-lg) var(--border-radius-lg); }
+.ask-btn { font-size:12px; padding:5px 12px; border-radius:var(--border-radius-md); border:0.5px solid var(--color-border-secondary); background:transparent; color:var(--color-text-secondary); cursor:pointer; margin-top:4px; }
+.ask-btn:hover { background:var(--color-background-secondary); }
+</style>
+
+<div style="padding:1rem 0 0;">
+
+  <div class="card">
+    <div class="card-head"><span class="badge badge-int">int</span><span class="label">Integer</span><span class="desc">Whole numbers only, no decimals</span></div>
+    <pre><span class="fn">@app.route</span>(<span class="st">'/post/&lt;int:id&gt;'</span>)
+<span class="kw">def</span> <span class="fn">get_post</span>(id):          <span class="cm"># id is already an int</span>
+    <span class="kw">return</span> <span class="st">f'Post #{id}'</span>
+
+<span class="cm"># /post/42   → id = 42  ✓</span>
+<span class="cm"># /post/abc  → 404 automatically ✗</span></pre>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><span class="badge badge-float">float</span><span class="label">Float</span><span class="desc">Decimal numbers</span></div>
+    <pre><span class="fn">@app.route</span>(<span class="st">'/price/&lt;float:amount&gt;'</span>)
+<span class="kw">def</span> <span class="fn">show_price</span>(amount):
+    <span class="kw">return</span> <span class="st">f'Price: ${amount:.2f}'</span>
+
+<span class="cm"># /price/9.99  → amount = 9.99  ✓</span>
+<span class="cm"># /price/abc   → 404 automatically ✗</span></pre>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><span class="badge badge-str">string</span><span class="label">String (default)</span><span class="desc">Anything except a slash</span></div>
+    <pre><span class="fn">@app.route</span>(<span class="st">'/user/&lt;string:name&gt;'</span>)
+<span class="kw">def</span> <span class="fn">profile</span>(name):
+    <span class="kw">return</span> <span class="st">f'User: {name}'</span>
+
+<span class="cm"># &lt;name&gt; and &lt;string:name&gt; are identical</span>
+<span class="cm"># /user/alice → name = "alice"  ✓</span>
+<span class="cm"># /user/a/b   → 404 (slash not allowed) ✗</span></pre>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><span class="badge badge-path">path</span><span class="label">Path</span><span class="desc">Like string, but slashes allowed</span></div>
+    <pre><span class="fn">@app.route</span>(<span class="st">'/files/&lt;path:filepath&gt;'</span>)
+<span class="kw">def</span> <span class="fn">get_file</span>(filepath):
+    <span class="kw">return</span> <span class="st">f'File: {filepath}'</span>
+
+<span class="cm"># /files/docs/report.pdf → filepath = "docs/report.pdf"  ✓</span></pre>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><span class="badge badge-uuid">uuid</span><span class="label">UUID</span><span class="desc">Validates UUID format strictly</span></div>
+    <pre><span class="fn">@app.route</span>(<span class="st">'/item/&lt;uuid:item_id&gt;'</span>)
+<span class="kw">def</span> <span class="fn">get_item</span>(item_id):   <span class="cm"># item_id is a uuid.UUID object</span>
+    <span class="kw">return</span> <span class="st">f'Item: {item_id}'</span>
+
+<span class="cm"># /item/123e4567-e89b-12d3-a456-426614174000  ✓</span>
+<span class="cm"># /item/not-a-uuid                            → 404 ✗</span></pre>
+  </div>
+
+  <div style="background:var(--color-background-secondary); border-radius:var(--border-radius-lg); padding:12px 16px; margin-top:4px; border:0.5px solid var(--color-border-tertiary);">
+    <div style="font-size:13px; font-weight:500; margin-bottom:8px; color:var(--color-text-primary);">Why this matters</div>
+    <div style="font-size:13px; color:var(--color-text-secondary); line-height:1.6;">Without a converter, <code style="font-family:var(--font-mono); font-size:12px; background:var(--color-background-primary); padding:1px 5px; border-radius:4px; border:0.5px solid var(--color-border-tertiary)">/post/abc</code> would reach your function as the string <code style="font-family:var(--font-mono); font-size:12px; background:var(--color-background-primary); padding:1px 5px; border-radius:4px; border:0.5px solid var(--color-border-tertiary)">"abc"</code> and crash when you try to use it as an ID. With <code style="font-family:var(--font-mono); font-size:12px; background:var(--color-background-primary); padding:1px 5px; border-radius:4px; border:0.5px solid var(--color-border-tertiary)">&lt;int:id&gt;</code>, Flask rejects invalid values with a 404 before your code even runs.</div>
+  </div>
+
+  <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">
+    <button class="ask-btn" onclick="sendPrompt('How do I create a custom URL converter in Flask?')">How do I create a custom URL converter? ↗</button>
+    <button class="ask-btn" onclick="sendPrompt('How do I handle 404 errors gracefully in Flask?')">How to handle 404 errors gracefully? ↗</button>
+  </div>
+</div>

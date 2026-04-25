@@ -1,0 +1,217 @@
+
+<style>
+.tab-bar { display:flex; gap:8px; margin-bottom:1.25rem; flex-wrap:wrap; }
+.tab { padding:6px 16px; font-size:13px; border-radius:var(--border-radius-md); border:0.5px solid var(--color-border-secondary); background:transparent; color:var(--color-text-secondary); cursor:pointer; transition:all .15s; }
+.tab.active { background:var(--color-background-info); color:var(--color-text-info); border-color:transparent; font-weight:500; }
+.tab:hover:not(.active) { background:var(--color-background-secondary); }
+.section { display:none; }
+.section.active { display:block; }
+.grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.col-head { font-size:13px; font-weight:500; padding:8px 14px; border-radius:var(--border-radius-md) var(--border-radius-md) 0 0; }
+.flask-head { background:#E1F5EE; color:#085041; }
+.express-head { background:#FAEEDA; color:#633806; }
+.code-block { background:var(--color-background-secondary); border:0.5px solid var(--color-border-tertiary); border-radius:0 0 var(--border-radius-md) var(--border-radius-md); padding:12px 14px; font-family:var(--font-mono); font-size:12px; line-height:1.8; color:var(--color-text-primary); white-space:pre; overflow-x:auto; }
+.note-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:8px; }
+.note { font-size:12px; color:var(--color-text-secondary); padding:8px 12px; background:var(--color-background-secondary); border-radius:var(--border-radius-md); border-left:3px solid var(--color-border-secondary); line-height:1.6; border-radius:0; }
+.note.flask-note { border-left-color:#1D9E75; }
+.note.express-note { border-left-color:#EF9F27; }
+.diff-card { background:var(--color-background-primary); border:0.5px solid var(--color-border-tertiary); border-radius:var(--border-radius-lg); margin-bottom:10px; overflow:hidden; }
+.diff-head { padding:10px 16px; border-bottom:0.5px solid var(--color-border-tertiary); display:flex; align-items:center; gap:10px; }
+.diff-label { font-size:13px; font-weight:500; color:var(--color-text-primary); }
+.diff-body { padding:12px 16px; font-size:13px; color:var(--color-text-secondary); line-height:1.7; }
+.pill { font-size:11px; padding:2px 8px; border-radius:20px; font-weight:500; }
+.pill-syntax { background:#E6F1FB; color:#0C447C; }
+.pill-deep { background:#FCEBEB; color:#791F1F; }
+.pill-both { background:#EEEDFE; color:#3C3489; }
+.kw  { color:#534AB7; }
+.fn  { color:#0F6E56; }
+.st  { color:#993C1D; }
+.cm  { color:var(--color-text-tertiary); }
+.num { color:#185FA5; }
+.ask-btn { font-size:12px; padding:5px 12px; border-radius:var(--border-radius-md); border:0.5px solid var(--color-border-secondary); background:transparent; color:var(--color-text-secondary); cursor:pointer; margin-top:12px; }
+.ask-btn:hover { background:var(--color-background-secondary); }
+code { font-family:var(--font-mono); font-size:11.5px; background:var(--color-background-secondary); padding:1px 5px; border-radius:4px; border:0.5px solid var(--color-border-tertiary); color:var(--color-text-primary); }
+</style>
+
+<div style="padding:1rem 0 0;">
+<div class="tab-bar">
+  <button class="tab active" onclick="show('routes',this)">Routes</button>
+  <button class="tab" onclick="show('requests',this)">Requests</button>
+  <button class="tab" onclick="show('responses',this)">Responses</button>
+  <button class="tab" onclick="show('diffs',this)">Key differences</button>
+</div>
+
+<div id="routes" class="section active">
+  <div class="grid">
+    <div><div class="col-head flask-head">Flask (Python)</div><div class="code-block"><span class="fn">@app.route</span>(<span class="st">'/hello'</span>)
+<span class="kw">def</span> <span class="fn">hello</span>():
+    <span class="kw">return</span> <span class="st">'Hello!'</span></div></div>
+    <div><div class="col-head express-head">Express (Node.js)</div><div class="code-block">app.<span class="fn">get</span>(<span class="st">'/hello'</span>, (req, res) => {
+  res.<span class="fn">send</span>(<span class="st">'Hello!'</span>)
+})</div></div>
+  </div>
+  <div class="note-row">
+    <div class="note flask-note">Method is set via <code>methods=[...]</code> on the decorator. GET is the default.</div>
+    <div class="note express-note">Method is the function name itself — <code>app.get()</code>, <code>app.post()</code>, <code>app.delete()</code>.</div>
+  </div>
+
+  <div style="margin-top:16px;" class="grid">
+    <div><div class="col-head flask-head">URL parameter</div><div class="code-block"><span class="fn">@app.route</span>(<span class="st">'/user/&lt;int:id&gt;'</span>)
+<span class="kw">def</span> <span class="fn">user</span>(id):
+    <span class="kw">return</span> <span class="st">f'User {id}'</span></div></div>
+    <div><div class="col-head express-head">URL parameter</div><div class="code-block">app.<span class="fn">get</span>(<span class="st">'/user/:id'</span>, (req, res) => {
+  <span class="kw">const</span> id = req.params.id
+  res.<span class="fn">send</span>(<span class="st">`User ${id}`</span>)
+})</div></div>
+  </div>
+  <div class="note-row">
+    <div class="note flask-note">Flask uses <code>&lt;type:name&gt;</code> syntax. Type conversion and validation happen automatically — <code>/user/abc</code> returns 404 if type is <code>int</code>.</div>
+    <div class="note express-note">Express uses <code>:name</code> syntax. All params are strings — you must validate and cast manually: <code>parseInt(req.params.id)</code>.</div>
+  </div>
+
+  <div style="margin-top:16px;" class="grid">
+    <div><div class="col-head flask-head">POST route</div><div class="code-block"><span class="fn">@app.route</span>(<span class="st">'/login'</span>,
+         methods=[<span class="st">'POST'</span>])
+<span class="kw">def</span> <span class="fn">login</span>():
+    ...</div></div>
+    <div><div class="col-head express-head">POST route</div><div class="code-block">app.<span class="fn">post</span>(<span class="st">'/login'</span>, (req, res) => {
+  ...
+})</div></div>
+  </div>
+  <div class="note-row">
+    <div class="note flask-note">One decorator handles all methods. Logic for GET vs POST lives inside the function using <code>request.method</code>.</div>
+    <div class="note express-note">Separate functions per HTTP method — no branching needed inside the handler.</div>
+  </div>
+</div>
+
+<div id="requests" class="section">
+  <div class="grid">
+    <div><div class="col-head flask-head">Query params</div><div class="code-block"><span class="kw">from</span> flask <span class="kw">import</span> request
+
+q = request.args.<span class="fn">get</span>(<span class="st">'q'</span>, <span class="st">''</span>)
+<span class="cm"># GET /search?q=flask</span></div></div>
+    <div><div class="col-head express-head">Query params</div><div class="code-block"><span class="kw">const</span> q = req.query.q ?? <span class="st">''</span>
+<span class="cm">// GET /search?q=express</span></div></div>
+  </div>
+  <div class="note-row">
+    <div class="note flask-note"><code>request</code> is a global-like object imported from Flask — available anywhere in the request context.</div>
+    <div class="note express-note"><code>req</code> is passed directly as a parameter into every handler function.</div>
+  </div>
+
+  <div style="margin-top:16px;" class="grid">
+    <div><div class="col-head flask-head">JSON body</div><div class="code-block">data = request.<span class="fn">get_json</span>()
+name = data[<span class="st">'name'</span>]</div></div>
+    <div><div class="col-head express-head">JSON body</div><div class="code-block"><span class="cm">// Needs middleware first:</span>
+app.<span class="fn">use</span>(express.<span class="fn">json</span>())
+
+<span class="kw">const</span> { name } = req.body</div></div>
+  </div>
+  <div class="note-row">
+    <div class="note flask-note">JSON parsing is built into Flask. <code>get_json()</code> returns <code>None</code> if body isn't valid JSON.</div>
+    <div class="note express-note">You must register <code>express.json()</code> middleware first. Without it, <code>req.body</code> is <code>undefined</code>.</div>
+  </div>
+
+  <div style="margin-top:16px;" class="grid">
+    <div><div class="col-head flask-head">Form data</div><div class="code-block">name = request.form[<span class="st">'name'</span>]</div></div>
+    <div><div class="col-head express-head">Form data</div><div class="code-block"><span class="cm">// Needs middleware first:</span>
+app.<span class="fn">use</span>(express.<span class="fn">urlencoded</span>(
+  { extended: <span class="kw">true</span> }
+))
+<span class="kw">const</span> name = req.body.name</div></div>
+  </div>
+  <div class="note-row">
+    <div class="note flask-note">Form parsing is built in — no setup needed.</div>
+    <div class="note express-note">Requires <code>express.urlencoded()</code> middleware. Form data also lands in <code>req.body</code>, same as JSON.</div>
+  </div>
+</div>
+
+<div id="responses" class="section">
+  <div class="grid">
+    <div><div class="col-head flask-head">Plain text</div><div class="code-block"><span class="kw">return</span> <span class="st">'Hello!'</span></div></div>
+    <div><div class="col-head express-head">Plain text</div><div class="code-block">res.<span class="fn">send</span>(<span class="st">'Hello!'</span>)</div></div>
+  </div>
+  <div class="note-row">
+    <div class="note flask-note">Flask returns by <code>return</code>ing a value from the function — feels like normal Python.</div>
+    <div class="note express-note">Express sends via <code>res.send()</code> — the function doesn't "return" the response; it calls a method on the response object.</div>
+  </div>
+
+  <div style="margin-top:16px;" class="grid">
+    <div><div class="col-head flask-head">JSON</div><div class="code-block"><span class="kw">from</span> flask <span class="kw">import</span> jsonify
+
+<span class="kw">return</span> <span class="fn">jsonify</span>(name=<span class="st">'Alice'</span>)</div></div>
+    <div><div class="col-head express-head">JSON</div><div class="code-block">res.<span class="fn">json</span>({ name: <span class="st">'Alice'</span> })</div></div>
+  </div>
+  <div class="note-row">
+    <div class="note flask-note"><code>jsonify()</code> sets Content-Type to <code>application/json</code> automatically.</div>
+    <div class="note express-note"><code>res.json()</code> does the same — slightly more concise since JS objects are already JSON-friendly.</div>
+  </div>
+
+  <div style="margin-top:16px;" class="grid">
+    <div><div class="col-head flask-head">Status code</div><div class="code-block"><span class="kw">return</span> <span class="fn">jsonify</span>(msg=<span class="st">'Created'</span>), <span class="num">201</span>
+<span class="kw">return</span> <span class="st">'Bad request'</span>, <span class="num">400</span></div></div>
+    <div><div class="col-head express-head">Status code</div><div class="code-block">res.<span class="fn">status</span>(<span class="num">201</span>).<span class="fn">json</span>({ msg: <span class="st">'Created'</span> })
+res.<span class="fn">status</span>(<span class="num">400</span>).<span class="fn">send</span>(<span class="st">'Bad request'</span>)</div></div>
+  </div>
+  <div class="note-row">
+    <div class="note flask-note">Status code is the second element of a return tuple — clean and readable.</div>
+    <div class="note express-note">Status is chained before the send method. Easy to forget — defaulting to 200 silently.</div>
+  </div>
+
+  <div style="margin-top:16px;" class="grid">
+    <div><div class="col-head flask-head">Redirect</div><div class="code-block"><span class="kw">from</span> flask <span class="kw">import</span> redirect, url_for
+<span class="kw">return</span> <span class="fn">redirect</span>(<span class="fn">url_for</span>(<span class="st">'home'</span>))</div></div>
+    <div><div class="col-head express-head">Redirect</div><div class="code-block">res.<span class="fn">redirect</span>(<span class="st">'/home'</span>)</div></div>
+  </div>
+  <div class="note-row">
+    <div class="note flask-note"><code>url_for()</code> generates URLs from function names — safer than hardcoding paths.</div>
+    <div class="note express-note">Express redirects to a raw path string. No built-in reverse URL lookup.</div>
+  </div>
+</div>
+
+<div id="diffs" class="section">
+
+  <div class="diff-card">
+    <div class="diff-head"><span class="pill pill-deep">Deep difference</span><span class="diff-label">Sync vs async by default</span></div>
+    <div class="diff-body">Flask runs <strong style="font-weight:500">synchronously</strong> by default — one request is handled at a time per worker. Express is built on Node.js's <strong style="font-weight:500">event loop</strong>, handling many requests concurrently without blocking. For I/O-heavy apps (databases, APIs), Express naturally scales better out of the box. Flask can use async with <code>async def</code> + an ASGI server, but it's not the default mindset.</div>
+  </div>
+
+  <div class="diff-card">
+    <div class="diff-head"><span class="pill pill-deep">Deep difference</span><span class="diff-label">Request context vs explicit passing</span></div>
+    <div class="diff-body">Flask uses a <strong style="font-weight:500">request context</strong> — the <code>request</code> object is a thread-local global you import. It feels magical but can confuse beginners. Express <strong style="font-weight:500">passes <code>req</code> and <code>res</code> explicitly</strong> into every handler — more verbose but completely transparent. No hidden state.</div>
+  </div>
+
+  <div class="diff-card">
+    <div class="diff-head"><span class="pill pill-deep">Deep difference</span><span class="diff-label">Batteries vs middleware</span></div>
+    <div class="diff-body">Flask includes form parsing, JSON parsing, and session handling <strong style="font-weight:500">out of the box</strong>. Express ships as a minimal core — almost everything (JSON body, cookies, sessions, CORS) requires installing and wiring up middleware via <code>app.use()</code>. Express is more flexible; Flask is faster to get started.</div>
+  </div>
+
+  <div class="diff-card">
+    <div class="diff-head"><span class="pill pill-syntax">Syntax difference</span><span class="diff-label">URL parameter typing</span></div>
+    <div class="diff-body">Flask supports <strong style="font-weight:500">typed converters</strong> like <code>&lt;int:id&gt;</code> — invalid types auto-404. Express uses <code>:id</code> (always a string), so you must validate and cast manually. Flask's approach means less defensive code in your handlers.</div>
+  </div>
+
+  <div class="diff-card">
+    <div class="diff-head"><span class="pill pill-syntax">Syntax difference</span><span class="diff-label">How responses are sent</span></div>
+    <div class="diff-body">Flask uses Python's <code>return</code> statement — responses feel like normal function output. Express uses <code>res.send()</code> / <code>res.json()</code> methods — the handler doesn't "return" anything meaningful; it calls methods on a response object. Forgetting to call <code>res.send()</code> in Express leaves the request hanging silently.</div>
+  </div>
+
+  <div class="diff-card">
+    <div class="diff-head"><span class="pill pill-both">Both</span><span class="diff-label">Routing structure</span></div>
+    <div class="diff-body">Both support route grouping: Flask uses <strong style="font-weight:500">Blueprints</strong>, Express uses <strong style="font-weight:500">Routers</strong> (<code>express.Router()</code>). The concept is identical — split routes into separate files/modules. The APIs are different but the mental model is the same.</div>
+  </div>
+
+  <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">
+    <button class="ask-btn" onclick="sendPrompt('How does async work in Flask compared to Express?')">How does async work in Flask vs Express? ↗</button>
+    <button class="ask-btn" onclick="sendPrompt('What are Flask Blueprints and how do they compare to Express Router?')">Flask Blueprints vs Express Router? ↗</button>
+  </div>
+</div>
+</div>
+
+<script>
+function show(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
