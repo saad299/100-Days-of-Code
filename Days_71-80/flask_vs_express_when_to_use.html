@@ -1,0 +1,116 @@
+
+<style>
+.grid2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px; }
+.card { background:var(--color-background-primary); border:0.5px solid var(--color-border-tertiary); border-radius:var(--border-radius-lg); overflow:hidden; }
+.card-head { padding:10px 16px; font-size:13px; font-weight:500; border-bottom:0.5px solid var(--color-border-tertiary); display:flex; align-items:center; gap:8px; }
+.flask-head { background:#E1F5EE; color:#085041; }
+.express-head { background:#FAEEDA; color:#633806; }
+.card-body { padding:12px 16px; }
+.row { display:flex; align-items:flex-start; gap:8px; margin-bottom:8px; font-size:13px; color:var(--color-text-secondary); line-height:1.6; }
+.dot { width:6px; height:6px; border-radius:50%; margin-top:6px; flex-shrink:0; }
+.dot-green { background:#1D9E75; }
+.dot-amber { background:#BA7517; }
+.section-title { font-size:12px; font-weight:500; color:var(--color-text-tertiary); text-transform:uppercase; letter-spacing:.04em; margin:16px 0 8px; }
+.uc-card { background:var(--color-background-primary); border:0.5px solid var(--color-border-tertiary); border-radius:var(--border-radius-lg); margin-bottom:8px; overflow:hidden; }
+.uc-head { display:flex; align-items:center; gap:10px; padding:10px 16px; border-bottom:0.5px solid var(--color-border-tertiary); }
+.uc-label { font-size:13px; font-weight:500; color:var(--color-text-primary); }
+.badge { font-size:11px; padding:3px 9px; border-radius:20px; font-weight:500; white-space:nowrap; }
+.b-flask   { background:#E1F5EE; color:#085041; }
+.b-express { background:#FAEEDA; color:#633806; }
+.b-either  { background:#EEEDFE; color:#3C3489; }
+.uc-body { padding:10px 16px; font-size:13px; color:var(--color-text-secondary); line-height:1.6; }
+.uc-reason { font-size:12px; margin-top:4px; color:var(--color-text-tertiary); }
+.verdict { background:var(--color-background-secondary); border-radius:var(--border-radius-lg); padding:14px 16px; border:0.5px solid var(--color-border-tertiary); margin-top:4px; }
+.verdict-title { font-size:13px; font-weight:500; color:var(--color-text-primary); margin-bottom:6px; }
+.verdict-body { font-size:13px; color:var(--color-text-secondary); line-height:1.7; }
+code { font-family:var(--font-mono); font-size:11.5px; background:var(--color-background-primary); padding:1px 5px; border-radius:4px; border:0.5px solid var(--color-border-tertiary); color:var(--color-text-primary); }
+.ask-btn { font-size:12px; padding:5px 12px; border-radius:var(--border-radius-md); border:0.5px solid var(--color-border-secondary); background:transparent; color:var(--color-text-secondary); cursor:pointer; margin-top:12px; margin-right:8px; }
+.ask-btn:hover { background:var(--color-background-secondary); }
+</style>
+
+<div style="padding:1rem 0 0;">
+
+  <div class="grid2">
+    <div class="card">
+      <div class="card-head flask-head">Flask — pick this when…</div>
+      <div class="card-body">
+        <div class="row"><div class="dot dot-green"></div><div>Your team knows Python or you're already in a Python codebase</div></div>
+        <div class="row"><div class="dot dot-green"></div><div>You're working with ML models, data science, or numerical computing (NumPy, Pandas, PyTorch)</div></div>
+        <div class="row"><div class="dot dot-green"></div><div>You need a quick internal API or prototype — batteries included, less setup</div></div>
+        <div class="row"><div class="dot dot-green"></div><div>You want typed URL validation and clean routing with minimal boilerplate</div></div>
+        <div class="row"><div class="dot dot-green"></div><div>Request concurrency isn't a primary concern (traditional request/response patterns)</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head express-head">Express — pick this when…</div>
+      <div class="card-body">
+        <div class="row"><div class="dot dot-amber"></div><div>Your team knows JavaScript or you're building a full JS stack (React/Vue + Node backend)</div></div>
+        <div class="row"><div class="dot dot-amber"></div><div>You need to handle many simultaneous connections — chat apps, live feeds, real-time APIs</div></div>
+        <div class="row"><div class="dot dot-amber"></div><div>You're building a public-facing API that will be hit heavily at scale</div></div>
+        <div class="row"><div class="dot dot-amber"></div><div>You want a highly customisable stack — pick only the middleware you need</div></div>
+        <div class="row"><div class="dot dot-amber"></div><div>You need WebSocket support alongside HTTP in the same server</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">Use case guide</div>
+
+  <div class="uc-card">
+    <div class="uc-head"><span class="uc-label">ML model serving / AI API</span><span class="badge b-flask">Flask</span></div>
+    <div class="uc-body">You trained a model in Python — Flask lets you serve it directly. No language boundary, no serialization overhead.
+      <div class="uc-reason">Express would require calling a Python subprocess or a separate service just to run the model.</div>
+    </div>
+  </div>
+
+  <div class="uc-card">
+    <div class="uc-head"><span class="uc-label">Real-time chat / notifications</span><span class="badge b-express">Express</span></div>
+    <div class="uc-body">Node's event loop handles thousands of open connections cheaply. Express + Socket.io is the standard combo.
+      <div class="uc-reason">Flask's sync model would require a thread per connection or significant async setup.</div>
+    </div>
+  </div>
+
+  <div class="uc-card">
+    <div class="uc-head"><span class="uc-label">REST API for a React / Vue frontend</span><span class="badge b-either">Either</span></div>
+    <div class="uc-body">Both work well here. Pick Express if your team is already JS-fluent (one language across the stack). Pick Flask if your backend team is Python-first.
+      <div class="uc-reason">The API contract is the same — the frontend doesn't care what's behind it.</div>
+    </div>
+  </div>
+
+  <div class="uc-card">
+    <div class="uc-head"><span class="uc-label">Data pipeline / ETL / analytics endpoint</span><span class="badge b-flask">Flask</span></div>
+    <div class="uc-body">Python's data ecosystem (Pandas, SQLAlchemy, Celery) is unmatched. Flask fits naturally as the HTTP layer on top.
+      <div class="uc-reason">Doing this in Express means reimplementing tools that already exist in Python.</div>
+    </div>
+  </div>
+
+  <div class="uc-card">
+    <div class="uc-head"><span class="uc-label">High-traffic public API (thousands of req/s)</span><span class="badge b-express">Express</span></div>
+    <div class="uc-body">Node handles I/O-bound work (DB queries, HTTP calls) concurrently on a single thread. Express scales horizontally with less memory than multi-threaded Flask workers.
+      <div class="uc-reason">Flask can scale too (with Gunicorn workers), but Express needs less infrastructure to get there.</div>
+    </div>
+  </div>
+
+  <div class="uc-card">
+    <div class="uc-head"><span class="uc-label">Quick internal tool / prototype</span><span class="badge b-flask">Flask</span></div>
+    <div class="uc-body">Five lines and you have a running server. No middleware wiring, no package decisions — just write the logic.
+      <div class="uc-reason">Express's minimal-core philosophy is a strength at scale but overhead when you just want something working.</div>
+    </div>
+  </div>
+
+  <div class="uc-card">
+    <div class="uc-head"><span class="uc-label">Microservices architecture</span><span class="badge b-either">Either</span></div>
+    <div class="uc-body">Use the right tool per service. ML inference service → Flask. Real-time notification service → Express. They can coexist in the same system and talk over HTTP or a message queue.
+      <div class="uc-reason">Microservices let you pick the best tool for each job — you're not locked in.</div>
+    </div>
+  </div>
+
+  <div class="verdict">
+    <div class="verdict-title">The honest one-liner</div>
+    <div class="verdict-body">If your work involves <strong style="font-weight:500">data, ML, or Python libraries</strong> — Flask. If your work involves <strong style="font-weight:500">many concurrent users, real-time features, or a JS-first team</strong> — Express. If neither strongly applies, both are fine and the decision comes down to your team's language comfort.</div>
+  </div>
+
+  <div>
+    <button class="ask-btn" onclick="sendPrompt('How does Flask handle concurrency with Gunicorn workers?')">How does Flask scale with Gunicorn? ↗</button>
+    <button class="ask-btn" onclick="sendPrompt('What is FastAPI and how does it compare to Flask?')">What about FastAPI vs Flask? ↗</button>
+  </div>
+</div>

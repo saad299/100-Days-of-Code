@@ -13,3 +13,4 @@ db.sqlite3
 Add Django Authentication.md
 
 views_explained.md
+django_mental_model.md

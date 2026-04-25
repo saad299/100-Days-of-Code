@@ -1,11 +1,34 @@
-{% extends 'base.html' %} {% block title %}Delete Job{% endblock %} {% block
-content %}
-<h1>Delete Job</h1>
-<p>Are you sure you want to delete "{{ job.title }}"?</p>
+{% extends 'base.html' %}
 
-<form method="post">
-  {% csrf_token %}
-  <button type="submit">Yes, Delete</button>
-  <a href="{% url 'jobs_app:employer_dashboard' %}">Cancel</a>
-</form>
+{% block title %}Delete Job — DevBoard{% endblock %}
+
+{% block content %}
+
+<div class="max-w-lg mx-auto mt-12">
+    <div class="bg-white rounded-xl border border-red-200 p-8 text-center">
+        <div class="text-4xl mb-4">⚠️</div>
+        <h1 class="text-xl font-bold text-gray-900 mb-2">Delete Job Listing</h1>
+        <p class="text-gray-500 mb-1">
+            Are you sure you want to delete <strong>{{ job.title }}</strong>?
+        </p>
+        <p class="text-red-500 text-sm mb-6">
+            This will permanently delete the listing and all {{ job.applications.count }} application{{ job.applications.count|pluralize }} associated with it.
+        </p>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="flex gap-3 justify-center">
+                <button type="submit"
+                        class="bg-red-500 hover:bg-red-600 text-white font-medium px-6 py-2.5 rounded-md">
+                    Yes, Delete
+                </button>
+                <a href="{% url 'jobs_app:employer_dashboard' %}"
+                   class="border border-gray-300 hover:bg-gray-50 text-gray-600 px-6 py-2.5 rounded-md">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
 {% endblock %}
