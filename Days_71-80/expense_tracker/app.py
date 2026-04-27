@@ -18,19 +18,10 @@ with app.app_context():
 def home():
     return 'this is the home page'
 
-"""
-Route -> which url are we using to get the response
-Request -> which method of request are we using to get the response
-Response -> what are we getting in return
-"""
-
 @app.route('/user', methods=['GET', 'POST'])
 def hello():
     print("Method:", request.method)
 
-    # on browser, we would visit url something like '/user?name=Ali'
-    # but that would still be a GET method and not a POST method
-    # for POST method, some type of form is used
     if request.method == 'POST':
         name = request.json.get('name', 'User')
         print("JSON Response:", request.json)
@@ -44,11 +35,6 @@ def hello():
 def form():
     print("Method:", request.method)
 
-    # on browser, we visit url '/form'
-    # that would show us the form
-    # user fills the form and submits it
-    # flask reads the form details using 'request.form.get()'
-    # and stores the form details in the 'user' variable
     if request.method == 'POST':
         user = request.form.get('name')
         print("Form Response:", request.form)
