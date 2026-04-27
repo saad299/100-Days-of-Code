@@ -1,20 +1,30 @@
 from flask import Flask, jsonify, render_template, request, url_for, redirect
-from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, EmailField, PasswordField, SubmitField
-from wtforms.validators import DataRequired, Email, EqualTo, Length
-# import email_validator
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+from contact import ContactForm
+# from model import User
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'some-secret-key'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-class ContactForm(FlaskForm):
-    name = StringField('Name', validators=[DataRequired(), Length(min=2, max=50)])
-    email = EmailField('Email', validators=[DataRequired(), Email()])
-    message = TextAreaField('Message', validators=[DataRequired(), Length(min=10, max=200)])
-    password = PasswordField('Password', validators=[DataRequired(), Length(min=6, max=20)])
-    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password', message='Password must match')])
-    submit = SubmitField('Submit')
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), nullable=False)
+    email = db.Column(db.String(120), nullable=False)
+    password = db.Column(db.String(120), nullable=False)
+    
+    # def __repr__(self):
+    #     return f'<User {self.name}>'
+
+with app.app_context():
+    db.create_all()
 
 @app.route('/')
 def home():
@@ -75,6 +85,46 @@ def register():
 @app.route('/success')
 def success():
     return "<h1>Registration Successful!!</h1>"
+
+
+@app.route('/user')
+def user():
+    users = User.query.all()
+    return render_template('users.html', users=users)
+
+
+# Add/Create
+@app.route('/add', methods=['GET', 'POST'])
+def add():
+    users = User(name="Saad", email="saad@example.com", password="password")
+    db.session.add(users)
+    db.session.commit()
+    return "User added successfully"
+
+# Read
+@app.route('/members', methods=['GET'])
+def members():
+    users = User.query.all()
+    user = User.query.get(1)
+    user = User.query.filter_by(name="Saad").first()
+    return str(users)
+
+# Update
+@app.route('/update')
+def update():
+    user = User.query.get(1)
+    user.name = "Saad Ahmad"
+    db.session.commit()
+    return "User updated successfully"
+
+# delete
+@app.route('/delete')
+def delete():
+    user = User.query.get(1)
+    db.session.delete(user)
+    db.session.commit()
+    return "User deleted successfully"
+
 
 if __name__ == '__main__':
     app.run(debug=True)
