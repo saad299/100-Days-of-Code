@@ -30,7 +30,6 @@ def home():
 # register route page
 @app.route("/register", methods=["GET", "POST"])
 def register():
-    form = RegisterForm()
     if current_user.is_authenticated:
         return redirect(url_for("expenses"))
     form = RegisterForm()
@@ -54,12 +53,17 @@ def register():
 # login route page
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for("expenses"))
     form = LoginForm()
     if form.validate_on_submit():
-        email = form.email.data
-        password = form.password.data
-        print("Form Response:", form.data)
-        return redirect(url_for('success'))
+        user = User.query.filter_by(username=form.username.data).first()
+        if user and user.check_password(form.password.data):
+            login_user(user, remember=form.remember.data)
+            print("Form Response:", form.data)
+            return redirect(url_for('expenses'))
+        else:
+            flash('Invalid username or password', 'danger')
     return render_template('auth/login.html', form=form)
 
 
