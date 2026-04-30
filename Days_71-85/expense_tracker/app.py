@@ -1,6 +1,7 @@
 from flask import Flask
 from model import User, db
 from flask_login import LoginManager
+# from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
 
@@ -10,13 +11,12 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///users.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 
-db = SQLALchemy(app)
+# db = SQLAlchemy(app)
 db.init_app(app)
 migrate = Migrate(app, db)
 
-
-# with app.app_context():
-#     db.create_all()
+with app.app_context():
+    db.create_all()
 
 login_manager = LoginManager(app)
 login_manager.login_view = "login"
@@ -28,7 +28,7 @@ def load_user(id):
     return User.query.get(int(id))
 
 
-import routes
+from routes import *
 
 
 if __name__ == "__main__":

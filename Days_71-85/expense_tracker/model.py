@@ -23,13 +23,14 @@ class User(UserMixin, db.Model):
 
 
 class Expense(db.Model):
-    # id = db.Column(db.Integer, primary_key=True)
-    author_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True, nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     amount = db.Column(db.Float, nullable=False)
     description = db.Column(db.String(200), nullable=False)
     date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    created_at = db.Column(db.DateTIme, default=datetime.utcnow)
-    # updated_at = db.Column(db.DateTIme, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    category = db.Column(db.String(50), nullable=False)
+    # updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     def __repr__(self):
         return f'<Expense {self.description}>'

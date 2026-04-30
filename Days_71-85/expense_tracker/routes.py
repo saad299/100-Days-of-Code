@@ -1,8 +1,8 @@
 from flask import render_template, request, url_for, redirect, flash, abort
 from flask_login import login_required, current_user, login_user, logout_user
 from form import RegisterForm, LoginForm, ExpenseForm
-from app import db, app
-from model import User, Expense
+from app import app
+from model import User, Expense, db
 from sqlalchemy import func
 
 """
@@ -20,11 +20,13 @@ Routes it will have
 
 
 # Homepage
-@app.route("/")
+@app.route('/')
 def home():
     if current_user.is_authenticated:
         return redirect(url_for("expenses"))
     return redirect(url_for("login"))
+    # return render_template('base.html')
+    # return 'This is a homepage'
 
 
 # register route page
@@ -71,28 +73,66 @@ def login():
 @app.route("/logout")
 def logout():
     logout_user()
+    flash('You have been logged out.', 'info')
     return redirect(url_for("login"))
 
 
 # expense lists route page
-@app.route("/expense")
-def expense():
-    return render_template("expenses/list.html")
+@app.route("/expenses")
+@login_required
+def expenses():
+    expenses = Expense.query.filter_by(author_id=current_user.id).all()
+    total = db.session.query(func.sum(Expense.amount)).filter_by(author_id=current_user.id).scalar() or 0
+    return render_template("expenses/list.html", expenses=expenses, total=total)
 
 
 # add expense route page
-@app.route("/expense/add")
+@app.route("/expense/add", methods=['GET', 'POST'])
+@login_required
 def add_expense():
-    return render_template("expenses/add.html")
+    form = ExpenseForm()
+    if form.validate_on_submit():
+        expense = Expense(
+            description=form.description.data,
+            amount=form.amount.data,
+            author_id=current_user.id,
+            date=form.date.data,
+            category=form.category.data
+        )
+        db.session.add(expense)
+        db.session.commit()
+        flash('Expense added successfully.', 'success')
+        return redirect(url_for('expenses'))
+    return render_template("expenses/add.html", form=form)
 
 
 # update expense route page
-@app.route("/expense/update/<int:id>")
+@app.route("/expense/update/<int:id>", methods=['GET', 'POST'])
+@login_required
 def update_expense(id):
-    return render_template("expenses/update.html")
+    expense = Expense.query.get_or_404(id)
+    if expense.author_id != current_user.id:
+        abort(403)
+    form = ExpenseForm(obj=expense)
+    if form.validate_on_submit():
+        expense.description = form.description.data
+        expense.amount = form.amount.data
+        expense.date = form.date.data
+        expense.category = form.category.data
+        db.session.commit()
+        flash('Expense updated successfully.', 'success')
+        return redirect(url_for('expenses'))
+    return render_template("expenses/update.html", form=form)
 
 
 # delete expense route page
-@app.route("/expense/delete/<int:id>")
+@app.route("/expense/delete/<int:id>", methods=['POST'])
+@login_required
 def delete_expense(id):
-    return render_template("expenses/delete.html")
+    expense = Expense.query.get_or_404(id)
+    if expense.author_id != current_user.id:
+        abort(403)
+    db.session.delete(expense)
+    db.session.commit()
+    flash('Expense deleted successfully.', 'success')
+    return redirect(url_for('expenses'))
