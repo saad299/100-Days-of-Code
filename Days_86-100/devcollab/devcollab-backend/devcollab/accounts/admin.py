@@ -1,11 +1,11 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import User
+from .models import User, Profile
 
 # Register your models here.
 # admin.site.register(User, UserAdmin)
 
-class ProfileInline(TabularInline):
+class ProfileInline(admin.TabularInline):
     model = Profile
     fields = ['bio', 'skills', 'location', 'github_url']
     can_delete = False
@@ -24,15 +24,15 @@ class CustomUserAdmin(UserAdmin):
     #         'fields': ('email_verified',)
     #     }),
     # )
-    fieldsets = (
-        *UserAdmin.fieldsets,
-        (
-            'Email Verification',
-            {
-                'fields': ('email_verified',)
-            }
-        ),
-    )
+    # fieldsets = (
+    #     *UserAdmin.fieldsets,
+    #     (
+    #         'Email Verification',
+    #         {
+    #             'fields': ('email_verified',)
+    #         }
+    #     ),
+    # )
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
