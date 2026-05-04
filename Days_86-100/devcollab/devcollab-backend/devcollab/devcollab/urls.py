@@ -23,4 +23,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('projects.urls')),
     path('api/auth/', include('accounts.urls')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
+
+# for development, add media file serving:
+if settings.DEBUG:
+    urlpatterns += static(
+        settings.MEDIA_URL,
+        document_root=settings.MEDIA_ROOT
+    )
