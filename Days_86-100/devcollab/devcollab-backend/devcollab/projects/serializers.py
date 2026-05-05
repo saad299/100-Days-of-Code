@@ -1,6 +1,6 @@
 from dataclasses import fields
 from rest_framework import serializers
-from .models import Project
+from .models import CollaborationRequest, Project
 from accounts.serializers import UserSerializer
 
 class ProjectSerializer(serializers.ModelSerializer):
@@ -24,7 +24,43 @@ class ProjectSerializer(serializers.ModelSerializer):
 
     def get_request_status(self, obj):
         request = self.context.get('request')
-        serialize = HTTP_request_object
-        if request == None or not request.user.is_authenticated:
-            return 'not_requested'
-        return 'requested'
+        if not request or not request.user.is_authenticated:
+            return None
+        collaboration_request = CollaborationRequest.objects.filter(
+            project=obj,
+            requester=request.user
+        ).first()
+        if collaboration_request:
+            return collaboration_request.status
+        return None
+
+class CollaborationRequestSerializer(serializers.ModelSerializer):
+    requester_data = serializers.SerializerMethodField()
+    project_details = serializers.SerializerMethodField()
+
+    class Meta:
+        model = CollaborationRequest
+        fields = '__all__'
+        read_only_fields = [
+            'id',
+            'message',
+            'status',
+            'created_at',
+            'requester_data',
+            'project_detail'
+        ]
+        
+    def get_requester_data(self, obj):
+        from accounts.serializers import UserSerializer
+        return UserSerializer(obj.requester).data
+    
+    def get_project_detail(self, obj):
+        return {
+            'id': obj.project.id,
+            'title': obj.project.title,
+            'owner_username': obj.project.owner.username,
+            'tech_stack_list': obj.project.get_tech_stack_list(),
+            'roles_list': obj.project.get_roles_list(),
+            'status': obj.project.status,
+            'is_open': obj.project.is_open,
+        }
