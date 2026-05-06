@@ -9,6 +9,19 @@ router.register(
     basename='project'
 )
 
+# {"id":6,"username":"Saad","email":"saad@gamil.com","profile":{"id":6,"bio":null,"avatar":null,"skills":null,"github_url":null,"linkedin_url":null,"website_url":null,"location":null,"user":6}}
+"""
+username = Saad
+email = saad@gamil.com
+password = testpass123
+username = Saad1
+email = saad1@gamil.com
+password = testpass1234
+username = Saad2
+email = saad2@gamil.com
+password = testpass12345
+"""
+
 urlpatterns = [
     # Project URLs - handled by router
     # GET    /api/projects/              — list all open projects
