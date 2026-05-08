@@ -18,8 +18,12 @@ function ProtectedRoute({children}) {
     if (loading) {
         return <div>Loading...</div>
     }
+
+    if (user === null) {
+        return null
+    }
     
-    return user ? children : null
+    return children
 }
 
 export default ProtectedRoute
