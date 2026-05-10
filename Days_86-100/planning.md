@@ -601,7 +601,24 @@ devcollab-frontend/
 
 ---
 
-## 8. Day by Day Build Plan
+## 8. Full flow of the DevCollab software:
+
+1. User opens the software for the first time; sees the the project dashboard where all the different projects posted are listed. They can click on any project and browse the projects listed and can see the details of the project, like what skills and tech stack the project requires. If they try to edit or request for collaboration on the project, they are redirected to the register/login page.
+
+2. Upon successful registering/logging in, the user can see that project dashboard once again where the different projects posted are listed. They can click on any project and browse the projects listed and can see the details of the project, like what skills and tech stack the project requires. If they try to edit the project, error is shown, saying something like 'You cannot edit the project. You are not the owner of this project.' But when they try to request for collaboration on the project, a text box is opened in which they can write the request message. The user cannot send and empty request message box, at least 20 characters are required.
+
+3. In the user's dashboard, they can see the stats of:
+    1. how many projects they have posted.
+    2. how many requests in total the user has requested on other projects.
+    3. how many of those are in pending and how many of those requested have been accepted.
+
+4. The navbar will have 'Browse Projects', 'Dashboard', and 'Profile' links that links to relative pages. There will also be a 'Post Project' link button that takes the user to post a new project page whose url will be '/projects/new/'
+
+5. Clicking the 'Profile' in the navbar will take the user to their profile where they can see their profile and also the projects that they have posted. The user can update their profile by clicking the 'Edit Profile' button on their profile
+
+---
+
+## 9. Day by Day Build Plan
 
 ### Django Backend (Days 87–90)
 ```
