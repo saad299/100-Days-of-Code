@@ -128,7 +128,7 @@ function EditProfilePage() {
         )}
 
         {/* Upload avatar image */}
-        <label className="cursor-pointer rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">
+        {/* <label className="cursor-pointer rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">
           Choose Avatar
           <input
             type="file"
@@ -136,7 +136,13 @@ function EditProfilePage() {
             onChange={handleAvatarChange}
             className="hidden"
           />
-        </label>
+        </label> */}
+        <div className="flex items-center gap-4 mb-6">
+          <div className="w-16 h-16 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-2xl font-semibold">
+            {user?.username?.[0]?.toUpperCase()}
+          </div>
+          <p className="text-sm text-gray-500">Avatar upload coming soon</p>
+        </div>
 
         {/* Bio field */}
         <div>

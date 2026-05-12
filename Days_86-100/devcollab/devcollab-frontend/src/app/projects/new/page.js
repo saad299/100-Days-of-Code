@@ -5,11 +5,14 @@ import { useRouter } from "next/navigation"
 import ProtectedRoute from "@/components/layout/ProtectedRoute"
 import ProjectForm from "@/components/projects/ProjectForm"
 import { createProject } from "@/services/projects"
+import useToast from '@/hooks/useToast'
+import parseApiError from '@/utils/parseApiError'
 
 function NewProjectPage() {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
     const router = useRouter()
+    const { showToast } = useToast()
 
     async function handleSubmit(formData) {
         setLoading(true)
@@ -19,11 +22,13 @@ function NewProjectPage() {
             const newProject = await createProject(formData)
             router.push(`/projects/${newProject.id}`)
         } catch (err) {
-            if (err.response?.data) {
-                setError(err.response.data.message)
-            } else {
-                setError(err.message)
-            }
+            // if (err.response?.data) {
+            //     setError(err.response.data.message)
+            // } else {
+            //     setError(err.message)
+            // }
+            showToast(parseApiError(err), 'error')
+            setDeleting(false)
         }
         setLoading(false)
     }

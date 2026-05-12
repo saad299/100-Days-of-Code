@@ -7,11 +7,15 @@ import { getProject, deleteProject } from "@/services/projects";
 import useAuth from "@/hooks/useAuth";
 import TechStackTag from "@/components/projects/TechStackTag";
 import RoleTag from "@/components/projects/RoleTag";
+import { SkeletonDetailPage } from '@/components/ui/SkeletonCard'
+import useToast from '@/hooks/useToast'
+import parseApiError from '@/utils/parseApiError'
 
 function ProjectDetailPage() {
   const { id } = useParams();
   const { user } = useAuth();
   const router = useRouter();
+  const { showToast } = useToast()
 
   const [project, setProject] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -46,7 +50,8 @@ const handleDelete = async () => {
         await deleteProject(id)
         router.push('/dashboard')
     } catch (err) {
-        console.error('Failed to delete project:', err)
+        showToast(parseApiError(err), 'error')
+        setDeleting(false)
     } finally {
         setDeleting(false)
     }
@@ -89,7 +94,11 @@ const renderActionButton = () => {
 
 }
 if (loading) {
-    return <div>Loading...</div>
+  return (
+    <div className="max-w-5xl mx-auto px-4 py-8">
+      <SkeletonDetailPage />
+    </div>
+  )
 }
 
 if (error === 'not_found') {
