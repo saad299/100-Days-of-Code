@@ -7,20 +7,21 @@ import ProtectedRoute from "@/components/layout/ProtectedRoute"
 import { getProjectById } from "@/services/projects"
 import { sendRequest } from "@/services/requests"
 import useAuth from "@/hooks/useAuth"
-import TechStackTag from "@/components/projects/TechStackTag"
+// import TechStackTag from "@/components/projects/TechStackTag"
+import useToast from '@/hooks/useToast'
+import parseApiError from '@/utils/parseApiError'
 
 function ApplyPage() {
     const { id } = useParams();
     const { user } = useAuth();
     const router = useRouter();
+    const { showToast } = useToast()
 
-    const [state, setState] = useState({
-        project: null,
-        message: '',
-        loading: true,
-        submitting: false,
-        error: null
-    })
+    const [submitting, setSubmitting] = useState(false);
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [project, setProject] = useState(null);
+    const [message, setMessage] = useState('');
 
     useEffect(() => {
         const fetchProject = async() => {
@@ -36,12 +37,19 @@ function ApplyPage() {
                     router.push(`/projects/${id}`);
                     return;
                 }
-                setState(prev => ({ ...prev, project: data, loading: false }));
+                setProject(data);
+                setLoading(false);
             } catch (error) {
-                console.error('Failed to fetch project:', error);
-                setState(prev => ({ ...prev, error: 'Failed to load project' }));
+                const msg = parseApiError(err)
+                if (msg.includes('already sent')) {
+                  showToast('You have already applied to this project.', 'info')
+                  router.push(`/projects/${id}`)
+                } else {
+                  showToast(msg, 'error')
+                  setSubmitting(false)
+                }
             } finally {
-                setState(prev => ({ ...prev, loading: false }));
+                setLoading(false)
             }
         }
 
@@ -51,15 +59,15 @@ function ApplyPage() {
     const handleSubmit = async(e) => {
         e.preventDefault();
         
-        if (state.message.trim().length < 20) {
-            setState(prev => ({ ...prev, error: 'Message must be at least 20 characters long' }));
+        if (message.trim().length < 20) {
+            setError('Message must be at least 20 characters long');
             return;
         }
-        setState(prev => ({ ...prev, submitting: true }));
-        setState(prev => ({ ...prev, error: null }));
+        setSubmitting(true);
+        setError(null);
         
         try {
-            await sendRequest(id, state.message.trim());
+            await sendRequest(id, message.trim());
             router.push(`/projects/${id}`);
         } catch (error) {
             const errorData = error.response?.data;
@@ -76,7 +84,7 @@ function ApplyPage() {
         }
     }
 
-    if (error && state.project === null) {
+    if (error && project === null) {
         return <ProtectedRoute error={error} />;
     }
 
@@ -84,11 +92,11 @@ function ApplyPage() {
         <ProtectedRoute>
             <div>
                 <h1>You &apos;re apply to:</h1>
-                <p>{state.project?.title}</p>
-                <p>{state.project?.owner?.username}</p>
-                <p>{state.project?.description.trim().substring(0, 150)}...</p>
-                <p>{state.project?.tech_stack?.join(', ')}</p>
-                <p>{state.project?.roles_needed?.join(', ')}</p>
+                <p>{project.title}</p>
+                <p>{project.owner?.username}</p>
+                <p>{project.description.trim().substring(0, 150)}...</p>
+                <p>{project.tech_stack?.join(', ')}</p>
+                <p>{project.roles_needed?.join(', ')}</p>
             </div>
 
             <div>
@@ -97,17 +105,17 @@ function ApplyPage() {
 
                 <form onSubmit={handleSubmit}>
                     <textarea 
-                        value={state.message}
+                        value={message}
                         placeholder="I&apos;m interested in this project because..."
                         onChange={(e) => setState(prev => ({ ...prev, message: e.target.value }))}
                         rows={6}
                         minLength={20}
                         cols={50}
-                        onError={state.error}
+                        onError={error}
                         required
                     />
-                    <button type="submit" disabled={state.submitting}>
-                        {state.submitting ? 'Sending...' : 'Send Request'}
+                    <button type="submit" disabled={submitting}>
+                        {submitting ? 'Sending...' : 'Send Request'}
                     </button>
                 </form>
                 <Link href={`/projects/${id}`}>Cancel</Link>

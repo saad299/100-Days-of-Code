@@ -6,18 +6,19 @@ import ProtectedRoute from "@/components/layout/ProtectedRoute"
 import ProjectForm from "@/components/projects/ProjectForm"
 import { getProjectById, updateProject } from "@/services/projects"
 import useAuth from "@/hooks/useAuth"
+import useToast from '@/hooks/useToast'
+import parseApiError from '@/utils/parseApiError'
 
 function EditProjectPage() {
     const { id } = useParams();
     const { user } = useAuth();
     const router = useRouter();
+    const { showToast } = useToast()
     
-    const [state, setState] = useState({
-        loading: true,
-        project: null,
-        submitting: false,
-        error: null
-    })
+    const [submitting, setSubmitting] = useState(false);
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [project, setProject] = useState(null);
 
     useEffect(() => {
         const fetchProject = async() => {
@@ -27,11 +28,13 @@ function EditProjectPage() {
                     router.push(`/projects/${id}`);
                     return;
                 }
-                setState(prev => ({ ...prev, project: data, loading: false }));
+                setProject(data);
+                setLoading(false);
                 // setState({ ...state, project: data, loading: false });
             } catch (error) {
                 console.error('Failed to fetch project:', error);
-                setState(prev => ({ ...prev, error: 'Failed to load project', loading: false }));
+                setError('Failed to load project');
+                setLoading(false);
             }
         }
 
@@ -39,15 +42,24 @@ function EditProjectPage() {
     })
 
     const handleSubmit = async(formData) => {
-        setState(prev => ({ ...prev, loading: true }));
-        setState(prev => ({ ...prev, error: null }));
+        // setState(prev => ({ ...prev, loading: true }));
+        // setState(prev => ({ ...prev, error: null }));
+        const hasChanged = Object.keys(formData).some(
+            (key) => formData[key] !== project[key]
+        )
+        if (!hasChanged) {
+            showToast('No changes to save.', 'info')
+            return
+        }
+        setSubmitting(true)
         
         try {
             await updateProject(id, formData);
+            showToast('Project updated successfully.', 'success')
             router.push(`/projects/${id}`);
         } catch (error) {
-            console.error('Failed to update project:', error);
-            setState(prev => ({ ...prev, error: 'Failed to update project', submitting: false }));
+            showToast(parseApiError(err), 'error')
+            setSubmitting(false)
         }
     }
 
@@ -55,7 +67,7 @@ function EditProjectPage() {
         return <div>Loading.....</div>
     }
 
-    if (error && state.project === null) {
+    if (error && project === null) {
         return <ProtectedRoute error={error} />;
     }
 
@@ -63,14 +75,14 @@ function EditProjectPage() {
         <ProtectedRoute>
             <div>
                 <h1>Edit Project</h1>
-                <p>{state.project?.title}</p>
+                <p>{project?.title}</p>
             </div>
 
             <ProjectForm 
-                project={state.project}
+                project={project}
                 onSubmit={handleSubmit}
-                loading={state.loading}
-                error={state.error}
+                loading={loading}
+                error={error}
             />
         </ProtectedRoute>
     )
