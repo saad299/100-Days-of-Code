@@ -4,9 +4,9 @@ import { createContext, useState, useEffect } from "react";
 import { getCurrentUser, login as loginService , logout as logoutService, register as registerService } from "../services/auth";
 import { usePathname, useRouter } from "next/navigation";
 
-const AuthContext = createContext(null);
+export const AuthContext = createContext(null);
 
-const AuthProvider = ({ children }) => {
+export default function AuthProvider({ children }) {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     
@@ -43,5 +43,3 @@ const AuthProvider = ({ children }) => {
         </AuthContext.Provider>
     )
 }
-
-export { AuthContext, AuthProvider };
