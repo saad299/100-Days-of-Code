@@ -6,11 +6,14 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import ProtectedRoute from "@/components/layout/ProtectedRoute";
 import { getMyProfile, updateMyProfile, uploadAvatar } from "@/services/users";
+import useToast from '@/hooks/useToast'
+import parseApiError from '@/utils/parseApiError'
 import useAuth from "@/hooks/useAuth";
 
 function EditProfilePage() {
   const { user } = useAuth();
   const router = useRouter();
+  const { showToast } = useToast();
 
   const [state, setState] = useState({
     bio: "",
@@ -74,7 +77,7 @@ function EditProfilePage() {
     setState((prev) => ({
       ...prev,
       submitting: true,
-      error: null,
+      // error: null,
     }));
 
     try {
@@ -92,14 +95,14 @@ function EditProfilePage() {
           linkedin_url: linkedinUrl,
           website_url: websiteUrl,
         });
-
+        showToast('Profile updated successfully', 'success');
         router.push(`/profile${user.username}`);
       }
     } catch (error) {
-      const errMessage = parseApiError(error);
+      showToast(parseApiError(error), 'error');
       setState((prev) => ({
         ...prev,
-        error: errMessage,
+        // error: errMessage,
         submitting: false,
       }));
     }
@@ -126,7 +129,22 @@ function EditProfilePage() {
             height={100}
           />
         )}
+        {/* Use this pattern to show an avatar for now */}
+        {profile?.avatar ? (
+          <Image
+            src={profile.avatar}
+            alt={username}
+            className="w-14 h-14 rounded-full object-cover"
+            width={56}
+            height={56}
+          />
+        ) : (
+          <div className="w-14 h-14 rounded-full bg-blue-100 text-blue-700 flex          items-center justify-center text-xl font-semibold">
+            {username?.[0]?.toUpperCase()}
+          </div>
+        )}
 
+        {/* This will be uncommented once file upload with Cloudinary is configured */}
         {/* Upload avatar image */}
         {/* <label className="cursor-pointer rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">
           Choose Avatar

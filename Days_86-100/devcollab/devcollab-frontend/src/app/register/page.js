@@ -3,16 +3,10 @@
 import Link from "next/link";
 import useAuth from "@/hooks/useAuth";
 import { useRouter } from "next/navigation";
-import { useActionState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 function RegisterPage() {
-  const [state, action, pending] = useActionState({
-    setState: (state, newState) => {
-      return {
-        ...state,
-        ...newState,
-      };
-    },
+  const [state, setState] = useState({
     username: "",
     email: "",
     password: "",
@@ -58,7 +52,7 @@ function RegisterPage() {
       <h1>Join DevCollab by Registering Yourself here</h1>
 
       {setState && (
-        <form action={action} onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
           <input
             type="username"
             placeholder="Username"
@@ -83,8 +77,8 @@ function RegisterPage() {
             value={state.password2}
             onChange={(e) => setState({ password2: e.target.value })}
           />
-          <button type="submit" disabled={pending}>
-            {isPending ? "Loading..." : "Login"}
+          <button type="submit" disabled={state.loading}>
+            {state.loading ? "Loading..." : "Register"}
           </button>
           {state?.error && <p className="text-red-500">{state.error}</p>}
         </form>

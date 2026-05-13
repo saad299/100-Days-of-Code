@@ -1,26 +1,17 @@
 "use client";
 
-import { useEffect, useActionState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import useAuth from "@/hooks/useAuth";
 
 function LoginPage() {
-  const [state, action, isPending] = useActionState(
-    (state, formData) => {
-      return {
-        ...state,
-        email: formData.get("email"),
-        password: formData.get("password"),
-      };
-    },
-    {
-      email: "",
-      password: "",
-      error: "",
-      loading: false,
-    }
-  );
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    error: "",
+    loading: false,
+  });
   const router = useRouter();
   const searchParams = useSearchParams();
   const { login, user } = useAuth();
@@ -62,30 +53,29 @@ function LoginPage() {
   return (
     <div className="flex flex-1 items-center justify-center">
       <h1>Welcome Back!</h1>
-      {formData && (
-        <form action={action} onSubmit={handleSubmit}>
-          <input
-            type="email"
-            placeholder="Email"
-            value={formData.email}
-            onChange={(e) =>
-              setFormData({ ...formData, email: e.target.value })
-            }
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={(e) =>
-              setFormData({ ...formData, password: e.target.value })
-            }
-          />
-          <button type="submit" disabled={isPending}>
-            {isPending ? "Loading..." : "Login"}
-          </button>
-          {state?.error && <p className="text-red-500">{state.error}</p>}
-        </form>
-      )}
+      <form onSubmit={handleSubmit}>
+        <input
+          type="email"
+          placeholder="Email"
+          value={formData.email}
+          onChange={(e) =>
+            setFormData({ ...formData, email: e.target.value })
+          }
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={formData.password}
+          onChange={(e) =>
+            setFormData({ ...formData, password: e.target.value })
+          }
+        />
+        <button type="submit" disabled={formData.loading}>
+          {formData.loading ? "Loading..." : "Login"}
+        </button>
+        {formData.error && <p className="text-red-500">{formData.error}</p>}
+      </form>
+      {router.push("/dashboard")}
       <Link href="/register">Don&apos;t have an account? Register</Link>
     </div>
   );

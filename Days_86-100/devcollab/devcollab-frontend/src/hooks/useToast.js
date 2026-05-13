@@ -1,7 +1,7 @@
 'use client'
 
 import { useContext } from 'react'
-import { ToastContext } from './ToastContext'
+import { ToastContext } from '../context/ToastContext'
 
 function useToast() {
   const context = useContext(ToastContext)
