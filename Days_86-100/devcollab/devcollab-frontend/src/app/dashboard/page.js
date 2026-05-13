@@ -8,7 +8,7 @@ import RequestCard from "@/components/requests/RequestCard";
 // import ProjectCard from "@/components/projects/ProjectCard";
 import { getMyProjects, deleteProject } from "@/services/projects";
 import { getProjectRequests } from "@/services/requests";
-import { SkeletonCard, SkeletonRow } from '@/components/ui/SkeletonCard'
+import { SkeletonCard, SkeletonRow, SkeletonProfile } from '@/components/ui/SkeletonCard'
 import EmptyState from '@/components/ui/EmptyState'
 import useToast from '@/hooks/useToast'
 import parseApiError from '@/utils/parseApiError'
@@ -104,8 +104,9 @@ function DashboardPage() {
   //   Show loading skeleton
   if (loading) {
     return (
-      <ProtectedRoute>
+      // <ProtectedRoute>
         <div className="max-w-5xl mx-auto px-4 py-8">
+          <SkeletonProfile />
           {/* skeleton stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
             {[...Array(4)].map((_, i) => (
@@ -126,7 +127,7 @@ function DashboardPage() {
             <SkeletonCard key={i} />
           ))}
         </div>
-      </ProtectedRoute>
+      // </ProtectedRoute>
     )
   }
 
