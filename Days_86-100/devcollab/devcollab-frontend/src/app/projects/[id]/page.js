@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { getProject, deleteProject } from "@/services/projects";
+import { getProjectById, deleteProject } from "@/services/projects";
 import useAuth from "@/hooks/useAuth";
 import TechStackTag from "@/components/projects/TechStackTag";
 import RoleTag from "@/components/projects/RoleTag";
@@ -27,7 +27,7 @@ function ProjectDetailPage() {
     setLoading(true);
 
     try {
-        const data = await getProject(id);
+        const data = await getProjectById(id);
         setProject(data);
     } catch (err) {
         const errMessage = "Failed"
@@ -101,13 +101,31 @@ if (loading) {
   )
 }
 
-if (error === 'not_found') {
-    return (
-        <div>
-            Project not found
-            <Link href="/projects">Back to Browse</Link>
-        </div>
-    )
+// if (error === 'not_found') {
+//     return (
+//         <div>
+//             Project not found
+//             <Link href="/projects">Back to Browse</Link>
+//         </div>
+//     )
+// }
+if (!loading && !project && error === 'not_found') {
+  return (
+    <div className="max-w-4xl mx-auto px-4 py-16 text-center">
+      <h2 className="text-xl font-semibold text-gray-800 mb-3">
+        Project not found
+      </h2>
+      <p className="text-gray-500 mb-6">
+        This project may have been deleted or the URL is incorrect.
+      </p>
+      <Link
+        href="/projects"
+        className="text-blue-500 hover:underline text-sm"
+      >
+        Back to Browse
+      </Link>
+    </div>
+  )
 }
 
 if (error === 'failed') {

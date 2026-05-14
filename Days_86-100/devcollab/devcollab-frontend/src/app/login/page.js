@@ -75,7 +75,6 @@ function LoginPage() {
         </button>
         {formData.error && <p className="text-red-500">{formData.error}</p>}
       </form>
-      {router.push("/dashboard")}
       <Link href="/register">Don&apos;t have an account? Register</Link>
     </div>
   );

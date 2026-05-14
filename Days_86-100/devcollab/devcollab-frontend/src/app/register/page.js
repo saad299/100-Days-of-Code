@@ -28,11 +28,10 @@ function RegisterPage() {
     e.preventDefault();
 
     if (state.password !== state.password2) {
-      setState({ error: "Passwords do not match" });
+      setState(prev => ({ ...prev, error: "Passwords do not match" }));
       return;
     }
-    setState({ loading: true });
-    setState({ error: null });
+    setState(prev => ({ ...prev, loading: true, errpr: null }));
 
     try {
       await register(state.username, state.email, state.password);
@@ -41,9 +40,9 @@ function RegisterPage() {
       const errMessage =
         error.response?.data?.message ||
         "Registration failed. Please try again.";
-      setState({ error: errMessage });
+      setState(prev => ({ ...prev, error: errMessage }));
     } finally {
-      setState({ loading: false });
+      setState(prev => ({ ...prev, loading: false }));
     }
   };
 
@@ -51,7 +50,7 @@ function RegisterPage() {
     <div>
       <h1>Join DevCollab by Registering Yourself here</h1>
 
-      {setState && (
+      {/* {setState && ( */}
         <form onSubmit={handleSubmit}>
           <input
             type="username"
@@ -82,7 +81,7 @@ function RegisterPage() {
           </button>
           {state?.error && <p className="text-red-500">{state.error}</p>}
         </form>
-      )}
+      {/* )} */}
       <Link href="/login">Already have an account? Login</Link>
     </div>
   );
