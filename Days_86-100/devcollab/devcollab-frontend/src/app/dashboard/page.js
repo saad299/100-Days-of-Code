@@ -8,7 +8,7 @@ import RequestCard from "@/components/requests/RequestCard";
 // import ProjectCard from "@/components/projects/ProjectCard";
 import { getMyProjects, deleteProject } from "@/services/projects";
 import { getProjectRequests } from "@/services/requests";
-import { SkeletonCard, SkeletonRow, SkeletonProfile } from '@/components/ui/SkeletonCard'
+import { SkeletonRequestCard, SkeletonRow, SkeletonProfile } from "@/components/ui/SkeletonCard";
 import EmptyState from '@/components/ui/EmptyState'
 import useToast from '@/hooks/useToast'
 import parseApiError from '@/utils/parseApiError'
@@ -27,7 +27,10 @@ function DashboardPage() {
 
 
   useEffect(() => {
-    async function fetchDashboardData() {
+    fetchDashboardData();
+  }, []);
+
+  async function fetchDashboardData() {
       setLoading(true);
       setError(null);
       try {
@@ -53,9 +56,6 @@ function DashboardPage() {
         setLoading(false);
       }
     }
-
-    fetchDashboardData();
-  }, []);
 
 //   Delete the project
   async function handleDeleteProject(projectId, projectTitle) {
@@ -124,7 +124,7 @@ function DashboardPage() {
           {/* skeleton requests */}
           <div className="h-5 bg-gray-200 rounded w-48 mb-4 mt-8 animate-pulse"></div>
           {[...Array(2)].map((_, i) => (
-            <SkeletonCard key={i} />
+            <SkeletonRequestCard key={i} />
           ))}
         </div>
       // </ProtectedRoute>
