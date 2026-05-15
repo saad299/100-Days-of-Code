@@ -1,7 +1,6 @@
 
 const mongoose = require("mongoose")
-const uri =
-  "mongodb+srv://hello:gyfguyfyf@cluster0.fkmn43w.mongodb.net/MyDatabase?appName=Cluster0";
+const uri = process.env.MONGO_URI
 
 const userSchema = new mongoose.Schema({
   name: String,
