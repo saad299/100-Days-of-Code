@@ -674,6 +674,7 @@ Day 100 — Final post: what DevCollab is, full tech stack,
 ```
 
 ### Buffer Rule
+<<<<<<< HEAD
 Days 95-97 are the natural buffer. If building days run over, those three days absorb the overflow. The hard deadline is deployment on days 98-99. Everything before that is flexible. A working deployed app beats a feature-complete local app every time.
 
 ---
@@ -737,3 +738,6 @@ and with the following JSON object in the Body -> raw -> JSON:
 ---
 
 ### Frontend endpoints (Test by running the nextjs app)
+=======
+Days 95-97 are the natural buffer. If building days run over, those three days absorb the overflow. The hard deadline is deployment on days 98-99. Everything before that is flexible. A working deployed app beats a feature-complete local app every time.
+>>>>>>> b4b3b0f4440339f59e8bbbbebe75bb00d72a8a73
