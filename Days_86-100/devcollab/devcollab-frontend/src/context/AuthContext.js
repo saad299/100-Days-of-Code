@@ -17,13 +17,13 @@ export default function AuthProvider({ children }) {
     }, [])
 
     async function login(email, password) {
-        data = await loginService(email, password)
+        const data = await loginService(email, password)
         setUser(data.user)
         return data
     }
 
     async function register(username, email, password, password2) {
-        data = await registerService(username, email, password, password2)
+        const data = await registerService(username, email, password, password2)
         setUser(data.user)
         return data
     }
