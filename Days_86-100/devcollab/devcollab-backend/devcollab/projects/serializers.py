@@ -4,23 +4,26 @@ from .models import CollaborationRequest, Project
 from accounts.serializers import UserSerializer
 
 class ProjectSerializer(serializers.ModelSerializer):
-    fields = ['id', 'title', 'description', 'tech_stack', 'roles_needed', 'status', 'is_open', 'created_at', 'updated_at']
+    class Meta:
+        model = Project
+        fields = ['id', 'title', 'description', 'tech_stack', 'roles_needed', 'status', 'is_open', 'created_at', 'updated_at']
 
     owner_data = serializers.SerializerMethodField()
-    tech_stack_list = serializers.SerializerMethodField()
-    roles_list = serializers.SerializerMethodField()
+    # tech_stack_list = serializers.SerializerMethodField()
+    # roles_list = serializers.SerializerMethodField()
     request_status = serializers.SerializerMethodField()
     
     class Meta:
         model = Project
         fields = '__all__'
-        read_only_fields = ['id', 'created_at', 'updated_at', 'owner_data', 'tech_stack_list', 'roles_list', 'request_status']
+        #  'roles_list' and 'tect_stack_list' was removed from here
+        read_only_fields = ['id', 'created_at', 'updated_at', 'owner_data', 'request_status']
 
     def get_owner_data(self, obj):
         return UserSerializer(obj.owner).data
     
-    def get_tech_stack_list(self, obj):
-        return obj.tech_stack_list()
+    # def get_tech_stack_list(self, obj):
+    #     return obj.tech_stack_list()
 
     def get_request_status(self, obj):
         request = self.context.get('request')
@@ -59,8 +62,8 @@ class CollaborationRequestSerializer(serializers.ModelSerializer):
             'id': obj.project.id,
             'title': obj.project.title,
             'owner_username': obj.project.owner.username,
-            'tech_stack_list': obj.project.get_tech_stack_list(),
-            'roles_list': obj.project.get_roles_list(),
+            # 'tech_stack_list': obj.project.get_tech_stack_list(),
+            # 'roles_list': obj.project.get_roles_list(),
             'status': obj.project.status,
             'is_open': obj.project.is_open,
         }

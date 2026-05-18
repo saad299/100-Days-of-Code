@@ -130,6 +130,7 @@ class CollaborationRequestViewSet(viewsets.ViewSet):
 
         serializer = CollaborationRequestSerializer(
             data=request.data,
+            many=True,
             context={'request': request}
         )
         if serializer.is_valid():
@@ -179,6 +180,7 @@ class CollaborationRequestViewSet(viewsets.ViewSet):
 
         serializer = CollaborationRequestSerializer(
             collaboration_request,
+            many=True,
             context={'request': request}
         )
         return Response(serializer.data, status=status.HTTP_200_OK)

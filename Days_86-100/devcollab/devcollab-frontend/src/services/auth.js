@@ -3,8 +3,8 @@ import api from './api.js';
 export const register = async (username, email, password, password2) => {
     const response = await api.post('/auth/register/', { username, email, password, password2 });
         if (response.data.access) {
-            localStorage.setItem('access_token', response.data.access);
-            localStorage.setItem('refresh_token', response.data.refresh);
+            localStorage.setItem('access_token', response.data.access, /* { expires: new Date(Date.now() + 24 * 60 * 60 * 1000) } */);
+            localStorage.setItem('refresh_token', response.data.refresh, /* { expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) } */);
             localStorage.setItem('user', JSON.stringify(response.data.user));
             return response.data;
         }
@@ -17,8 +17,8 @@ export const register = async (username, email, password, password2) => {
 export const login = async (email, password) => {
     const response = await api.post('/auth/login/', { email, password });
         if (response.data.access) {
-            localStorage.setItem('access_token', response.data.access);
-            localStorage.setItem('refresh_token', response.data.refresh);
+            localStorage.setItem('access_token', response.data.access, /* { expires: new Date(Date.now() + 24 * 60 * 60 * 1000)} */);
+            localStorage.setItem('refresh_token', response.data.refresh, /* { expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)} */);
             localStorage.setItem('user', JSON.stringify(response.data.user));
             return response.data;
         }
@@ -40,7 +40,6 @@ export const logout = () => {
     }
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
-    localStorage.removeItem('user');
 };
 
 export const getCurrentUser = () => {
