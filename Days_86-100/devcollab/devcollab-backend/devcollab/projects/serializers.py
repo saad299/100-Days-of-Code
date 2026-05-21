@@ -16,8 +16,8 @@ class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
         fields = '__all__'
-        #  'roles_list' and 'tect_stack_list' was removed from here
-        read_only_fields = ['id', 'created_at', 'updated_at', 'tech_stack_list', 'roles_list', 'owner_data', 'request_status']
+        # read_only_fields = ['id', 'created_at', 'updated_at', 'tech_stack_list', 'roles_list', 'owner_data', 'request_status']
+        read_only_fields = ['id', 'created_at', 'updated_at', 'owner', 'tech_stack_list', 'roles_list', 'owner_data', 'request_status']
 
     def get_owner_data(self, obj):
         return UserSerializer(obj.owner).data
