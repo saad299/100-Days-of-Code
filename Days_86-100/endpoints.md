@@ -16,6 +16,7 @@ GET   /api/requests/mine/        (second user token)
 
 > Authorization(Profile) endpoints
 
+### Registering
 1. send POST request on http://127.0.0.1:8000/api/auth/register/ along with the following JSON object in the Body -> raw -> JSON
    - Request body:
      ```json
@@ -28,6 +29,7 @@ GET   /api/requests/mine/        (second user token)
      ```
    - Expected output: 201 status with access token, refresh token, and user object.
 
+### Logging in
 2. send POST request on http://127.0.0.1:8000/api/auth/login/ along with the following JSON object in the Body -> raw -> JSON
    - Request body:
      ```json
@@ -38,6 +40,7 @@ GET   /api/requests/mine/        (second user token)
      ```
    - Expected output: 200 status with access token, refresh token, and user object. Copy the access token.
 
+### Refreshing token
 3. send POST request on http://127.0.0.1:8000/api/auth/token/refresh/ along with the following JSON object in the Body -> raw -> JSON
    - Request body:
      ```json
@@ -49,10 +52,12 @@ GET   /api/requests/mine/        (second user token)
 
 > Profile endpoints
 
+### Getting profile
 4. send GET request on http://127.0.0.1:8000/api/auth/users/me/ with the access token in the headers tab of Postman in the following way:
    > Authorization: Bearer <your_access_token_here>
    - Expected output: 200 status with your user and profile data.
 
+### Updating profile
 5. send PATCH request on http://127.0.0.1:8000/api/auth/users/me/ with the access token in the headers tab of Postman in the following way:
     > Authorization: Bearer <your_access_token_here>
 and with the following JSON object in the Body -> raw -> JSON:
@@ -66,23 +71,29 @@ and with the following JSON object in the Body -> raw -> JSON:
     ```
     - Expected output: 200 status with updated profile.
 
+### Viewing public profile
 6. send GET request on http://127.0.0.1:8000/api/auth/users/testuser/ without any access token to get the public profile
   - Expected output: 200 status with public profile
 
 > Project endpoints
 
+### View listed projects
 1. send GET request on http://127.0.0.1:8000/api/projects/ without any access token to get the list of listed projects
   - Expected output: 200 status with list of posted projects
 
+### View the details of one specific project
 2. send GET request on http://127.0.0.1:8000/api/projects/{id}/ without any access token to get the project details
   - Expected output: 200 status with project details of that specific project
 
+### View your own projects
 3. send GET request on http://127.0.0.1:8000/api/projects/mine/ with the access token to get the project details of your listed projects
   - Expected output: 200 status with only your listed projects
 
+### Search for projects
 4. send GET request on http://127.0.0.1:8000/api/projects/?search=test without any access token to search for projects containing that specific keyword
   - Expected output: 200 status with only projects containing that specific keyword
 
+### Update a project
 5. send PATCH request on http://127.0.0.1:8000/api/projects/{id}/ with the access token in the headers tab of Postman in the following way:
     > Authorization: Bearer <your_access_token_here>
 and with the following JSON object in the Body -> raw -> JSON:
@@ -98,6 +109,7 @@ and with the following JSON object in the Body -> raw -> JSON:
     ```
     - Expected output: 200 status with updated project.
 
+### Create a new project
 6. send POST request on http://127.0.0.1:8000/api/projects/ with the access token in the headers tab of Postman in the following way:
     > Authorization: Bearer <your_access_token_here>
 and with the following JSON object in the Body -> raw -> JSON:
@@ -112,6 +124,9 @@ and with the following JSON object in the Body -> raw -> JSON:
     }
     ```
     - Expected output: 201 status with created project.
+
+> Collaboration request endpoints
+
 
 ---
 
