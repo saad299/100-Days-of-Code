@@ -127,6 +127,37 @@ and with the following JSON object in the Body -> raw -> JSON:
 
 > Collaboration request endpoints
 
+### Request for collaboration
+7. sign in as another user and send POST request on http://127.0.0.1:8000/api/projects/{id}/requests/ (not on your project but on a different project) with the access token of the second user in the headers tab of Postman in the following way:
+    > Authorization: Bearer <your_access_token_here>
+and with the following JSON object in the Body -> raw -> JSON:
+    ```json
+    {
+       "message": "I want to collaborate with you on this project"
+    }
+    ```
+    - Expected output: 201 status with created collaboration request.
+
+### See the list of collaboration requests
+8. sign in as the main user and send GET request on http://127.0.0.1:8000/api/projects/{id}/requests/ with the access token in the headers tab of Postman in the following way:
+    > Authorization: Bearer <your_access_token_here>
+    - Expected output: 200 status with list of collaboration requests including the profile data of the other users who have requested for collaboration
+
+### Update the status of the project
+9. sign in as the main user and send PATCH request on http://127.0.0.1:8000/api/projects/{id}/requests/{req_id} with the access token in the headers tab of Postman in the following way:
+    > Authorization: Bearer <your_access_token_here>
+and with the following JSON object in the Body -> raw -> JSON:
+    ```json
+    {
+       "status": "accepted"
+    }
+    ```
+    - Expected output: 200 status with the status of project updated.
+
+### See the collaboration status of the applied projects
+10. sign in as second user and send GET request on http://127.0.0.1:8000/api/projects/mine/ with the access token of the second user in the headers tab of Postman in the following way:
+    > Authorization: Bearer <your_access_token_here>
+    - Expected output: 200 status with list of projects where you have applied as the second user
 
 ---
 
