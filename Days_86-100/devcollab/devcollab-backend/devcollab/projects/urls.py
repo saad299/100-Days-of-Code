@@ -37,7 +37,7 @@ urlpatterns = [
     # GET    /api/projects/<project_id>/requests/              — list requests (owner only)
     # POST   /api/projects/<project_id>/requests/              — send a request
     path(
-        'projects/<int:project_id>/requests',
+        'projects/<int:project_id>/requests/',
         CollaborationRequestViewSet.as_view({
             'get': 'list',
             'post': 'create',

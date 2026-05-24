@@ -12,6 +12,7 @@ class ProjectSerializer(serializers.ModelSerializer):
     tech_stack_list = serializers.SerializerMethodField()
     roles_list = serializers.SerializerMethodField()
     request_status = serializers.SerializerMethodField()
+    project_id = serializers.IntegerField(source='id', read_only=True)
     
     # class Meta:
     #     model = Project
@@ -20,7 +21,7 @@ class ProjectSerializer(serializers.ModelSerializer):
         # read_only_fields = ['id', 'created_at', 'updated_at', 'owner', 'tech_stack_list', 'roles_list', 'owner_data', 'request_status']
     class Meta:
         model = Project
-        fields = ['id', 'owner_data', 'title', 'description', 'tech_stack_list', 'roles_list', 'status', 'is_open', 'created_at', 'updated_at', 'request_status']
+        fields = ['project_id', 'owner_data', 'title', 'description', 'tech_stack_list', 'roles_list', 'status', 'is_open', 'created_at', 'updated_at', 'request_status']
         read_only_fields = ['id', 'created_at', 'updated_at', 'owner', 'tech_stack_list', 'roles_list', 'owner_data', 'request_status']
 
     def get_owner_data(self, obj):
