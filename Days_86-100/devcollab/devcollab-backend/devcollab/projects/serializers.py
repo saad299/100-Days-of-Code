@@ -47,7 +47,7 @@ class ProjectSerializer(serializers.ModelSerializer):
 
 class CollaborationRequestSerializer(serializers.ModelSerializer):
     requester_data = serializers.SerializerMethodField()
-    project_details = serializers.SerializerMethodField()
+    project_detail = serializers.SerializerMethodField()
 
     class Meta:
         model = CollaborationRequest
