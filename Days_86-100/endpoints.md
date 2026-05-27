@@ -16,7 +16,7 @@ GET   /api/requests/mine/        (second user token)
 
 > Authorization(Profile) endpoints
 
-### Registering
+### Registering (status: working)
 1. send POST request on http://127.0.0.1:8000/api/auth/register/ along with the following JSON object in the Body -> raw -> JSON
    - Request body:
      ```json
@@ -29,7 +29,7 @@ GET   /api/requests/mine/        (second user token)
      ```
    - Expected output: 201 status with access token, refresh token, and user object.
 
-### Logging in
+### Logging in (status: working)
 2. send POST request on http://127.0.0.1:8000/api/auth/login/ along with the following JSON object in the Body -> raw -> JSON
    - Request body:
      ```json
@@ -40,7 +40,7 @@ GET   /api/requests/mine/        (second user token)
      ```
    - Expected output: 200 status with access token, refresh token, and user object. Copy the access token.
 
-### Refreshing token
+### Refreshing token (status: working)
 3. send POST request on http://127.0.0.1:8000/api/auth/token/refresh/ along with the following JSON object in the Body -> raw -> JSON
    - Request body:
      ```json
@@ -52,12 +52,12 @@ GET   /api/requests/mine/        (second user token)
 
 > Profile endpoints
 
-### Getting profile
+### Getting profile (status: working)
 4. send GET request on http://127.0.0.1:8000/api/auth/users/me/ with the access token in the headers tab of Postman in the following way:
    > Authorization: Bearer <your_access_token_here>
    - Expected output: 200 status with your user and profile data.
 
-### Updating profile
+### Updating profile (status: working)
 5. send PATCH request on http://127.0.0.1:8000/api/auth/users/me/ with the access token in the headers tab of Postman in the following way:
     > Authorization: Bearer <your_access_token_here>
 and with the following JSON object in the Body -> raw -> JSON:
@@ -71,29 +71,29 @@ and with the following JSON object in the Body -> raw -> JSON:
     ```
     - Expected output: 200 status with updated profile.
 
-### Viewing public profile
+### Viewing public profile (status: working)
 6. send GET request on http://127.0.0.1:8000/api/auth/users/testuser/ without any access token to get the public profile
   - Expected output: 200 status with public profile
 
 > Project endpoints
 
-### View listed projects
+### View listed projects (status: working)
 1. send GET request on http://127.0.0.1:8000/api/projects/ without any access token to get the list of listed projects
   - Expected output: 200 status with list of posted projects
 
-### View the details of one specific project
+### View the details of one specific project (status: working)
 2. send GET request on http://127.0.0.1:8000/api/projects/{id}/ without any access token to get the project details
   - Expected output: 200 status with project details of that specific project
 
-### View your own projects
+### View your own projects (status: working)
 3. send GET request on http://127.0.0.1:8000/api/projects/mine/ with the access token to get the project details of your listed projects
   - Expected output: 200 status with only your listed projects
 
-### Search for projects
+### Search for projects (status: working)
 4. send GET request on http://127.0.0.1:8000/api/projects/?search=test without any access token to search for projects containing that specific keyword
   - Expected output: 200 status with only projects containing that specific keyword
 
-### Update a project
+### Update a project (status: working)
 5. send PATCH request on http://127.0.0.1:8000/api/projects/{id}/ with the access token in the headers tab of Postman in the following way:
     > Authorization: Bearer <your_access_token_here>
 and with the following JSON object in the Body -> raw -> JSON:
@@ -109,7 +109,7 @@ and with the following JSON object in the Body -> raw -> JSON:
     ```
     - Expected output: 200 status with updated project.
 
-### Create a new project
+### Create a new project (status: working)
 6. send POST request on http://127.0.0.1:8000/api/projects/ with the access token in the headers tab of Postman in the following way:
     > Authorization: Bearer <your_access_token_here>
 and with the following JSON object in the Body -> raw -> JSON:
@@ -127,7 +127,7 @@ and with the following JSON object in the Body -> raw -> JSON:
 
 > Collaboration request endpoints
 
-### Request for collaboration
+### Request for collaboration (status: working)
 7. sign in as another user and send POST request on http://127.0.0.1:8000/api/projects/{id}/requests/ (not on your project but on a different project) with the access token of the second user in the headers tab of Postman in the following way:
     > Authorization: Bearer <your_access_token_here>
 and with the following JSON object in the Body -> raw -> JSON:
@@ -138,12 +138,12 @@ and with the following JSON object in the Body -> raw -> JSON:
     ```
     - Expected output: 201 status with created collaboration request.
 
-### See the list of collaboration requests
+### See the list of collaboration requests (status: working)
 8. sign in as the main user and send GET request on http://127.0.0.1:8000/api/projects/{id}/requests/ with the access token in the headers tab of Postman in the following way:
     > Authorization: Bearer <your_access_token_here>
     - Expected output: 200 status with list of collaboration requests including the profile data of the other users who have requested for collaboration
 
-### Update the status of the project
+### Update the status of the project (status: working)
 9. sign in as the main user and send PATCH request on http://127.0.0.1:8000/api/projects/{id}/requests/{req_id} with the access token in the headers tab of Postman in the following way:
     > Authorization: Bearer <your_access_token_here>
 and with the following JSON object in the Body -> raw -> JSON:
@@ -154,7 +154,7 @@ and with the following JSON object in the Body -> raw -> JSON:
     ```
     - Expected output: 200 status with the status of project updated.
 
-### See the collaboration status of the applied projects
+### See the collaboration status of the applied projects (status: working)
 10. sign in as second user and send GET request on http://127.0.0.1:8000/api/projects/mine/ with the access token of the second user in the headers tab of Postman in the following way:
     > Authorization: Bearer <your_access_token_here>
     - Expected output: 200 status with list of projects where you have applied as the second user

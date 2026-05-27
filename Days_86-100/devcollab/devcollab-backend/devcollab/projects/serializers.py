@@ -13,15 +13,24 @@ class ProjectSerializer(serializers.ModelSerializer):
     roles_list = serializers.SerializerMethodField()
     request_status = serializers.SerializerMethodField()
     project_id = serializers.IntegerField(source='id', read_only=True)
+    # Add this later
+#     tech_stack = serializers.CharField()
+#     roles_needed = serializers.CharField()
+
+# def validate_tech_stack(self, value):
+#     if isinstance(value, list):
+#         return ', '.join(value)
+#     return value
+
+# def validate_roles_needed(self, value):
+#     if isinstance(value, list):
+#         return ', '.join(value)
+#     return value
     
-    # class Meta:
-    #     model = Project
-    #     fields = '__all__'
-        # read_only_fields = ['id', 'created_at', 'updated_at', 'tech_stack_list', 'roles_list', 'owner_data', 'request_status']
-        # read_only_fields = ['id', 'created_at', 'updated_at', 'owner', 'tech_stack_list', 'roles_list', 'owner_data', 'request_status']
     class Meta:
         model = Project
-        fields = ['project_id', 'owner_data', 'title', 'description', 'tech_stack_list', 'roles_list', 'status', 'is_open', 'created_at', 'updated_at', 'request_status']
+        fields = ['project_id', 'owner_data', 'title', 'description', 'tech_stack', 'roles_needed', 'tech_stack_list', 'roles_list', 'status', 'is_open', 'created_at', 'updated_at', 'request_status']
+        # fields = ['project_id', 'owner_data', 'title', 'description', 'tech_stack', 'roles_needed', 'tech_stack_list', 'roles_list', 'status', 'is_open', 'created_at', 'updated_at', 'request_status']
         read_only_fields = ['id', 'created_at', 'updated_at', 'owner', 'tech_stack_list', 'roles_list', 'owner_data', 'request_status']
 
     def get_owner_data(self, obj):
@@ -54,9 +63,11 @@ class CollaborationRequestSerializer(serializers.ModelSerializer):
         fields = '__all__'
         read_only_fields = [
             'id',
-            'message',
             'status',
             'created_at',
+            'updated_at',
+            'requester',
+            'project',
             'requester_data',
             'project_detail'
         ]
