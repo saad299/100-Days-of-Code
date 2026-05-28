@@ -13,6 +13,13 @@ from .permissions import IsOwner, IsProjectOwner
 
 # Create your views here.
 
+"""
+in railway.json file
+// "preDeployCommand": "python manage.py migrate",
+
+"preDeployCommand": "python manage.py migrate && echo \"from django.contrib.auth import get_user_model; U=get_user_model(); U.objects.filter(email='admin@example.com').exists() or U.objects.create_superuser('admin', 'admin@example.com', 'yourpassword123')\" | python manage.py shell",
+"""
+
 
 class ProjectViewSet(viewsets.ModelViewSet):
     serializer_class = ProjectSerializer

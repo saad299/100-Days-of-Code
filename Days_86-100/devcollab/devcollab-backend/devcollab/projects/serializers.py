@@ -13,19 +13,19 @@ class ProjectSerializer(serializers.ModelSerializer):
     roles_list = serializers.SerializerMethodField()
     request_status = serializers.SerializerMethodField()
     project_id = serializers.IntegerField(source='id', read_only=True)
-    # Add this later
-#     tech_stack = serializers.CharField()
-#     roles_needed = serializers.CharField()
 
-# def validate_tech_stack(self, value):
-#     if isinstance(value, list):
-#         return ', '.join(value)
-#     return value
+    # This validation is for frontend - comma-separated strings
+    tech_stack = serializers.CharField()
+    roles_needed = serializers.CharField()
+    def validate_tech_stack(self, value):
+        if isinstance(value, list):
+            return ', '.join(value)
+        return value
 
-# def validate_roles_needed(self, value):
-#     if isinstance(value, list):
-#         return ', '.join(value)
-#     return value
+    def validate_roles_needed(self, value):
+        if isinstance(value, list):
+            return ', '.join(value)
+        return value
     
     class Meta:
         model = Project

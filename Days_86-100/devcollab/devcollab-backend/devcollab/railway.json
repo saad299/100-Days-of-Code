@@ -6,7 +6,7 @@
   },
   "deploy": {
     "startCommand": "gunicorn devcollab.wsgi --log-file -",
-    "preDeployCommand": "python manage.py migrate",
+    "preDeployCommand": "python manage.py migrate && python manage.py collectstatic --noinput",
     "restartPolicyType": "ON_FAILURE"
   }
 }
