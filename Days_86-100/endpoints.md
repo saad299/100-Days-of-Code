@@ -162,3 +162,5 @@ and with the following JSON object in the Body -> raw -> JSON:
 ---
 
 ### Frontend endpoints (Test by running the nextjs app)
+
+- Fix the issue where the error "An unexpected error occured" shows up on the dashboard and after that, the page loads and the log in screen shows up. The interval of logging in and logging out is of some minutes, after that this error shows up and login screen shows up to log back again. Also, under the 'Expires/Max Age column in cookies tab in Applications tab' in the developer tools, it is showing 'Session', name as "__next_hmr_refresh_hash__", value as '105'. Shouldn't the 'Expires/Max Age' colum show the expiry date of the token and the name to something like 'jwt_token'? Is it showing correctly and showing like it should show? I want the page to be logged in for the at least 6 weeks.
