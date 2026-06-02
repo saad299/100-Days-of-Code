@@ -163,4 +163,14 @@ and with the following JSON object in the Body -> raw -> JSON:
 
 ### Frontend endpoints (Test by running the nextjs app)
 
+1. Dashboard (/dashboard): The user lands on their dashboard if they are logged in. If they are not logged in, they land on the website's landing page and from there, they can log in.
+> Status: Working as expected
+
+2. Profile (/profile/[username]): The user clicks the 'profile' button in the navbard to see their profile. The profile contains details user provides. The page also has 'Edit Profile' button that takes the user to 'profile/edit' page where the user can edit their profile. Whatever the user edits or changes on the 'profile/edit' page, should be reflected on the 'profile' page.
+> Status: Working for now. Its working will be verified once the Edit Profile page is done.
+
+3. Edit Profile (/profile/edit): The user clicks the 'Edit Profile' button on the 'profile' page to edit their profile. Whatever the user edits or changes on the 'profile/edit' page, should be reflected on the 'profile' page.
+> Status: Pending.
+
+### Issues
 - Fix the issue where the error "An unexpected error occured" shows up on the dashboard and after that, the page loads and the log in screen shows up. The interval of logging in and logging out is of some minutes, after that this error shows up and login screen shows up to log back again. Also, under the 'Expires/Max Age column in cookies tab in Applications tab' in the developer tools, it is showing 'Session', name as "__next_hmr_refresh_hash__", value as '105'. Shouldn't the 'Expires/Max Age' colum show the expiry date of the token and the name to something like 'jwt_token'? Is it showing correctly and showing like it should show? I want the page to be logged in for the at least 6 weeks.
