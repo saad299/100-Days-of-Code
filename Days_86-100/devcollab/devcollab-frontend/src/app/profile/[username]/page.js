@@ -69,7 +69,7 @@ function PublicProfilePage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
+      <div className="flex items-center justify-center min-h-100">
         <div className="text-gray-500">Loading profile...</div>
       </div>
     );
@@ -77,7 +77,7 @@ function PublicProfilePage() {
 
   if (error === "User not found") {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[400px] px-4">
+      <div className="flex flex-col items-center justify-center min-h-100 px-4">
         <div className="text-6xl mb-4">👤</div>
         <h2 className="text-2xl font-semibold mb-2">User not found</h2>
         <p className="text-gray-500 mb-6">The profile you&apos;re looking for doesn&apos;t exist.</p>
@@ -93,7 +93,7 @@ function PublicProfilePage() {
 
   if (error) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[400px] px-4">
+      <div className="flex flex-col items-center justify-center min-h-100 px-4">
         <div className="text-6xl mb-4">⚠️</div>
         <h2 className="text-2xl font-semibold mb-2">Error</h2>
         <p className="text-gray-500 mb-6">{error}</p>
