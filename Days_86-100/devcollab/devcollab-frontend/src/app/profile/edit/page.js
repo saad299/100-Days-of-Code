@@ -48,7 +48,7 @@ function EditProfilePage() {
           }),
         }));
       } catch (error) {
-        setError(parseApiError(error));
+        setState(prev => ({ ...prev, ...parseApiError(error) }));
       } finally {
         setState((prev) => ({
           ...prev,
@@ -88,12 +88,12 @@ function EditProfilePage() {
         // Update profile with avatar URL
         await updateMyProfile({
           ...state,
-          bio,
-          skills,
-          location,
-          github_url: githubUrl,
-          linkedin_url: linkedinUrl,
-          website_url: websiteUrl,
+          bio: state.bio,
+          skills: state.skills,
+          location: state.location,
+          github_url: state.githubUrl,
+          linkedin_url: state.linkedinUrl,
+          website_url: state.websiteUrl,
         });
         showToast('Profile updated successfully', 'success');
         router.push(`/profile${user.username}`);
@@ -108,29 +108,29 @@ function EditProfilePage() {
     }
   }
 
-  if (loading) return <div>Loading...</div>;
+  if (state.loading) return <div>Loading...</div>;
 
   return (
     <ProtectedRoute>
       <div>
         <h1>Edit Profile</h1>
 
-        {error && <div>{error}</div>}
+        {state.error && <div>{state.error}</div>}
       </div>
 
       <form onSubmit={handleSubmit}>
         <p>Avatar Placeholder</p>
 
-        {avatarPreview && (
+        {state.avatarPreview && (
           <Image
-            src={avatarPreview}
+            src={state.avatarPreview}
             alt="Avatar Preview"
             width={100}
             height={100}
           />
         )}
         {/* Use this pattern to show an avatar for now */}
-        {profile?.avatar ? (
+        {/* {profile?.avatar ? (
           <Image
             src={profile.avatar}
             alt={username}
@@ -142,7 +142,7 @@ function EditProfilePage() {
           <div className="w-14 h-14 rounded-full bg-blue-100 text-blue-700 flex          items-center justify-center text-xl font-semibold">
             {username?.[0]?.toUpperCase()}
           </div>
-        )}
+        )} */}
 
         {/* This will be uncommented once file upload with Cloudinary is configured */}
         {/* Upload avatar image */}
@@ -166,7 +166,7 @@ function EditProfilePage() {
         <div>
           <label>Bio</label>
           <textarea
-            value={bio}
+            value={state.bio}
             className="w-full rounded border px-3 py-2"
             onChange={(e) =>
               setState((prev) => ({ ...prev, bio: e.target.value }))
@@ -180,7 +180,7 @@ function EditProfilePage() {
         <label>Skills</label>
         <input
           type="text"
-          value={skills}
+          value={state.skills}
           className="w-full rounded border px-3 py-2"
           onChange={(e) =>
             setState((prev) => ({ ...prev, skills: e.target.value }))
@@ -193,7 +193,7 @@ function EditProfilePage() {
           <label>Location</label>
           <input
             type="text"
-            value={location}
+            value={state.location}
             className="w-full rounded border px-3 py-2"
             onChange={(e) =>
               setState((prev) => ({ ...prev, location: e.target.value }))
@@ -207,7 +207,7 @@ function EditProfilePage() {
           <label>GitHub URL</label>
           <input
             type="url"
-            value={githubUrl}
+            value={state.githubUrl}
             className="w-full rounded border px-3 py-2"
             onChange={(e) =>
               setState((prev) => ({ ...prev, githubUrl: e.target.value }))
@@ -221,7 +221,7 @@ function EditProfilePage() {
           <label>LinkedIn URL</label>
           <input
             type="url"
-            value={linkedinUrl}
+            value={state.linkedinUrl}
             className="w-full rounded border px-3 py-2"
             onChange={(e) =>
               setState((prev) => ({ ...prev, linkedinUrl: e.target.value }))
@@ -235,7 +235,7 @@ function EditProfilePage() {
           <label>Website URL</label>
           <input
             type="url"
-            value={websiteUrl}
+            value={state.websiteUrl}
             className="w-full rounded border px-3 py-2"
             onChange={(e) =>
               setState((prev) => ({ ...prev, websiteUrl: e.target.value }))
@@ -247,10 +247,10 @@ function EditProfilePage() {
         {/* Submit button */}
         <button
           type="submit"
-          disabled={submitting}
+          disabled={state.submitting}
           className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 disabled:opacity-50"
         >
-          {submitting ? "Saving..." : "Save Changes"}
+          {state.submitting ? "Saving..." : "Save Changes"}
         </button>
 
         <Link

@@ -24,7 +24,7 @@ GET   /api/requests/mine/        (second user token)
        "username": "testuser",
        "email": "testuser@example.com",
        "password": "testpassword123",
-       "password2": "testpass123"
+       "password2": "testpassword123"
      }
      ```
    - Expected output: 201 status with access token, refresh token, and user object.
