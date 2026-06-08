@@ -52,6 +52,9 @@ axiosInstance.interceptors.response.use(
                 localStorage.removeItem('refresh_token');
                 localStorage.removeItem('access_token_expiry');
                 localStorage.removeItem('refresh_token_expiry');
+                localStorage.removeItem('user');
+                // Dispatch custom event to notify AuthContext
+                window.dispatchEvent(new Event('auth:logout'));
                 window.location.href = '/login';
             }
             return Promise.reject(error);
@@ -82,6 +85,9 @@ axiosInstance.interceptors.response.use(
                     localStorage.removeItem('refresh_token');
                     localStorage.removeItem('access_token_expiry');
                     localStorage.removeItem('refresh_token_expiry');
+                    localStorage.removeItem('user');
+                    // Dispatch custom event to notify AuthContext
+                    window.dispatchEvent(new Event('auth:logout'));
                     window.location.href = '/login';
                 }
                 return Promise.reject(refreshError);

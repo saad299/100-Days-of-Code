@@ -66,6 +66,11 @@ export const logout = () => {
     }
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
+    localStorage.removeItem('access_token_expiry');
+    localStorage.removeItem('refresh_token_expiry');
+    localStorage.removeItem('user');
+    // Dispatch custom event to notify AuthContext
+    window.dispatchEvent(new Event('auth:logout'));
 };
 
 export const getCurrentUser = () => {
