@@ -68,10 +68,9 @@ function EditProfilePage() {
           bio: profile.bio || "",
           skills: Array.isArray(profile.skills) ? profile.skills.join(", ") : (profile.skills || ""),
           location: profile.location || "",
-          githubUrl: profile.githubUrl || "",
-          linkedinUrl: profile.linkedinUrl || "",
-          websiteUrl: profile.websiteUrl || "",
-
+          githubUrl: profile.github_url || "",
+          linkedinUrl: profile.linkedin_url || "",
+          websiteUrl: profile.website_url || "",
           ...(profile.avatar && {
             avatarPreview: profile.avatar,
           }),
