@@ -166,11 +166,17 @@ and with the following JSON object in the Body -> raw -> JSON:
 1. Dashboard (/dashboard): The user lands on their dashboard if they are logged in. If they are not logged in, they land on the website's landing page and from there, they can log in.
 > Status: Working as expected
 
-2. Profile (/profile/[username]): The user clicks the 'profile' button in the navbard to see their profile. The profile contains details user provides. The page also has 'Edit Profile' button that takes the user to 'profile/edit' page where the user can edit their profile. Whatever the user edits or changes on the 'profile/edit' page, should be reflected on the 'profile' page.
+2. Login/Logout(/login, /logout): Login page from where user can login. User can remain logged in for 42 days, meaning the expiry of access token is 42 days after which user is logged out and would need to login again. The expiry of refresh token is 1 hour, meaning if user is on the website for 1 hour straight, the refresh token will expire. Usually this would mean that user would also log out as a result, but the refresh token would automatically re-generate again, so user would stay login even after 1 hour. But after 42 days, user would be log out and would need to login again.
+> Status: Both Login and Logout are working as expected.
+
+3. Profile (/profile/[username]): The user clicks the 'profile' button in the navbard to see their profile. The profile contains details user provides. The page also has 'Edit Profile' button that takes the user to 'profile/edit' page where the user can edit their profile. Whatever the user edits or changes on the 'profile/edit' page, should be reflected on the 'profile' page.
 > Status: Working as expected
 
-3. Edit Profile (/profile/edit): The user clicks the 'Edit Profile' button on the 'profile' page to edit their profile. Whatever the user edits or changes on the 'profile/edit' page, should be reflected on the 'profile' page.
+4. Edit Profile (/profile/edit): The user clicks the 'Edit Profile' button on the 'profile' page to edit their profile. Whatever the user edits or changes on the 'profile/edit' page, should be reflected on the 'profile' page.
 > Status: Working as expected
+
+5. Browse Projects (/projects): The user can browse all the projects on the website. The user can filter the projects by category, status, and search by title or description. The user can also sort the projects by date, title, or status.
+> Status: Need work
 
 ### Issues
 - Fix the issue where the error "An unexpected error occured" shows up on the dashboard and after that, the page loads and the log in screen shows up. The interval of logging in and logging out is of some minutes, after that this error shows up and login screen shows up to log back again. Also, under the 'Expires/Max Age column in cookies tab in Applications tab' in the developer tools, it is showing 'Session', name as "__next_hmr_refresh_hash__", value as '105'. Shouldn't the 'Expires/Max Age' colum show the expiry date of the token and the name to something like 'jwt_token'? Is it showing correctly and showing like it should show? I want the page to be logged in for the at least 6 weeks.
