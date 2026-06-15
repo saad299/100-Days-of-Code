@@ -23,6 +23,7 @@ export default function LandingPage() {
     async function fetchRecentProjects() {
       try {
         const data = await getProjects()
+
         // show only first 3 projects on landing page
         setRecentProjects(data.slice(0, 3))
       } catch {
@@ -181,7 +182,7 @@ export default function LandingPage() {
         ) : recentProjects.length > 0 ? (
           <div className="space-y-4">
             {recentProjects.map((project) => (
-              <ProjectCard key={project.id} project={project} />
+              <ProjectCard key={project.project_id} project={project} />
             ))}
           </div>
         ) : (
