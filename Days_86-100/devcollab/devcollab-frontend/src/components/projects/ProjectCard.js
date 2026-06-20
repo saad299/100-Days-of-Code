@@ -46,7 +46,7 @@ function ProjectCard({ project }) {
       <div className="flex flex-wrap gap-2 mb-4">
         {tech_stack_list.length > 0 &&
           tech_stack_list.map((tech) => (
-            <TechStackTag key={tech} techStack={tech} />
+            <TechStackTag key={tech} tech={tech} />
           ))}
 
         {roles_list.length > 0 &&
