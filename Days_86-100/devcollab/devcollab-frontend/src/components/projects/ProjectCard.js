@@ -54,7 +54,13 @@ function ProjectCard({ project }) {
       </div>
 
       <footer className="text-xs text-gray-500 pt-3 border-t border-gray-100">
-        {new Date(created_at).toLocaleDateString()}
+        Date Posted: {new Date(created_at).toLocaleDateString(undefined, {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+          // hour: "2-digit",
+          // minute: "2-digit",
+        })}
       </footer>
     </div>
   );
