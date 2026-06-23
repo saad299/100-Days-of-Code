@@ -176,6 +176,9 @@ and with the following JSON object in the Body -> raw -> JSON:
 > Status: Working as expected
 
 5. Browse Projects (/projects): The user can browse all the projects on the website. The user can filter the projects by category, status, and search by title or description. The user can also sort the projects by date, title, or status.
+> Status: Working as expected
+
+6. Project Details (/projects/[id]): The user can click on a project to see its details. The user can also click on the 'Apply' button to apply for the project.
 > Status: Need work
 
 ### Issues
