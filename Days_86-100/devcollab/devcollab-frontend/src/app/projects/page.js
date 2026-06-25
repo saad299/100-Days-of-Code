@@ -41,7 +41,7 @@ function ProjectsPage() {
         const data = await getProjects(params);
         setProjects(data);
       } catch (err) {
-        showToast(parseApiError(err), 'error')
+        showToast(parseApiError(err), "error");
       } finally {
         setLoading(false);
       }
@@ -88,7 +88,10 @@ function ProjectsPage() {
         Discover Projects and find collaborators
       </h1>
 
-      <form onSubmit={handleSearch} className="bg-white border border-gray-200 rounded-xl p-5 mb-8">
+      <form
+        onSubmit={handleSearch}
+        className="bg-white border border-gray-200 rounded-xl p-5 mb-8"
+      >
         <div className="grid grid-cols-1 md:grid-cols-4 gap-3 ml-5">
           {/* Search */}
           <input
@@ -119,7 +122,7 @@ function ProjectsPage() {
 
           {/* Buttons */}
           <div className="flex gap-2">
-            <button 
+            <button
               type="submit"
               className="bg-[#378ADD] text-white px-6 py-2 rounded-lg hover:bg-[#2a6bc4] transition-colors font-medium whitespace-nowrap"
             >
@@ -127,8 +130,8 @@ function ProjectsPage() {
             </button>
 
             {hasActiveFilters && (
-              <button 
-                type="button" 
+              <button
+                type="button"
                 onClick={handleClearFilters}
                 className="bg-gray-100 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-200 transition-colors font-medium whitespace-nowrap"
               >
@@ -148,17 +151,15 @@ function ProjectsPage() {
         </div>
       ) : error ? (
         <div className="text-center py-16">
-            <p className="text-red-500 mb-4">
-              {error}
-            </p>
+          <p className="text-red-500 mb-4">{error}</p>
 
-            <button
-              onClick={() => router.refresh()}
-              className="bg-[#378ADD] text-white px-6 py-2 rounded-lg hover:bg-[#2a6bc4] transition-colors font-medium"
-            >
-              Retry
-            </button>
-          </div>
+          <button
+            onClick={() => router.refresh()}
+            className="bg-[#378ADD] text-white px-6 py-2 rounded-lg hover:bg-[#2a6bc4] transition-colors font-medium"
+          >
+            Retry
+          </button>
+        </div>
       ) : projects.length === 0 ? (
         // Empty State
         <EmptyState
@@ -175,14 +176,11 @@ function ProjectsPage() {
         <>
           {/* Results Count */}
           <p className="text-gray-500 text-sm mb-6">
-            {projects.length} project{projects.length !== 1 ? 's' : ''} found
+            {projects.length} project{projects.length !== 1 ? "s" : ""} found
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {projects.map((project) => (
-              <ProjectCard
-                key={project.project_id}
-                project={project}
-              />
+              <ProjectCard key={project.project_id} project={project} />
             ))}
           </div>
         </>
