@@ -57,10 +57,6 @@ function ProjectDetailPage() {
     }
   };
 
-  const isOwner = user && user.username === project.owner_data.username;
-  const isAuthenticated = user !== null;
-  const requestStatus = project.request_status;
-
   const renderActionButton = () => {
     if (!isAuthenticated) {
       return <Link href={`/login?next=/projects/${id}`}>Login to Apply</Link>;
@@ -76,6 +72,10 @@ function ProjectDetailPage() {
         </div>
       );
     }
+
+    const pending = requestStatus === 'pending';
+    const approved = requestStatus === 'approved';
+    const rejected = requestStatus === 'rejected';
 
     if (!requestStatus) {
       return (
@@ -138,6 +138,10 @@ function ProjectDetailPage() {
     );
   }
 
+  const isOwner = user && project && user.username === project.owner_data.username;
+  const isAuthenticated = user !== null;
+  const requestStatus = project?.request_status;
+
   return (
     <div>
       <h1>{project.title}</h1>
@@ -153,18 +157,18 @@ function ProjectDetailPage() {
       <div>
         <h2>Tech Stack</h2>
         <p>
-          {project.tech_stack.map((tech) => (
+          {Array.isArray(project.tech_stack) ? project.tech_stack.map((tech) => (
             <TechStackTag key={tech} tech={tech} />
-          ))}
+          )) : project.tech_stack || 'No tech stack specified'}
         </p>
       </div>
 
       <div>
         <h2>Roles Needed</h2>
         <p>
-          {project.roles_required.map((role) => (
+          {Array.isArray(project.roles_required) ? project.roles_required.map((role) => (
             <RoleTag key={role} role={role} />
-          ))}
+          )) : project.roles_required || 'No roles specified'}
         </p>
       </div>
 
