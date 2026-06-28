@@ -193,11 +193,11 @@ function ProjectDetailPage() {
     : typeof project.tech_stack === 'string' 
       ? project.tech_stack.split(',').map(t => t.trim()).filter(t => t)
       : [];
-  const rolesArray = Array.isArray(project.roles_required) 
-    ? project.roles_required 
-    : typeof project.roles_required === 'string' 
-      ? project.roles_required.split(',').map(r => r.trim()).filter(r => r)
-      : [];
+  // const rolesArray = Array.isArray(project.roles_required) 
+  //   ? project.roles_required 
+  //   : typeof project.roles_required === 'string' 
+  //     ? project.roles_required.split(',').map(r => r.trim()).filter(r => r)
+  //     : [];
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
