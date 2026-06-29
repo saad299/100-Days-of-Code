@@ -140,14 +140,6 @@ function ProjectDetailPage() {
     );
   }
 
-  // if (error === 'not_found') {
-  //     return (
-  //         <div>
-  //             Project not found
-  //             <Link href="/projects">Back to Browse</Link>
-  //         </div>
-  //     )
-  // }
   if (!loading && !project && error === "not_found") {
     return (
       <div className="max-w-4xl mx-auto px-4 py-16 text-center">
