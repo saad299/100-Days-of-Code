@@ -89,25 +89,34 @@ function ProjectDetailPage() {
       );
     }
 
-    const pending = requestStatus === 'pending';
-    const approved = requestStatus === 'approved';
-    const rejected = requestStatus === 'rejected';
+    const pending = requestStatus === "pending";
+    const approved = requestStatus === "approved";
+    const rejected = requestStatus === "rejected";
 
     if (!requestStatus) {
       return (
         <>
           {pending && (
-            <button disabled className="bg-gray-300 text-gray-600 px-6 py-2 rounded-lg font-medium cursor-not-allowed">
+            <button
+              disabled
+              className="bg-gray-300 text-gray-600 px-6 py-2 rounded-lg font-medium cursor-not-allowed"
+            >
               Pending
             </button>
           )}
           {approved && (
-            <button disabled className="bg-green-500 text-white px-6 py-2 rounded-lg font-medium cursor-not-allowed">
+            <button
+              disabled
+              className="bg-green-500 text-white px-6 py-2 rounded-lg font-medium cursor-not-allowed"
+            >
               Approved
             </button>
           )}
           {rejected && (
-            <button disabled className="bg-red-300 text-gray-600 px-6 py-2 rounded-lg font-medium cursor-not-allowed">
+            <button
+              disabled
+              className="bg-red-300 text-gray-600 px-6 py-2 rounded-lg font-medium cursor-not-allowed"
+            >
               Rejected
             </button>
           )}
@@ -175,19 +184,23 @@ function ProjectDetailPage() {
     );
   }
 
-  const isOwner = user && project && user.username === project.owner_data.username;
+  const isOwner =
+    user && project && user.username === project.owner_data.username;
   const isAuthenticated = user !== null;
   const requestStatus = project?.request_status;
 
   // Transform tech_stack and roles_required from string to array if needed
-  const techStackArray = Array.isArray(project.tech_stack) 
-    ? project.tech_stack 
-    : typeof project.tech_stack === 'string' 
-      ? project.tech_stack.split(',').map(t => t.trim()).filter(t => t)
+  const techStackArray = Array.isArray(project.tech_stack)
+    ? project.tech_stack
+    : typeof project.tech_stack === "string"
+      ? project.tech_stack
+          .split(",")
+          .map((t) => t.trim())
+          .filter((t) => t)
       : [];
-  // const rolesArray = Array.isArray(project.roles_required) 
-  //   ? project.roles_required 
-  //   : typeof project.roles_required === 'string' 
+  // const rolesArray = Array.isArray(project.roles_required)
+  //   ? project.roles_required
+  //   : typeof project.roles_required === 'string'
   //     ? project.roles_required.split(',').map(r => r.trim()).filter(r => r)
   //     : [];
 
@@ -213,7 +226,8 @@ function ProjectDetailPage() {
           <span>Status: {project.status}</span>
           <span>•</span>
           <span>
-            Posted: {new Date(project.created_at).toLocaleDateString(undefined, {
+            Posted:{" "}
+            {new Date(project.created_at).toLocaleDateString(undefined, {
               year: "numeric",
               month: "short",
               day: "numeric",
@@ -234,9 +248,7 @@ function ProjectDetailPage() {
 
       {/* Tech Stack Section */}
       <div className="bg-white border border-gray-200 rounded-xl p-6 mb-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">
-          Tech Stack
-        </h2>
+        <h2 className="text-xl font-semibold text-gray-900 mb-4">Tech Stack</h2>
         <div className="flex flex-wrap gap-2">
           {techStackArray.length > 0 ? (
             techStackArray.map((tech) => (
@@ -245,9 +257,7 @@ function ProjectDetailPage() {
               </div>
             ))
           ) : (
-            <span className="text-gray-500">
-              No tech stack specified
-            </span>
+            <span className="text-gray-500">No tech stack specified</span>
           )}
         </div>
       </div>
@@ -259,9 +269,7 @@ function ProjectDetailPage() {
         </h2>
         <div className="flex flex-wrap gap-2">
           {Array.isArray(project.roles_list) ? (
-            project.roles_list.map((role) => (
-              <RoleTag key={role} role={role} />
-            ))
+            project.roles_list.map((role) => <RoleTag key={role} role={role} />)
           ) : (
             <span className="text-gray-500">
               {project.roles_list || "No roles specified"}
@@ -314,9 +322,7 @@ function ProjectDetailPage() {
       </div>
 
       {/* Action Button */}
-      <div className="flex justify-end">
-        {renderActionButton()}
-      </div>
+      <div className="flex justify-end">{renderActionButton()}</div>
     </div>
   );
 }
