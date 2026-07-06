@@ -181,6 +181,9 @@ and with the following JSON object in the Body -> raw -> JSON:
 6. Project Details (/projects/[id]): The user can click on a project to see its details. The user can also click on the 'Apply' button to apply for the project.
 > Status: Working as expected
 
+7. Apply on a project (/projects/[id]/apply): The user can click on the 'Apply' button on the project details page to apply for the project. The user should be redirected to the project details page after applying.
+> Status: Needs work
+
 ### Issues
 - Fix the issue where the error "An unexpected error occured" shows up on the dashboard and after that, the page loads and the log in screen shows up. The interval of logging in and logging out is of some minutes, after that this error shows up and login screen shows up to log back again. Also, under the 'Expires/Max Age column in cookies tab in Applications tab' in the developer tools, it is showing 'Session', name as "__next_hmr_refresh_hash__", value as '105'. Shouldn't the 'Expires/Max Age' colum show the expiry date of the token and the name to something like 'jwt_token'? Is it showing correctly and showing like it should show? I want the page to be logged in for the at least 6 weeks.
 Status: Fixed
