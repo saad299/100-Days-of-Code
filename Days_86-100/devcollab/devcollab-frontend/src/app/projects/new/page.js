@@ -27,8 +27,11 @@ function NewProjectPage() {
                 status: formData.status === 'open' || formData.status === 'in_progress' ? 'active' : formData.status === 'cancelled' ? 'on_hold' : formData.status,
                 is_open: formData.isOpen
             }
-            const newProject = await createProject(backendData)
+            // const newProject = await createProject(backendData)
             // router.push(`/projects/${newProject.id}`)
+            // router.push(`/projects/${newProject.project_id}`)
+            const newProject = await createProject(backendData)
+            console.log('Backend response:', newProject)
             router.push(`/projects/${newProject.project_id}`)
         } catch (err) {
             showToast(parseApiError(err), 'error')
