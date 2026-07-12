@@ -22,11 +22,6 @@ function NewProjectPage() {
             const newProject = await createProject(formData)
             router.push(`/projects/${newProject.id}`)
         } catch (err) {
-            // if (err.response?.data) {
-            //     setError(err.response.data.message)
-            // } else {
-            //     setError(err.message)
-            // }
             showToast(parseApiError(err), 'error')
         }
         setLoading(false)
