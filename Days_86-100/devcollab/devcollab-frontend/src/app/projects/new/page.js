@@ -19,7 +19,15 @@ function NewProjectPage() {
         setError(null)
 
         try {
-            const newProject = await createProject(formData)
+            const backendData = {
+                title: formData.title,
+                description: formData.description,
+                tech_stack: formData.techStack,
+                roles_needed: formData.rolesNeeded,
+                status: formData.status,
+                is_open: formData.isOpen
+            }
+            const newProject = await createProject(backendData)
             router.push(`/projects/${newProject.id}`)
         } catch (err) {
             showToast(parseApiError(err), 'error')
