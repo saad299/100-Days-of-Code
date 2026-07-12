@@ -28,7 +28,8 @@ function NewProjectPage() {
                 is_open: formData.isOpen
             }
             const newProject = await createProject(backendData)
-            router.push(`/projects/${newProject.id}`)
+            // router.push(`/projects/${newProject.id}`)
+            router.push(`/projects/${newProject.project_id}`)
         } catch (err) {
             showToast(parseApiError(err), 'error')
         }
