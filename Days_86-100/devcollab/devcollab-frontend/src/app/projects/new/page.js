@@ -24,7 +24,7 @@ function NewProjectPage() {
                 description: formData.description,
                 tech_stack: formData.techStack,
                 roles_needed: formData.rolesNeeded,
-                status: formData.status,
+                status: formData.status === 'open' || formData.status === 'in_progress' ? 'active' : formData.status === 'cancelled' ? 'on_hold' : formData.status,
                 is_open: formData.isOpen
             }
             const newProject = await createProject(backendData)
