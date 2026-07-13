@@ -33,12 +33,14 @@ function NewProjectPage() {
             // const newProject = await createProject(backendData)
             // console.log('Backend response:', newProject)
             // router.push(`/projects/${newProject.project_id}`)
-            console.log('Sending to backend:', backendData)
+            // console.log('Sending to backend:', backendData)
+            // const newProject = await createProject(backendData)
+            // console.log('Backend response:', newProject)
+            // const projectId = newProject.project_id || newProject.id || newProject.project_id
+            // console.log('Extracted Project ID:', projectId)
+            // router.push(`/projects/${projectId}`)
             const newProject = await createProject(backendData)
-            console.log('Backend response:', newProject)
-            const projectId = newProject.project_id || newProject.id || newProject.project_id
-            console.log('Extracted Project ID:', projectId)
-            router.push(`/projects/${projectId}`)
+            router.push(`/projects/${newProject.project_id}`)
         } catch (err) {
             showToast(parseApiError(err), 'error')
         }

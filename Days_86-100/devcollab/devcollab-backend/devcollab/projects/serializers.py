@@ -13,6 +13,7 @@ class ProjectSerializer(serializers.ModelSerializer):
     roles_list = serializers.SerializerMethodField()
     request_status = serializers.SerializerMethodField()
     project_id = serializers.IntegerField(source='id', read_only=True)
+    # id = serializers.IntegerField(read_only=True)
 
     # This validation is for frontend - comma-separated strings
     tech_stack = serializers.CharField()
