@@ -36,8 +36,9 @@ function NewProjectPage() {
             console.log('Sending to backend:', backendData)
             const newProject = await createProject(backendData)
             console.log('Backend response:', newProject)
-            console.log('Project ID:', newProject.project_id)
-            router.push(`/projects/${newProject.project_id}`)
+            const projectId = newProject.project_id || newProject.id || newProject.project_id
+            console.log('Extracted Project ID:', projectId)
+            router.push(`/projects/${projectId}`)
         } catch (err) {
             showToast(parseApiError(err), 'error')
         }
