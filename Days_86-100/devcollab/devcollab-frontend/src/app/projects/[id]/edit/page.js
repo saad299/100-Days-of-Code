@@ -64,7 +64,13 @@ function EditProjectPage() {
     }
 
     if (loading) {
-        return <div>Loading.....</div>
+        return (
+            <ProtectedRoute>
+                <div className="max-w-3xl mx-auto px-4 py-8">
+                    <div className="text-gray-500">Loading...</div>
+                </div>
+            </ProtectedRoute>
+        );
     }
 
     if (error && project === null) {
@@ -73,17 +79,25 @@ function EditProjectPage() {
 
     return (
         <ProtectedRoute>
-            <div>
-                <h1>Edit Project</h1>
-                <p>{project?.title}</p>
-            </div>
+            <div className="max-w-3xl mx-auto px-4 py-8">
+                <div className="mb-8">
+                    <h1 className="text-3xl font-semibold text-gray-900 mb-2">
+                        Edit Project
+                    </h1>
+                    <p className="text-gray-600">
+                        Update your project details
+                    </p>
+                </div>
 
-            <ProjectForm 
-                project={project}
-                onSubmit={handleSubmit}
-                loading={loading}
-                error={error}
-            />
+                <div className="bg-white border border-gray-200 rounded-xl p-6">
+                    <ProjectForm 
+                        project={project}
+                        onSubmit={handleSubmit}
+                        loading={loading}
+                        error={error}
+                    />
+                </div>
+            </div>
         </ProtectedRoute>
     )
 }
