@@ -39,7 +39,7 @@ function EditProjectPage() {
     };
 
     fetchProject();
-  }, [id, user]);
+  }, [id, user, router]);
 
   const handleSubmit = async (formData) => {
     // setState(prev => ({ ...prev, loading: true }));
