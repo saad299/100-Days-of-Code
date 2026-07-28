@@ -157,7 +157,9 @@ function DashboardPage() {
         {/* header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 sm:mb-8">
           <div>
-            <h1 className="text-xl sm:text-2xl font-semibold text-gray-900">Dashboard</h1>
+            <h1 className="text-xl sm:text-2xl font-semibold text-gray-900">
+              Dashboard
+            </h1>
             <p className="text-gray-500 text-sm mt-1">
               Welcome back,{" "}
               <span className="font-medium text-gray-700">
