@@ -524,79 +524,127 @@ Redirect to /dashboard or ?next= page
 ```
 devcollab-backend/
 │
-├── devcollab/                  ← project package
-│   ├── settings.py
-│   ├── urls.py
-│   └── wsgi.py
-│
-├── accounts/                   ← user and profile app
-│   ├── models.py               — User (custom), Profile
-│   ├── serializers.py          — UserSerializer, ProfileSerializer, RegisterSerializer
-│   ├── views.py                — RegisterView, ProfileView, PublicProfileView
-│   ├── urls.py
-│   ├── signals.py              — auto-create Profile on User creation
-│   └── migrations/
-│
-├── projects/                   ← projects and requests app
-│   ├── models.py               — Project, CollaborationRequest
-│   ├── serializers.py          — ProjectSerializer, CollaborationRequestSerializer
-│   ├── views.py                — ProjectViewSet, CollaborationRequestViewSet
-│   ├── urls.py
-│   ├── permissions.py          — IsOwner custom permission class
-│   └── migrations/
-│
-├── .env
-├── .env.example
-├── .gitignore
-└── requirements.txt
+├── devcollab/                  ← main project package
+│   ├── manage.py
+│   ├── requirements.txt
+│   ├── .env
+│   ├── .gitignore
+│   ├── Procfile
+│   ├── railway.json
+│   ├── db.sqlite3
+│   ├── staticfiles/
+│   ├── accounts.txt
+│   │
+│   ├── accounts/               ← user and profile app
+│   │   ├── __init__.py
+│   │   ├── models.py           — User (custom), Profile
+│   │   ├── serializers.py      — UserSerializer, ProfileSerializer, RegisterSerializer
+│   │   ├── views.py            — RegisterView, ProfileView, PublicProfileView
+│   │   ├── urls.py
+│   │   ├── signals.py          — auto-create Profile on User creation
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── tests.py
+│   │   └── migrations/
+│   │
+│   ├── projects/               ← projects and requests app
+│   │   ├── __init__.py
+│   │   ├── models.py           — Project, CollaborationRequest
+│   │   ├── serializers.py      — ProjectSerializer, CollaborationRequestSerializer
+│   │   ├── views.py            — ProjectViewSet, CollaborationRequestViewSet
+│   │   ├── urls.py
+│   │   ├── permissions.py      — IsOwner custom permission class
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── tests.py
+│   │   └── migrations/
+│   │
+│   └── devcollab/             ← project configuration
+│       ├── __init__.py
+│       ├── settings.py
+│       ├── urls.py
+│       ├── wsgi.py
+│       ├── asgi.py
+│       └── settings/
+│           ├── __init__.py
+│           ├── base.py
+│           ├── development.py
+│           └── production.py
 ```
 
 ### Next.js Frontend
 ```
 devcollab-frontend/
 │
+├── public/
+│   ├── robots.txt
+│   └── favicon.ico
+│
 ├── src/
 │   ├── app/                        ← Next.js App Router
 │   │   ├── page.js                 — landing page
-│   │   ├── layout.js               — root layout with AuthProvider
+│   │   ├── layout.js               — root layout
+│   │   ├── globals.css
+│   │   ├── sitemap.js              — dynamic sitemap generation
 │   │   ├── login/page.js
 │   │   ├── register/page.js
 │   │   ├── dashboard/page.js
 │   │   ├── projects/
 │   │   │   ├── page.js             — browse projects
-│   │   │   ├── new/page.js
+│   │   │   ├── new/page.js         — create new project
 │   │   │   └── [id]/
 │   │   │       ├── page.js         — project detail
-│   │   │       └── edit/page.js
+│   │   │       ├── edit/page.js    — edit project
+│   │   │       └── apply/page.js   — apply for collaboration
 │   │   ├── profile/
-│   │   │   ├── [username]/page.js  — public profile
-│   │   │   └── edit/page.js
-│   │   └── requests/page.js
+│   │   │   ├── [username]/page.js  — public profile view
+│   │   │   └── edit/page.js        — edit own profile
+│   │   └── requests/page.js        — collaboration requests
 │   │
 │   ├── components/
-│   │   ├── ui/                     — Button, Input, Badge, Card, Modal, Spinner
-│   │   ├── layout/                 — Navbar, Footer, PageWrapper, ProtectedRoute
-│   │   ├── projects/               — ProjectCard, ProjectForm, TechStackTag, RoleTag
-│   │   ├── requests/               — RequestCard, RequestForm, StatusBadge
-│   │   └── profile/                — ProfileCard, SkillTag, AvatarUpload
+│   │   ├── layout/
+│   │   │   ├── Navbar.js           — main navigation
+│   │   │   └── ProtectedRoute.js   — route protection wrapper
+│   │   ├── projects/
+│   │   │   ├── ProjectCard.js      — project display card
+│   │   │   ├── ProjectForm.js      — project creation/edit form
+│   │   │   ├── RoleTag.js          — role badge component
+│   │   │   └── TechStackTag.js     — tech stack badge component
+│   │   ├── requests/
+│   │   │   └── RequestCard.js      — collaboration request card
+│   │   └── ui/
+│   │       ├── EmptyState.js       — empty state display
+│   │       ├── SkeletonCard.js     — loading skeleton
+│   │       └── Toast.js            — toast notification
 │   │
 │   ├── context/
-│   │   └── AuthContext.js          — global auth state, login/logout functions
+│   │   ├── AuthContext.js         — authentication state management
+│   │   └── ToastContext.js        — toast notification state
 │   │
 │   ├── hooks/
-│   │   ├── useAuth.js              — consumes AuthContext
-│   │   ├── useProjects.js          — data fetching for projects
-│   │   └── useRequests.js          — data fetching for requests
+│   │   ├── useAuth.js             — authentication hook
+│   │   └── useToast.js            — toast notification hook
 │   │
-│   └── services/
-│       ├── api.js                  — Axios instance with interceptors
-│       ├── auth.js                 — register, login, logout, refresh
-│       ├── projects.js             — all project API calls
-│       └── requests.js             — all collaboration request API calls
+│   ├── services/
+│   │   ├── api.js                 — Axios instance with interceptors
+│   │   ├── auth.js                — auth API calls (register, login, refresh)
+│   │   ├── projects.js            — project API calls
+│   │   ├── requests.js            — collaboration request API calls
+│   │   └── users.js               — user profile API calls
+│   │
+│   └── utils/
+│       └── parseApiError.js       — API error parsing utility
 │
+├── .env
 ├── .env.local
+├── .env.local.example
 ├── .gitignore
-└── package.json
+├── package.json
+├── next.config.mjs
+├── postcss.config.mjs
+├── jsconfig.json
+├── eslint.config.mjs
+└── vercel.json
 ```
 
 ---
