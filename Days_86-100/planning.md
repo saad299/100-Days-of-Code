@@ -525,51 +525,51 @@ Redirect to /dashboard or ?next= page
 devcollab-backend/
 │
 ├── devcollab/                  ← main project package
-│   ├── manage.py
-│   ├── requirements.txt
-│   ├── .env
-│   ├── .gitignore
-│   ├── Procfile
-│   ├── railway.json
-│   ├── db.sqlite3
-│   ├── staticfiles/
-│   ├── accounts.txt
+│   ├── manage.py               — Django management commands
+│   ├── requirements.txt        — Python dependencies
+│   ├── .env                   — environment variables
+│   ├── .gitignore             — Git ignore rules
+│   ├── Procfile               — Heroku/Railway deployment config
+│   ├── railway.json           — Railway deployment configuration
+│   ├── db.sqlite3             — SQLite database file
+│   ├── staticfiles/           — collected static files
+│   ├── accounts.txt           — accounts documentation/notes
 │   │
 │   ├── accounts/               ← user and profile app
-│   │   ├── __init__.py
-│   │   ├── models.py           — User (custom), Profile
-│   │   ├── serializers.py      — UserSerializer, ProfileSerializer, RegisterSerializer
-│   │   ├── views.py            — RegisterView, ProfileView, PublicProfileView
-│   │   ├── urls.py
-│   │   ├── signals.py          — auto-create Profile on User creation
-│   │   ├── admin.py
-│   │   ├── apps.py
-│   │   ├── tests.py
-│   │   └── migrations/
+│   │   ├── __init__.py        — app initialization
+│   │   ├── models.py          — User (custom), Profile
+│   │   ├── serializers.py     — UserSerializer, ProfileSerializer, RegisterSerializer
+│   │   ├── views.py           — RegisterView, ProfileView, PublicProfileView
+│   │   ├── urls.py            — URL routing for accounts app
+│   │   ├── signals.py         — auto-create Profile on User creation
+│   │   ├── admin.py           — Django admin configuration
+│   │   ├── apps.py            — app configuration
+│   │   ├── tests.py           — unit tests for accounts
+│   │   └── migrations/        — database migrations
 │   │
 │   ├── projects/               ← projects and requests app
-│   │   ├── __init__.py
-│   │   ├── models.py           — Project, CollaborationRequest
-│   │   ├── serializers.py      — ProjectSerializer, CollaborationRequestSerializer
-│   │   ├── views.py            — ProjectViewSet, CollaborationRequestViewSet
-│   │   ├── urls.py
-│   │   ├── permissions.py      — IsOwner custom permission class
-│   │   ├── admin.py
-│   │   ├── apps.py
-│   │   ├── tests.py
-│   │   └── migrations/
+│   │   ├── __init__.py        — app initialization
+│   │   ├── models.py          — Project, CollaborationRequest
+│   │   ├── serializers.py     — ProjectSerializer, CollaborationRequestSerializer
+│   │   ├── views.py           — ProjectViewSet, CollaborationRequestViewSet
+│   │   ├── urls.py            — URL routing for projects app
+│   │   ├── permissions.py     — IsOwner custom permission class
+│   │   ├── admin.py           — Django admin configuration
+│   │   ├── apps.py            — app configuration
+│   │   ├── tests.py           — unit tests for projects
+│   │   └── migrations/        — database migrations
 │   │
 │   └── devcollab/             ← project configuration
-│       ├── __init__.py
-│       ├── settings.py
-│       ├── urls.py
-│       ├── wsgi.py
-│       ├── asgi.py
+│       ├── __init__.py        — project initialization
+│       ├── settings.py        — settings entry point
+│       ├── urls.py            — main URL configuration
+│       ├── wsgi.py            — WSGI deployment interface
+│       ├── asgi.py            — ASGI deployment interface
 │       └── settings/
-│           ├── __init__.py
-│           ├── base.py
-│           ├── development.py
-│           └── production.py
+│           ├── __init__.py    — settings package initialization
+│           ├── base.py        — base settings configuration
+│           ├── development.py — development environment settings
+│           └── production.py  — production environment settings
 ```
 
 ### Next.js Frontend
