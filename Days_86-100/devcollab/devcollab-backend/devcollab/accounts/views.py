@@ -19,7 +19,7 @@ class RegisterView(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
-        print(f"DEBUG: Received registration data: {request.data}")
+        # print(f"DEBUG: Received registration data: {request.data}")
         serializer = RegisterSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
@@ -33,7 +33,7 @@ class RegisterView(APIView):
                 },
                 status=status.HTTP_201_CREATED,
             )
-        print(f"DEBUG: Validation errors: {serializer.errors}")
+        # print(f"DEBUG: Validation errors: {serializer.errors}")
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
