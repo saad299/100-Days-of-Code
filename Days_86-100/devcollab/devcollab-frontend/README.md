@@ -14,6 +14,7 @@ A modern web application for developer collaboration built with Next.js, React, 
 - [Setup Instructions](#setup-instructions)
 - [Environment Configuration](#environment-configuration)
 - [Deployment](#deployment)
+- [Drawbacks/Issues needed to be fix](#drawbacksissues-needed-to-be-fix)
 
 ## What is this application?
 
@@ -505,6 +506,485 @@ When contributing to this project:
 3. Create reusable components when possible
 4. Add proper error handling
 5. Test on different screen sizes
+
+## Drawbacks/Issues needed to be fix
+
+### Security Issues
+
+#### 1. localStorage for Sensitive Data
+**Issue:** JWT tokens and user data are stored in localStorage, which is vulnerable to XSS attacks.
+
+**Problems:**
+- Accessible by any JavaScript code running on the page
+- Vulnerable to cross-site scripting (XSS) attacks
+- Tokens can be stolen by malicious scripts
+- No protection against token theft
+
+**Recommendation:** Use httpOnly cookies for token storage:
+```javascript
+// Store tokens in httpOnly cookies set by the backend
+// Frontend only stores non-sensitive user session data
+```
+
+#### 2. Missing CSRF Protection
+**Issue:** No CSRF token implementation for state-changing requests.
+
+**Problems:**
+- Vulnerable to cross-site request forgery attacks
+- Malicious sites can make requests on behalf of authenticated users
+- Can lead to unauthorized actions (project deletion, etc.)
+- No protection against forged requests
+
+**Recommendation:** Implement CSRF tokens for all state-changing operations.
+
+#### 3. Missing Input Sanitization
+**Issue:** User inputs are not properly sanitized before display or API submission.
+
+**Problems:**
+- Risk of XSS attacks through user-generated content
+- Malicious scripts can be injected through project descriptions, messages, etc.
+- Can compromise user sessions and steal data
+- No validation of URLs in user profiles
+
+**Recommendation:** Implement proper input sanitization and validation:
+```javascript
+import DOMPurify from 'dompurify';
+
+const sanitizedDescription = DOMPurify.sanitize(userInput);
+```
+
+### State Management Issues
+
+#### 4. localStorage as Single Source of Truth
+**Issue:** Authentication state relies solely on localStorage without proper state synchronization.
+
+**Problems:**
+- State can become inconsistent across browser tabs
+- Race conditions between multiple tabs
+- No proper state management for complex scenarios
+- Difficult to handle token expiration gracefully
+
+**Recommendation:** Implement proper state management with Redux or Zustand, or use React Query for server state.
+
+#### 5. Missing Error Boundaries
+**Issue:** No error boundaries to handle component errors gracefully.
+
+**Problems:**
+- Application crashes on component errors
+- Poor user experience when something goes wrong
+- No graceful degradation
+- Difficult to debug production errors
+
+**Recommendation:** Implement React error boundaries:
+```javascript
+class ErrorBoundary extends React.Component {
+  componentDidCatch(error, errorInfo) {
+    logErrorToService(error, errorInfo);
+  }
+  render() {
+    if (this.state.hasError) {
+      return <ErrorFallback />;
+    }
+    return this.props.children;
+  }
+}
+```
+
+### Performance Issues
+
+#### 6. No Data Caching Strategy
+**Issue:** No caching mechanism for API responses, leading to repeated requests.
+
+**Problems:**
+- Unnecessary API calls for the same data
+- Slower page loads and navigation
+- Increased server load
+- Poor offline experience
+
+**Recommendation:** Implement React Query or SWR for data caching and synchronization:
+```javascript
+import { useQuery } from '@tanstack/react-query';
+
+const { data, isLoading } = useQuery({
+  queryKey: ['projects'],
+  queryFn: getProjects,
+  staleTime: 5 * 60 * 1000, // 5 minutes
+});
+```
+
+#### 7. Missing Code Splitting for Large Components
+**Issue:** Large components are loaded even when not needed.
+
+**Problems:**
+- Larger initial bundle size
+- Slower initial page load
+- Poor performance on slow connections
+- Unnecessary JavaScript execution
+
+**Recommendation:** Implement dynamic imports for heavy components:
+```javascript
+const ProjectForm = dynamic(() => import('./ProjectForm'), {
+  loading: () => <SkeletonLoader />
+});
+```
+
+#### 8. No Image Optimization
+**Issue:** User avatars and images are not optimized.
+
+**Problems:**
+- Large image files slow down page loads
+- No responsive image loading
+- Poor performance on mobile devices
+- Increased bandwidth usage
+
+**Recommendation:** Use Next.js Image component with optimization:
+```javascript
+<Image 
+  src={user.avatar} 
+  alt={user.username}
+  width={100}
+  height={100}
+  loading="lazy"
+/>
+```
+
+### Code Quality Issues
+
+#### 9. Inconsistent Error Handling
+**Issue:** Error handling varies across components (some use alerts, some use toasts, some show inline).
+
+**Problems:**
+- Inconsistent user experience
+- Difficult to maintain error handling logic
+- Some errors go unnoticed by users
+- No centralized error tracking
+
+**Recommendation:** Implement consistent error handling with a centralized error manager.
+
+#### 10. Commented-Out Debug Code
+**Issue:** Debug comments and incomplete code left in production files (e.g., RequestCard.js line 49).
+
+**Problems:**
+- Clutters the codebase
+- Indicates incomplete development
+- May contain sensitive information
+- Unprofessional code presentation
+
+**Recommendation:** Remove all debug comments and incomplete code before deployment.
+
+#### 11. Missing PropTypes or TypeScript
+**Issue:** No type checking for component props and function parameters.
+
+**Problems:**
+- Runtime errors due to incorrect prop types
+- Difficult to refactor without breaking things
+- No IDE autocomplete for props
+- Harder to catch bugs during development
+
+**Recommendation:** Implement TypeScript or PropTypes:
+```javascript
+import PropTypes from 'prop-types';
+
+RequestCard.propTypes = {
+  request: PropTypes.object.isRequired,
+  onStatusUpdate: PropTypes.func
+};
+```
+
+#### 12. Magic Numbers and Strings
+**Issue:** Hardcoded values throughout the codebase (e.g., slice(0, 200), timeouts, etc.).
+
+**Problems:**
+- Difficult to maintain and update
+- No clear meaning behind numbers
+- Inconsistent behavior across components
+- Hard to test edge cases
+
+**Recommendation:** Extract constants to a configuration file:
+```javascript
+const CONFIG = {
+  MESSAGE_TRUNCATE_LENGTH: 200,
+  TOAST_DURATION: 3000,
+  API_TIMEOUT: 10000
+};
+```
+
+### User Experience Issues
+
+#### 13. Missing Loading States for Some Operations
+**Issue:** Some async operations don't show loading indicators.
+
+**Problems:**
+- Users don't know if action is being processed
+- Can lead to duplicate submissions
+- Poor perceived performance
+- User confusion
+
+**Recommendation:** Implement loading states for all async operations.
+
+#### 14. No Optimistic UI Updates
+**Issue:** UI doesn't update until API response is received.
+
+**Problems:**
+- Slower perceived performance
+- Poor user experience for fast operations
+- Users think actions failed
+- No immediate feedback
+
+**Recommendation:** Implement optimistic updates with rollback on failure:
+```javascript
+const updateProject = async (updates) => {
+  const oldData = projects;
+  setProjects(prev => ({ ...prev, ...updates })); // Optimistic
+  
+  try {
+    await api.patch(`/projects/${id}`, updates);
+  } catch (error) {
+    setProjects(oldData); // Rollback
+  }
+};
+```
+
+#### 15. No Offline Support
+**Issue:** Application doesn't work when offline.
+
+**Problems:**
+- Poor user experience on unstable connections
+- Can't view previously loaded content offline
+- No service worker for caching
+- Users lose work on connection loss
+
+**Recommendation:** Implement service worker and offline caching strategies.
+
+#### 16. Missing Form Validation
+**Issue:** Limited client-side form validation before API submission.
+
+**Problems:**
+- Unnecessary API calls for invalid data
+- Poor user experience with delayed error feedback
+- Server-side validation only
+- Inconsistent validation rules
+
+**Recommendation:** Implement comprehensive form validation:
+```javascript
+import { useForm } from 'react-hook-form';
+
+const { register, handleSubmit, formState: { errors } } = useForm({
+  validationSchema: projectSchema
+});
+```
+
+### Accessibility Issues
+
+#### 17. Missing ARIA Labels and Roles
+**Issue:** Interactive elements lack proper ARIA attributes.
+
+**Problems:**
+- Poor accessibility for screen readers
+- Navigation difficult for keyboard users
+- Not compliant with WCAG guidelines
+- Excludes users with disabilities
+
+**Recommendation:** Add proper ARIA labels and roles:
+```javascript
+<button 
+  aria-label="Accept collaboration request"
+  role="button"
+>
+  Accept
+</button>
+```
+
+#### 18. Missing Keyboard Navigation Support
+**Issue:** Some interactive elements don't support keyboard navigation.
+
+**Problems:**
+- Can't use application without mouse
+- Poor accessibility
+- Not compliant with accessibility standards
+- Difficult for users with motor disabilities
+
+**Recommendation:** Ensure all interactive elements are keyboard accessible.
+
+#### 19. Poor Color Contrast
+**Issue:** Some text elements may have insufficient color contrast.
+
+**Problems:**
+- Difficult to read for users with visual impairments
+- Not WCAG compliant
+- Poor readability in various lighting conditions
+- Accessibility issues
+
+**Recommendation:** Audit and fix color contrast ratios to meet WCAG AA standards.
+
+### Testing Issues
+
+#### 20. No Test Coverage
+**Issue:** No tests written for components, hooks, or services.
+
+**Problems:**
+- No assurance that code changes don't break functionality
+- Difficult to refactor safely
+- Higher risk of bugs in production
+- No safety net for development
+
+**Recommendation:** Implement comprehensive testing:
+```javascript
+// Component tests with React Testing Library
+// Hook tests with @testing-library/react-hooks
+// Service tests with MSW (Mock Service Worker)
+```
+
+### Architecture Issues
+
+#### 21. Tight Coupling Between Components
+**Issue:** Components are tightly coupled to specific data structures and API responses.
+
+**Problems:**
+- Difficult to reuse components
+- Changes to API break components
+- Hard to test components in isolation
+- Poor maintainability
+
+**Recommendation:** Implement proper abstraction layers and component composition patterns.
+
+#### 22. Missing API Versioning Strategy
+**Issue:** No handling for API version changes in the frontend.
+
+**Problems:**
+- Breaking API changes break the frontend
+- Can't support multiple API versions
+- Difficult to migrate to new API versions
+- No backward compatibility
+
+**Recommendation:** Implement API version handling in service layer.
+
+#### 23. No Request Cancellation
+**Issue:** API requests can't be cancelled when components unmount.
+
+**Problems:**
+- Memory leaks from unmounted components
+- Unnecessary API calls waste resources
+- Can cause state updates on unmounted components
+- React warnings about state updates on unmounted components
+
+**Recommendation:** Implement request cancellation with AbortController:
+```javascript
+useEffect(() => {
+  const controller = new AbortController();
+  
+  fetchProjects({ signal: controller.signal });
+  
+  return () => controller.abort();
+}, []);
+```
+
+### SEO and Analytics Issues
+
+#### 24. Missing Meta Tags and Open Graph
+**Issue:** Pages lack proper meta tags for SEO and social sharing.
+
+**Problems:**
+- Poor search engine optimization
+- Bad social media preview cards
+- Missing Open Graph tags
+- No structured data for rich snippets
+
+**Recommendation:** Implement proper meta tags and Open Graph:
+```javascript
+export const metadata = {
+  title: 'DevCollab - Find Developer Collaborators',
+  description: 'Connect with developers to build projects together',
+  openGraph: {
+    title: 'DevCollab',
+    description: 'Find collaborators for your projects',
+    images: ['/og-image.png']
+  }
+};
+```
+
+#### 25. No Analytics Integration
+**Issue:** No user analytics or error tracking implemented.
+
+**Problems:**
+- No insight into user behavior
+- Can't track conversion funnels
+- No error tracking in production
+- Difficult to make data-driven decisions
+
+**Recommendation:** Implement analytics (Google Analytics, Mixpanel) and error tracking (Sentry).
+
+### Missing Features
+
+#### 26. No Real-Time Updates
+**Issue:** No WebSocket or real-time update mechanism.
+
+**Problems:**
+- Users must refresh to see new collaboration requests
+- No live notifications
+- Poor collaboration experience
+- Outdated information display
+
+**Recommendation:** Implement WebSocket connections for real-time updates.
+
+#### 27. No File Upload Handling
+**Issue:** Missing proper file upload handling for avatars and project files.
+
+**Problems:**
+- Can't upload project images or documents
+- No avatar upload functionality
+- Limited user profile customization
+- Poor user experience
+
+**Recommendation:** Implement proper file upload with progress indicators and validation.
+
+#### 28. No Search History or Recent Activity
+**Issue:** No tracking of user's recent searches or activity.
+
+**Problems:**
+- Can't easily revisit previous searches
+- No personalized recommendations
+- Poor user experience
+- Missing engagement features
+
+**Recommendation:** Implement search history and activity tracking.
+
+### Deployment and DevOps Issues
+
+#### 29. Missing Environment-Specific Configurations
+**Issue:** Limited environment-specific configuration management.
+
+**Problems:**
+- Difficult to manage different environments
+- Risk of using wrong configuration
+- No proper staging environment setup
+- Configuration drift between environments
+
+**Recommendation:** Implement proper environment configuration management.
+
+#### 30. No Performance Monitoring
+**Issue:** No performance monitoring or alerting system.
+
+**Problems:**
+- Can't detect performance degradation
+- No visibility into application performance
+- Difficult to optimize user experience
+- No alerting for performance issues
+
+**Recommendation:** Implement performance monitoring (Lighthouse CI, Web Vitals monitoring).
+
+### Browser Compatibility Issues
+
+#### 31. Limited Browser Testing
+**Issue:** No systematic testing across different browsers and devices.
+
+**Problems:**
+- May not work on older browsers
+- Responsive design issues on some devices
+- Inconsistent behavior across browsers
+- Poor user experience for some users
+
+**Recommendation:** Implement cross-browser testing with tools like BrowserStack or Sauce Labs.
 
 ## License
 
