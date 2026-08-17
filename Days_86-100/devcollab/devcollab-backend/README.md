@@ -170,10 +170,10 @@ sequenceDiagram
 ```mermaid
 erDiagram
     USER ||--|| PROFILE : "has one"
-    USER ||--{ PROJECT : "owns many"
-    USER ||--{ COLLABORATION_REQUEST : "sends many"
-    USER ||--{ COLLABORATION_REQUEST : "receives many"
-    PROJECT ||--{ COLLABORATION_REQUEST : "has many"
+    USER ||--|{ PROJECT : "owns many"
+    USER ||--|{ COLLABORATION_REQUEST : "sends many"
+    USER ||--|{ COLLABORATION_REQUEST : "receives many"
+    PROJECT ||--|{ COLLABORATION_REQUEST : "has many"
 
     USER {
         integer id PK
