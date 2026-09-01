@@ -9,7 +9,7 @@ function Navbar() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
     
     return (
-        <nav className='sticky top-0 z-50 flex items-center justify-between bg-white border-b border-gray-200 px-4 sm:px-6 h-[52px] sm:h-[60px]'>
+        <nav className='sticky top-0 z-50 flex items-center justify-between bg-white border-b border-gray-200 px-4 sm:px-6 h-13 sm:h-15'>
             <Link href={user ? "/dashboard" : "/"} className='text-[17px] sm:text-[18px] font-medium cursor-pointer text-gray-900'>
                 Dev<span className='text-[#378ADD]'>Collab</span>
             </Link>
@@ -18,13 +18,13 @@ function Navbar() {
             <div className='hidden sm:flex items-center gap-2'>
                 {user === null ? (
                     <>
-                        <Link href="/projects" className='text-[14px] text-gray-600 px-[10px] py-[6px] rounded-md cursor-pointer hover:bg-gray-50 hover:text-gray-900 transition-colors'>
+                        <Link href="/projects" className='text-[14px] text-gray-600 px-2.5 py-1.5 rounded-md cursor-pointer hover:bg-gray-50 hover:text-gray-900 transition-colors'>
                             Browse Projects
                         </Link>
-                        <Link href="/login" className='text-[14px] text-gray-600 px-[10px] py-[6px] rounded-md cursor-pointer hover:bg-gray-50 hover:text-gray-900 transition-colors'>
+                        <Link href="/login" className='text-[14px] text-gray-600 px-2.5 py-1.5 rounded-md cursor-pointer hover:bg-gray-50 hover:text-gray-900 transition-colors'>
                             Login
                         </Link>
-                        <Link href="/register" className='text-[14px] text-gray-600 px-[10px] py-[6px] rounded-md cursor-pointer hover:bg-gray-50 hover:text-gray-900 transition-colors'>
+                        <Link href="/register" className='text-[14px] text-gray-600 px-2.5 py-1.5 rounded-md cursor-pointer hover:bg-gray-50 hover:text-gray-900 transition-colors'>
                             Register
                         </Link>
                     </>
