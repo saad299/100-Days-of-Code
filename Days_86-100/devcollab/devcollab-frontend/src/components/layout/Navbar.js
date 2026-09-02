@@ -30,10 +30,10 @@ function Navbar() {
                     </>
                 ) : (
                     <>
-                        <Link href="/projects" className='text-[14px] text-gray-600 px-[10px] py-[6px] rounded-md cursor-pointer hover:bg-gray-50 hover:text-gray-900 transition-colors'>
+                        <Link href="/projects" className='text-[14px] text-gray-600 px-2.5 py-1.5 rounded-md cursor-pointer hover:bg-gray-50 hover:text-gray-900 transition-colors'>
                             Browse
                         </Link>
-                        <Link href="/projects/new" className='text-[14px] text-gray-600 px-[10px] py-[6px] rounded-md cursor-pointer hover:bg-gray-50 hover:text-gray-900 transition-colors'>
+                        <Link href="/projects/new" className='text-[14px] text-gray-600 px-2.5 py-1.5 rounded-md cursor-pointer hover:bg-gray-50 hover:text-gray-900 transition-colors'>
                             Post Project
                         </Link>
                         <Link href={`/profile/${user.username}`} className='text-[14px] text-gray-600 px-[10px] py-[6px] rounded-md cursor-pointer hover:bg-gray-50 hover:text-gray-900 transition-colors'>
