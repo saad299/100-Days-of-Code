@@ -39,7 +39,7 @@ function Navbar() {
                         <Link href={`/profile/${user.username}`} className='text-[14px] text-gray-600 px-2.5 py-1.5 rounded-md cursor-pointer hover:bg-gray-50 hover:text-gray-900 transition-colors'>
                             Profile
                         </Link>
-                        <button onClick={logout} className='text-[14px] text-gray-600 px-[10px] py-[6px] rounded-md cursor-pointer hover:bg-gray-50 hover:text-gray-900 transition-colors'>
+                        <button onClick={logout} className='text-[14px] text-gray-600 px-2.5 py-1.5 rounded-md cursor-pointer hover:bg-gray-50 hover:text-gray-900 transition-colors'>
                             Logout
                         </button>
                     </>
