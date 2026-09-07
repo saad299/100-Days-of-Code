@@ -81,7 +81,7 @@ function Navbar() {
                                 </Link>
                                 <Link 
                                     href="/login" 
-                                    className='text-[14px] text-gray-600 px-[10px] py-[8px] rounded-md cursor-pointer hover:bg-gray-50 hover:text-gray-900 transition-colors'
+                                    className='text-[14px] text-gray-600 px-2.5 py-2 rounded-md cursor-pointer hover:bg-gray-50 hover:text-gray-900 transition-colors'
                                     onClick={() => setMobileMenuOpen(false)}
                                 >
                                     Login
