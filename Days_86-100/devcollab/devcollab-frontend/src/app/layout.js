@@ -26,7 +26,7 @@ export const metadata = {
     description: 'Find collaborators for your projects',
     // images: ['/og-image.png']
   }
-};
+}
 
 // export default function RootLayout({ children }) {
 //   return (
