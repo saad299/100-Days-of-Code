@@ -24,7 +24,7 @@ function NewProjectPage() {
         description: formData.description,
         tech_stack: formData.techStack,
         roles_needed: formData.rolesNeeded,
-        
+        github_url: formData.githubUrl,
         status:
           formData.status === "open" || formData.status === "in_progress"
             ? "active"
