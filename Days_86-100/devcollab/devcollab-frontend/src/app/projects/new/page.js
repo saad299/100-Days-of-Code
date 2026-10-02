@@ -26,7 +26,7 @@ function NewProjectPage() {
         roles_needed: formData.rolesNeeded,
         // github_url: formData.githubUrl || null,
         // demo_url: formData.demoUrl || null,
-        
+
         status:
           formData.status === "open" || formData.status === "in_progress"
             ? "active"
@@ -35,18 +35,6 @@ function NewProjectPage() {
               : formData.status,
         is_open: formData.isOpen,
       };
-      // const newProject = await createProject(backendData)
-      // router.push(`/projects/${newProject.id}`)
-      // router.push(`/projects/${newProject.project_id}`)
-      // const newProject = await createProject(backendData)
-      // console.log('Backend response:', newProject)
-      // router.push(`/projects/${newProject.project_id}`)
-      // console.log('Sending to backend:', backendData)
-      // const newProject = await createProject(backendData)
-      // console.log('Backend response:', newProject)
-      // const projectId = newProject.project_id || newProject.id || newProject.project_id
-      // console.log('Extracted Project ID:', projectId)
-      // router.push(`/projects/${projectId}`)
       const newProject = await createProject(backendData);
       router.push(`/projects/${newProject.project_id}`);
     } catch (err) {
