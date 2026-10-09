@@ -1,6 +1,7 @@
 from .base import *
 import dj_database_url
 from decouple import config, Csv
+from django.core.exceptions import ImproperlyConfigured
 
 DEBUG = False
 
@@ -18,6 +19,8 @@ if not CORS_ALLOWED_ORIGINS:
     raise ImproperlyConfigured('CORS_ALLOWED_ORIGINS must be set in production')
 
 CORS_ALLOW_CREDENTIALS = True
+
+AUTH_COOKIE_SECURE = True
 
 SECURE_SSL_REDIRECT = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
