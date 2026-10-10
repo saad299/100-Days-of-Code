@@ -76,13 +76,21 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'accounts.User'
 
 REST_FRAMEWORK = {
+    # 'DEFAULT_AUTHENTICATION_CLASSES': [
+    #     'rest_framework_simplejwt.authentication.JWTAuthentication',
+    # ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'accounts.authentication.CookieJWTAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
 }
+
+AUTH_COOKIE_ACCESS = 'dc_access'
+AUTH_COOKIE_REFRESH = 'dc_refresh'
+AUTH_COOKIE_SAMESITE = 'Lax'
+AUTH_COOKIE_REFRESH_PATH = '/api/auth/'
 
 from datetime import timedelta
 SIMPLE_JWT = {
