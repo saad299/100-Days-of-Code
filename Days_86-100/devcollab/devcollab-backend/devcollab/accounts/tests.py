@@ -1,5 +1,6 @@
 from django.test import TestCase
 from .models import User
+from .models import Profile
 
 # Create your tests here.
 
@@ -30,3 +31,22 @@ class UserModelTest(TestCase):
         self.assertNotEqual(user.password, 'testpass123')
         self.assertTrue(user.check_password('testpass123'))
         self.assertFalse(user.check_password('wrongpass'))
+
+class ProfileModelTest(TestCase):
+    def test_profile_auto_created(self):
+        user = User.objects.create_user(username='testuser', email='test@example.com', password='testpass123')
+        profile = Profile.objects.get(user=user)
+        self.assertIsNotNone(profile)
+        self.assertEqual(profile.user, user)
+
+    def test_profile_update(self):
+        user = User.objects.create_user(username='testuser', email='test@example.com', password='testpass123')
+        profile = Profile.objects.get(user=user)
+        profile.bio = 'Test bio'
+        profile.skills = 'Test skills'
+        profile.location = 'Test location'
+        profile.save()
+        profile = Profile.objects.get(user=user)
+        self.assertEqual(profile.bio, 'Test bio')
+        self.assertEqual(profile.skills, 'Test skills')
+        self.assertEqual(profile.location, 'Test location')
