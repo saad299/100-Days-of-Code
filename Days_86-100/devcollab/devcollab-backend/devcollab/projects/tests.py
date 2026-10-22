@@ -65,3 +65,13 @@ class ListProjectsIntegrationTest(TestCase):
         self.assertEqual(len(response.data), 2) # I expect 2 projects
         self.assertEqual(response.data[0]['title'], 'Test Project 1') # I expect the first project to have the title 'Test Project 1'
         self.assertEqual(response.data[1]['title'], 'Test Project 2') # I expect the second project to have the title 'Test Project 2'
+
+    
+    def test_get_nonexistent_project_returns_404(self):
+        # ACT: one action — an unauthenticated GET request to a non-existent project
+        client = APIClient()
+        response = client.get('/api/projects/999/')
+
+        # ASSERT: my expectations about the result
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.data['detail'], 'No Project matches the given query.')
