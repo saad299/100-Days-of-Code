@@ -37,14 +37,18 @@
                     <td class="px-6 py-4 text-gray-500">{{ application.job.location }}</td>
                     <td class="px-6 py-4 text-gray-500">{{ application.applied_at|date:"M d, Y" }}</td>
                     <td class="px-6 py-4">
-                        {% if application.status == 'pending' %}
-                            <span class="bg-gray-100 text-gray-600 text-xs font-medium px-2.5 py-1 rounded-full">Pending</span>
-                        {% elif application.status == 'reviewed' %}
-                            <span class="bg-blue-100 text-blue-700 text-xs font-medium px-2.5 py-1 rounded-full">Reviewed</span>
-                        {% elif application.status == 'accepted' %}
-                            <span class="bg-green-100 text-green-700 text-xs font-medium px-2.5 py-1 rounded-full">✓ Accepted</span>
+                        {% if application.status == 'applied' %}
+                            <span class="bg-gray-100 text-gray-600 text-xs font-medium px-2.5 py-1 rounded-full">Applied</span>
+                        {% elif application.status == 'shortlisted' %}
+                            <span class="bg-blue-100 text-blue-700 text-xs font-medium px-2.5 py-1 rounded-full">Shortlisted</span>
                         {% elif application.status == 'rejected' %}
                             <span class="bg-red-100 text-red-600 text-xs font-medium px-2.5 py-1 rounded-full">Not Selected</span>
+                        {% elif application.status == 'offer' %}
+                            <span class="bg-purple-100 text-purple-700 text-xs font-medium px-2.5 py-1 rounded-full">Offer</span>
+                        {% elif application.status == 'accepted' %}
+                            <span class="bg-green-100 text-green-700 text-xs font-medium px-2.5 py-1 rounded-full">✓ Accepted</span>
+                        {% elif application.status == 'declined' %}
+                            <span class="bg-orange-100 text-orange-600 text-xs font-medium px-2.5 py-1 rounded-full">Declined</span>
                         {% endif %}
                     </td>
                 </tr>
