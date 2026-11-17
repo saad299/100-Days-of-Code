@@ -1,18 +1,19 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import useAuth from "@/hooks/useAuth";
 import { getProjects } from "@/services/projects";
-import ProjectCard from "@/components/projects/ProjectCard";
-import SkeletonCard from "@/components/ui/SkeletonCard";
 
 export default function LandingPage() {
   const { user } = useAuth();
   const router = useRouter();
   const [recentProjects, setRecentProjects] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [imageError, setImageError] = useState(false);
+  const heroImage = "/project_detail.png";
 
   useEffect(() => {
     if (user) {
@@ -39,195 +40,202 @@ export default function LandingPage() {
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
       <section className="bg-white border-b border-gray-200">
-        <div className="max-w-5xl mx-auto px-4 py-12 md:py-20 text-center">
-          <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 text-xs sm:text-sm font-medium px-3 sm:px-4 py-1.5 rounded-full mb-4 sm:mb-6">
-            <span className="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
-            Open for collaboration requests
-          </div>
+        <div className="max-w-5xl mx-auto px-4 py-12 md:py-20">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+            <div className="text-left">
+              <h1 className="font-display text-3xl sm:text-4xl md:text-5xl font-semibold text-gray-900 mb-4 sm:mb-5 leading-tight">
+                Find developers to build
+                <br className="hidden md:block" /> with you
+              </h1>
 
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-semibold text-gray-900 mb-4 sm:mb-5 leading-tight">
-            Find developers to build
-            <br className="hidden md:block" /> with you
-          </h1>
+              <p className="font-body text-base sm:text-lg text-gray-500 max-w-2xl mb-6 sm:mb-8 leading-relaxed">
+                DevCollab connects developers who have project ideas with developers
+                who want to contribute. Post your project, find collaborators, and
+                build something together.
+              </p>
 
-          <p className="text-base sm:text-lg text-gray-500 max-w-2xl mx-auto mb-6 sm:mb-8 leading-relaxed px-2 sm:px-0">
-            DevCollab connects developers who have project ideas with developers
-            who want to contribute. Post your project, find collaborators, and
-            build something together.
-          </p>
+              <div className="flex flex-col sm:flex-row items-start gap-3">
+                {user ? (
+                  <>
+                    <Link
+                      href="/projects/new"
+                      className="w-full sm:w-auto bg-blue-500 hover:bg-blue-600 text-white font-medium px-7 py-3 rounded-xl transition-colors text-sm min-h-11 flex items-center justify-center"
+                    >
+                      Post a Project
+                    </Link>
+                    <Link
+                      href="/projects"
+                      className="w-full sm:w-auto text-gray-700 font-medium px-7 py-3 rounded-xl transition-colors text-sm min-h-11 flex items-center justify-center hover:underline"
+                    >
+                      Browse Projects
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <Link
+                      href="/register"
+                      className="w-full sm:w-auto bg-blue-500 hover:bg-blue-600 text-white font-medium px-7 py-3 rounded-xl transition-colors text-sm min-h-11 flex items-center justify-center"
+                    >
+                      Get Started. It&apos;s Free
+                    </Link>
+                    <Link
+                      href="/projects"
+                      className="w-full sm:w-auto text-gray-700 font-medium px-7 py-3 rounded-xl transition-colors text-sm min-h-11 flex items-center justify-center hover:underline"
+                    >
+                      Browse Projects
+                    </Link>
+                  </>
+                )}
+              </div>
+            </div>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-            {user ? (
-              <>
-                <Link
-                  href="/projects/new"
-                  className="w-full sm:w-auto bg-blue-500 hover:bg-blue-600 text-white font-medium px-7 py-3 rounded-xl transition-colors text-sm"
-                >
-                  Post a Project
-                </Link>
-                <Link
-                  href="/projects"
-                  className="w-full sm:w-auto border border-gray-200 hover:bg-gray-50 text-gray-700 font-medium px-7 py-3 rounded-xl transition-colors text-sm"
-                >
-                  Browse Projects
-                </Link>
-              </>
-            ) : (
-              <>
-                <Link
-                  href="/register"
-                  className="w-full sm:w-auto bg-blue-500 hover:bg-blue-600 text-white font-medium px-7 py-3 rounded-xl transition-colors text-sm"
-                >
-                  Get Started. It&apos;s Free
-                </Link>
-                <Link
-                  href="/projects"
-                  className="w-full sm:w-auto border border-gray-200 hover:bg-gray-50 text-gray-700 font-medium px-7 py-3 rounded-xl transition-colors text-sm"
-                >
-                  Browse Projects
-                </Link>
-              </>
-            )}
+            <div className="relative h-64 md:h-80 lg:h-96">
+              {heroImage && !imageError ? (
+                <Image
+                  src={heroImage}
+                  alt="DevCollab project card preview"
+                  fill
+                  className="rounded-2xl shadow-lg object-cover"
+                  onError={() => setImageError(true)}
+                />
+              ) : (
+                <div className="absolute inset-0 flex items-center justify-center bg-gray-100 rounded-2xl border-2 border-dashed border-gray-300">
+                  <p className="text-gray-400 text-sm">Image failed to load</p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </section>
 
       {/* How It Works */}
       <section className="max-w-5xl mx-auto px-4 py-12 md:py-16">
-        <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 text-center mb-8 sm:mb-12">
+        <h2 className="font-display text-xl sm:text-2xl font-semibold text-gray-900 text-left mb-8 sm:mb-12">
           How it works
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-          {[
-            {
-              step: "01",
-              title: "Post your project",
-              description:
-                "Share what you are building. Describe the project, list the tech stack, and specify the roles you need.",
-            },
-            {
-              step: "02",
-              title: "Receive requests",
-              description:
-                "Developers who are interested send collaboration requests with a message explaining what they bring to the project.",
-            },
-            {
-              step: "03",
-              title: "Build together",
-              description:
-                "Review requests, accept the right collaborators, and start building. Track everything from your dashboard.",
-            },
-          ].map((item) => (
-            <div key={item.step} className="text-center">
-              <div className="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center text-sm font-semibold mx-auto mb-4">
-                {item.step}
-              </div>
-              <h3 className="font-semibold text-gray-900 mb-2">{item.title}</h3>
-              <p className="text-sm text-gray-500 leading-relaxed px-2">
-                {item.description}
+        <div className="space-y-8 md:space-y-12">
+          <div className="flex gap-6 items-start">
+            <span className="font-display text-5xl md:text-6xl font-bold text-blue-500">01</span>
+            <div className="flex-1">
+              <h3 className="font-display text-xl font-semibold text-gray-900 mb-2">Post your project</h3>
+              <p className="font-body text-base text-gray-500 leading-relaxed">
+                Share what you are building. Describe the project, list the tech stack, and specify the roles you need.
               </p>
             </div>
-          ))}
+          </div>
+
+          <div className="flex gap-6 items-start">
+            <span className="font-display text-5xl md:text-6xl font-bold text-blue-500">02</span>
+            <div className="flex-1">
+              <h3 className="font-display text-xl font-semibold text-gray-900 mb-2">Receive requests</h3>
+              <p className="font-body text-base text-gray-500 leading-relaxed">
+                Developers who are interested send collaboration requests with a message explaining what they bring to the project.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex gap-6 items-start">
+            <span className="font-display text-5xl md:text-6xl font-bold text-blue-500">03</span>
+            <div className="flex-1">
+              <h3 className="font-display text-xl font-semibold text-gray-900 mb-2">Build together</h3>
+              <p className="font-body text-base text-gray-500 leading-relaxed">
+                Review requests, accept the right collaborators, and start building. Track everything from your dashboard.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Stats Row */}
-      <section className="bg-white border-y border-gray-200">
-        <div className="max-w-5xl mx-auto px-4 py-8 md:py-10">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 text-center">
-            {[
-              { value: "Free", label: "Always free to use" },
-              { value: "Open", label: "Open source friendly" },
-              { value: "Fast", label: "Post in minutes" },
-              { value: "Real", label: "Real developers only" },
-            ].map((stat) => (
-              <div key={stat.label}>
-                <p className="text-xl md:text-2xl font-semibold text-gray-900 mb-1">
-                  {stat.value}
-                </p>
-                <p className="text-xs sm:text-sm text-gray-500">{stat.label}</p>
+      {/* Recent Projects - Only shown when there are projects */}
+      {!loading && recentProjects.length > 0 && (
+        <section className="max-w-5xl mx-auto px-4 py-12 md:py-16">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+            <div>
+              <h2 className="font-display text-xl sm:text-2xl font-semibold text-gray-900">
+                Recent Projects
+              </h2>
+              <p className="font-body text-sm text-gray-500 mt-1">
+                Projects looking for collaborators right now
+              </p>
+            </div>
+            <Link
+              href="/projects"
+              className="text-sm text-blue-500 hover:underline font-medium"
+            >
+              View all →
+            </Link>
+          </div>
+
+          <div className="space-y-0">
+            {recentProjects.map((project, index) => (
+              <div key={project.project_id}>
+                {index === 0 ? (
+                  <div className="bg-blue-500 border border-blue-600 rounded-xl p-6 mb-6">
+                    <Link href={`/projects/${project.project_id}`} className="block">
+                      <h3 className="font-display text-2xl font-semibold text-white mb-2 hover:text-blue-100 transition-colors">
+                        {project.title}
+                      </h3>
+                      <p className="font-body text-blue-50 text-sm leading-relaxed mb-4 line-clamp-2">
+                        {project.description}
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {Array.isArray(project.tech_stack) ? (
+                          project.tech_stack.slice(0, 3).map((tech) => (
+                            <span key={tech} className="text-xs bg-blue-100 text-blue-900 px-3 py-1.5 rounded-full font-medium">
+                              {tech}
+                            </span>
+                          ))
+                        ) : (
+                          <span className="text-xs bg-blue-100 text-blue-900 px-3 py-1.5 rounded-full font-medium">
+                            {project.tech_stack || 'No tech stack specified'}
+                          </span>
+                        )}
+                      </div>
+                    </Link>
+                  </div>
+                ) : (
+                  <div className="border-t border-gray-200 py-4">
+                    <Link href={`/projects/${project.project_id}`} className="block">
+                      <h3 className="font-display text-lg font-medium text-gray-900 mb-1 hover:text-blue-500 transition-colors">
+                        {project.title}
+                      </h3>
+                      <p className="font-body text-gray-500 text-sm line-clamp-1">
+                        {project.description}
+                      </p>
+                    </Link>
+                  </div>
+                )}
               </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* Recent Projects */}
-      <section className="max-w-5xl mx-auto px-4 py-12 md:py-16">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-          <div>
-            <h2 className="text-xl sm:text-2xl font-semibold text-gray-900">
-              Recent Projects
-            </h2>
-            <p className="text-sm text-gray-500 mt-1">
-              Projects looking for collaborators right now
-            </p>
-          </div>
-          <Link
-            href="/projects"
-            className="text-sm text-blue-500 hover:underline font-medium"
-          >
-            View all →
-          </Link>
-        </div>
-
-        {loading ? (
-          <div className="space-y-4">
-            {[...Array(3)].map((_, i) => (
-              <SkeletonCard key={i} />
-            ))}
-          </div>
-        ) : recentProjects.length > 0 ? (
-          <div className="space-y-4">
-            {recentProjects.map((project) => (
-              <ProjectCard key={project.project_id} project={project} />
-            ))}
-          </div>
-        ) : (
-          <div className="bg-white border border-gray-200 rounded-xl px-6 py-14 text-center">
-            <p className="text-gray-500 text-sm">
-              No projects yet.{" "}
-              <Link href="/register" className="text-blue-500 hover:underline">
-                Be the first to post one.
-              </Link>
-            </p>
-          </div>
-        )}
-      </section>
+        </section>
+      )}
 
       {/* CTA Section */}
       <section className="bg-white border-t border-gray-200">
         <div className="max-w-5xl mx-auto px-4 py-12 md:py-16 text-center">
-          <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4">
+          <h2 className="font-display text-xl sm:text-2xl font-semibold text-gray-900 mb-4">
             Ready to find your next collaborator?
           </h2>
-          <p className="text-gray-500 mb-6 sm:mb-8 max-w-md mx-auto text-sm leading-relaxed px-2">
+          <p className="font-body text-gray-500 mb-6 sm:mb-8 max-w-md mx-auto text-sm leading-relaxed px-2">
             Join DevCollab, post your project, and connect with developers who
             want to build with you.
           </p>
           {user ? (
             <Link
               href="/dashboard"
-              className="inline-block bg-blue-500 hover:bg-blue-600 text-white font-medium px-8 py-3 rounded-xl transition-colors text-sm"
+              className="bg-blue-500 hover:bg-blue-600 text-white font-medium px-8 py-3 rounded-xl transition-colors text-sm min-h-11 flex items-center justify-center"
             >
               Go to Dashboard
             </Link>
           ) : (
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-              <Link
-                href="/register"
-                className="w-full sm:w-auto bg-blue-500 hover:bg-blue-600 text-white font-medium px-8 py-3 rounded-xl transition-colors text-sm"
-              >
-                Create an Account
-              </Link>
-              <Link
-                href="/login"
-                className="w-full sm:w-auto border border-gray-200 hover:bg-gray-50 text-gray-700 font-medium px-8 py-3 rounded-xl transition-colors text-sm"
-              >
-                Sign In
-              </Link>
-            </div>
+            <Link
+              href="/register"
+              className="bg-blue-500 hover:bg-blue-600 text-white font-medium px-8 py-3 rounded-xl transition-colors text-sm min-h-11 flex items-center justify-center"
+            >
+              Create an Account
+            </Link>
           )}
         </div>
       </section>
